@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CMI City FrontPage</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://unpkg.com/naive-ui"></script>
+  <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Optional: Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    #app {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left-box {
+      width: 40%;
+      background-color: #5F9EA0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 20px 0 0 30px;
+    }
+
+    .logo-container {
+      width: 400px;
+      margin-top: -140px;
+      margin-left: 100px;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .welcome-text {
+      color: white;
+      max-width: 80%;
+      margin-left: 100px;
+      margin-top: 20px;
+    }
+
+    .welcome-text h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .welcome-text p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+    }
+
+    /* Registration box styling */
+    .right-box {
+      width: 60%;
+      background-color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      margin: auto;
+    }
+
+    .right-box h1 {
+      margin-bottom: 30px;
+    }
+
+    .right-box p {
+      margin-bottom: 40px;
+      font-size: 1.2rem;
+    }
+
+    .registration-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .continue-button {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .left-box n-steps {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Reset margins and paddings for each n-step item */
+    .left-box n-step {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Additionally, reset margins/paddings of any child elements inside steps */
+    .left-box n-step > div {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* In case there are some internal margins applied to the steps list */
+    .left-box .n-steps-steps {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  </style>
+
+</head>
+<body>
+  <div id="app">
+    <div class="left-box">
+      <!-- Vue template will render here -->
+      <n-space vertical>
+        <n-steps :current="current" :status="currentStatus" direction="horizontal">
+          <n-step title="I Me Mine" description="All through the day, I me mine I me mine, I me mine" />
+          <n-step title="Let It Be" description="When I find myself in times of trouble Mother Mary comes to me" />
+          <n-step title="Break" />
+          <n-step title="Come Together" description="Here come old flat top He come grooving up slowly" />
+          <n-step title="Something" description="Something in the way she moves Attracts me like no other lover" />
+        </n-steps>
+      </n-space>
+    </div>
+    <div class="right-box">
+      <!-- You can add content here later if needed -->
+    </div>
+  </div>
+
+  <script type="module">
+    // Vue setup with Naive UI integration
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        const currentRef = ref(1); // step index
+        return {
+          currentStatus: ref("process"), // status of current step
+          current: currentRef
+        };
+      }
+    }).use(naive).mount("#app"); // Use Naive UI with the Vue app
+  </script>
+</body>
+</html>

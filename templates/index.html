@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CMI City FrontPage</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://unpkg.com/naive-ui"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Optional: Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #app {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left-box {
+      width: 40%;
+      background-color: #5F9EA0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 20px 0 0 30px;
+    }
+
+    .logo-container {
+      width: 400px;
+      margin-top: -140px;
+      margin-left: 100px;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .welcome-text {
+      color: white;
+      max-width: 80%;
+      margin-left: 100px;
+      margin-top: 20px;
+    }
+
+    .welcome-text h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .welcome-text p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 90px;
+      margin-left: 180px;
+      margin-top: 60px;
+    }
+
+    .carousel-container {
+      width: 60%;
+    }
+
+    .carousel-img {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+    }
+    a {
+      color: white;
+      text-decoration: none;
+      
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="left-box">
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='slike/logo1.png') }}" alt="CMI Logo" class="logo-img" />
+      </div>
+
+      <div class="welcome-text">
+        <h1>Welcome to CMI</h1>
+        <p>
+            CMI is your centralized platform for smart and efficient urban governance. Designed with modern cities in mind, it empowers administrators, planners, and decision-makers to seamlessly organize, monitor, and optimize every aspect of city operations — all from one intuitive interface.
+            From infrastructure management and public services to planning, analytics, and real-time monitoring, CMI provides the tools you need to keep your city connected, responsive, and future-ready. Whether you're overseeing transportation networks, utilities or development projects, CMI enables data-driven decisions that make your city safer, smarter, and more sustainable.
+            Welcome to the future of urban management — welcome to CMI.
+        </p>
+      </div>
+
+      <div class="button-group">
+        <n-button round type="primary" size="large" color="#1B365C" style="width: 150px;">
+          <a href="/login">Login</a>
+        </n-button>
+        <n-button round type="primary" size="large" color="#1B365C" style="width: 150px;">
+          <a href="/register">Register</a>
+        </n-button>
+      </div>
+    </div>
+
+    <div class="carousel-container">
+      <n-carousel autoplay>
+        <img class="carousel-img" src="{{ url_for('static', filename='slike/mesto1.jpg') }}" />
+        <img class="carousel-img" src="{{ url_for('static', filename='slike/mesto2.jpg') }}" />
+        <img class="carousel-img" src="{{ url_for('static', filename='slike/mesto3.jpg') }}" />
+        <img class="carousel-img" src="{{ url_for('static', filename='slike/mesto4.jpg') }}" />
+        <img class="carousel-img" src="{{ url_for('static', filename='slike/mesto5.jpg') }}" />
+      </n-carousel>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+    const app = createApp({})
+    app.use(naive)
+    app.mount('#app')
+  </script>
+</body>
+</html>
