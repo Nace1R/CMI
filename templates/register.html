@@ -158,7 +158,10 @@
                 }, 
                 dataType: 'json',
                 success: function (odgovor) {
-                  window.location.href = '/profileCreation';
+                  if (odgovor.success){
+                    window.location.href = odgovor.redirect_url;
+                  }
+
                 }
             });
         }

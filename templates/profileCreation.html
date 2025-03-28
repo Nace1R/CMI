@@ -7,10 +7,8 @@
   <script src="https://unpkg.com/naive-ui"></script>
   <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Optional: Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
-
   <style>
     body, html {
       margin: 0;
@@ -19,53 +17,40 @@
       font-family: 'Poppins', sans-serif;
       background-color: #f5f5f5;
     }
-
     #app {
       display: flex;
       height: 100vh;
     }
-
     .left-box {
       width: 40%;
       background-color: #5F9EA0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
       padding: 20px 0 0 30px;
     }
-
     .logo-container {
       width: 400px;
       margin-top: -140px;
       margin-left: 100px;
     }
-
     .logo-img {
       width: 100%;
       height: auto;
       object-fit: contain;
     }
-
     .welcome-text {
       color: white;
       max-width: 80%;
       margin-left: 100px;
       margin-top: 20px;
     }
-
     .welcome-text h1 {
       font-size: 2rem;
       margin-bottom: 10px;
     }
-
     .welcome-text p {
       font-size: 1rem;
       line-height: 1.6;
       margin: 0 0 20px 0;
     }
-
-    /* Registration box styling */
     .right-box {
       width: 60%;
       background-color: #FFFFFF;
@@ -78,135 +63,132 @@
       border-radius: 8px;
       margin: auto;
     }
-
     .right-box h1 {
       margin-bottom: 30px;
     }
-
     .right-box p {
       margin-bottom: 40px;
       font-size: 1.2rem;
     }
-
     .registration-form {
       width: 100%;
       max-width: 400px;
-    }
-
-    .continue-button {
-      margin-top: 20px;
-      width: 100%;
     }
   </style>
 </head>
 <body>
   <div id="app">
+    
     <div class="left-box">
       <div class="logo-container">
         <img src="{{ url_for('static', filename='slike/logo1.png') }}" alt="CMI Logo" class="logo-img" />
       </div>
-
       <div class="welcome-text">
         <h1>Welcome to CMI</h1>
         <p>
           CMI is your centralized platform for smart and efficient urban governance. Designed with modern cities in mind, it empowers administrators, planners, and decision-makers to seamlessly organize, monitor, and optimize every aspect of city operations — all from one intuitive interface.
-          From infrastructure management and public services to planning, analytics, and real-time monitoring, CMI provides the tools you need to keep your city connected, responsive, and future-ready. Whether you're overseeing transportation networks, utilities or development projects, CMI enables data-driven decisions that make your city safer, smarter, and more sustainable.
           Welcome to the future of urban management — welcome to CMI.
         </p>
       </div>
     </div>
 
+    
     <div class="right-box">
       <h1>Complete registration</h1>
-      <p>Enter the data requested below</p>
+      <p>Answer one question at a time</p>
       <div class="registration-form">
-        <n-space vertical>
-          <n-form label-placement="top">
-            <n-form-item v-if="step === 0" label="Upload your profile picture!" label-align="left">
-              <div style="width: 100%; display: flex; justify-content: center;">
-                <n-upload
-                  action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-                  :headers="{ 'naive-info': 'hello!' }"
-                  :data="{ 'naive-data': 'cool! naive!' }"
-                  v-model:file-list="form.pfp"
-                  show-file-list="false"
-                  accept="image/*"
-                  max="1"
-                >
-                  <n-button type="primary">Upload Profile Picture</n-button>
-                </n-upload>
-              </div>
+        <n-form @submit.prevent="submitForm">
+          
+          <div v-if="step === 0">
+            <n-form-item label="Name">
+              <n-input v-model="name"  placeholder="Enter your name" />
             </n-form-item>
-            
-            
+            <n-button type="primary" @click="nextStep" block>Next</n-button>
+          </div>
           
-            <n-form-item v-if="step === 1" label="What is your email?">
-              <n-input v-model:value="form.email" placeholder="Email" />
+          <div v-else-if="step === 1">
+            <n-form-item label="Email">
+              <n-input v-model="email"  type="email" placeholder="Enter your email" />
             </n-form-item>
+            <n-button type="primary" @click="nextStep" block>Next</n-button>
+          </div>
           
-            <n-form-item v-if="step === 2" label="Where do you live?">
-              <n-input v-model:value="form.city" placeholder="City, Country" />
+          <div v-else-if="step === 2">
+            <n-form-item label="Password">
+              <n-input v-model="password" type="password" placeholder="Enter your password" />
             </n-form-item>
-          
-            <n-result
-              v-if="step === 3"
-              status="success"
-              title="Done!"
-              description="Thanks for registering."
-            />
-          </n-form>
-          
-          <n-button class="continue-button"roundtype="primary"size="large"style="background-color: #000000;" @click="nextStep" v-if="step < 3">
-            Next
-          </n-button>
-          
-        </n-space>
+            <n-button type="primary" @click="nextStep(); submitForm()" native-type="submit" block>Submit</n-button>
+          </div>
+  
+          <div v-else-if="step === 3" style="text-align: center;">
+            <div style="font-size: 48px; color: green;">✅</div>
+            <h2>Thank you, you are all set up!</h2>
+            <p>Redirecting to dashboard...</p>
+          </div>
+        </n-form>
       </div>
     </div>
   </div>
 
-<script>
-    const { createApp, ref } = Vue;
+  <script>
+    function getCookies(){
+      const userid = document.cookie
+      .split('; ')
+      .find(row => startsWith('user_id='))
+      ?.split('=')[1];
 
-    const app = createApp({
-      setup() {
-        const step = ref(0);
-        const form = ref({
-          pfp: [],
+      console.log(userId)
+    }
+
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          step: 0,
+          name: '',
           email: '',
-          city: ''
-        });
-        const nextStep = () => {
-          if (step.value < 3) step.value++;
+          password: ''
         };
-        return { step, form, nextStep };
-      }
-    });
+      },
+      methods: {
+        nextStep() {
+          this.step++;
+        },
+       
+        submitForm() {
+          
 
-    app.use(naive);
-    app.mount('#app');
-
-    function sendProfileData(){
-        const ime = document.getElementById('username').querySelector("input").value;
-        const email = document.getElementById('email').querySelector("input").value;
-        const geslo = document.getElementById('password').querySelector("input").value;
-        $.ajax({
-                url: "/register", 
-                method: "POST",                
-                data: {ime: ime,
-                      email: email,
-                      geslo: geslo
-                }, 
-                dataType: 'json',
-                success: function (odgovor) {
-                  window.location.href = '/profileCreation';
-                }
-            });
+          const profileData = {
+            name: this.name,
+            email: this.email,
+            password: this.password
+          };
+          console.log('Name:', this.name);
+          console.log('Email:', this.email);
+          console.log('Password:', this.password);
+          
+          $.ajax({
+            // POSTA podatke iz profiledata consta 
+            url: '/profileCreation', 
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(profileData),
+            success: (response) => {
+              console.log(profileData)
+              // Ce je uspesno dobis thank you page
+              this.step = 3;
+              // po 2 sekundah redirect na login
+              setTimeout(() => {
+                window.location.href = '/login';
+              }, 2000);
+            },
+            error: () => {
+              alert('Error saving profile.');
+            }
+          });
         }
-
-
-
-</script>
-
+      }
+    }).use(naive).mount('#app');
+  </script>
 </body>
 </html>
