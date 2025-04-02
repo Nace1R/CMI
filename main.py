@@ -35,7 +35,7 @@ def register():
         
         uporabniki.insert({"ime": ime, "email": email, "geslo": geslo, "id":ids})
         response = make_response(jsonify({"success": True, "redirect_url": url_for('profileCreation')}))
-        response.set_cookie("user_id", ids, max_age=600)  # Store for 10 minutes
+        response.set_cookie("user_id", ids, max_age=600)
         return response
     return render_template("register.html")
 
@@ -47,15 +47,15 @@ def login():
 
 @app.route("/profileCreation", methods=["GET", "POST"])
 def profileCreation():
-    user_id = request.cookies.get("user_id")  # Read user_id from cookie
+    user_id = request.cookies.get("user_id")
     if not user_id: 
-        return redirect(url_for("register"))  # Redirect if no ID found
+        return redirect(url_for("register"))
     if request.method == "POST":
-        print("✅ Request received!")  # Debugging step 1
-        data = request.get_json()  # Ensure correct JSON retrieval
+        print("Request received!")
+        data = request.get_json()
 
         if not data:
-            print("❌ No data received!")  # Debugging step 2
+            print("no data received!")
             return jsonify({"success": False, "error": "No data received"}), 400
         print(data)
         name = data.get("name")

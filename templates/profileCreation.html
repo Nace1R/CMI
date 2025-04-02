@@ -173,7 +173,7 @@
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(profileData),
-            success: (response) => {
+            success: function(response) {
               console.log(profileData)
               // Ce je uspesno dobis thank you page
               this.step = 3;
