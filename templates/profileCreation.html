@@ -97,93 +97,125 @@
       <h1>Sign Up</h1>
       <p>One step at a time</p>
       <div class="registration-form">
-        <div v-if="step == 1">
+        <div v-if="step === 1">
           <h2>1. Upload a nice picture of you :)</h2>
-          <n-upload v-on:change="picture = $event.fileList[0]">
+          <n-upload
+            :default-upload="false"
+            @update:file-list="handleUpload"
+          >
             <n-button>Pick a picture</n-button>
           </n-upload>
-          <n-button v-on:click="goNext">Next step</n-button>
         </div>
 
-        <div v-if="step == 2">
-          <h2>2. Where do you live?</h2>
-          <n-input v-model:value="cityCountry" placeholder="Ljubljana Slovenia"></n-input>
-          <n-button v-on:click="goNext">Next step</n-button>
-        </div>
+          <div class="form-group">
+            <n-button @click="goNext">Next step</n-button>
+          </div>
 
-        <div v-if="step == 3">
-          <h2>3. Your phone number:</h2>
-          <n-input v-model:value="phoneNumber" type="text" placeholder="+386 51 123 123"></n-input>
-          <n-button v-on:click="finish">Finish!</n-button>
-        </div>
+          <div v-if="step === 2">
+            <h2>2. Where do you live?</h2>
+            <n-input v-model:value="cityCountry" placeholder="Ljubljana, Slovenia"></n-input>
+            <div class="form-group">
+              <n-button @click="goNext">Next step</n-button>
+            </div>
+          </div>
 
-        <div v-if="step == 4">
-          <h2>✅ All Set!</h2>
-          <p>Going to login...</p>
+          <div v-if="step === 3">
+            <h2>3. Your phone number:</h2>
+            <n-input v-model:value="phoneNumber" placeholder="+386 51 123 123"></n-input>
+            <div class="form-group">
+              <n-button @click="finish">Finish!</n-button>
+            </div>
+          </div>
+          
+          <div v-if="step === 4">
+            <h2>✅ All Set!</h2>
+            <p>Going to login...</p>
+          </div>
+ 
         </div>
-      </div>
-    </div>
   </div>
 
   <script>
+
+    let userId;
+
     function getCookies(){
-      const userid = document.cookie
-      .split('; ')
-      .find(row => startsWith('user_id='))
-      ?.split('=')[1];
-
-      console.log(userId)
+      const userId = document.cookie
+        .split('; ')
+        .find(row => row.indexOf('userId=') === 0)
+        ?.split('=')[1];
+      return userId;
     }
-
-    const { createApp } = Vue;
+    
+    userId = getCookies()
+    console.log(userId);
+    const { createApp, ref } = Vue;
 
     createApp({
-      components: { NUpload, NInput, NButton }, //omogoci moznosti naive ui komponent
-      data() {
-        return {
-          step: 1, // zacnem z stepom 1 v tem primeru picture upload
-          picture: null, // pred uploadom slik je vrednost null
-          emacityCountry: '',
-          password: ''
-        };
-      },
-      methods: {
-        goNext() {
-          if (this.step == 1) {
-            let picture_box = new FormData(); // Naredim skatlo s slikami
-            picture_box.append('picture', this.picture.file); // Postavim sliko v to skatlo
-            $.ajax({
-              url: '/profileCreation',
-              type: 'POST',
-              data: picture_box,
-              processData: false, // Se ne dotikam skatle s slikami = nastavljeno na false
-              contentType: false // Pustim da sam ugotovi type
-            });
-          }
-          if (this.step == 2) {
-            $.ajax({
-              url: '/profileCreation',
-              type: 'POST',
-              data: JSON.stringify({ email: this.email }) 
-            });
-          }
-          this.step = this.step + 1; //Premik na naslednji korak
-        },
-        finish() {
+      setup() {
+        const step = ref(1);
+        const pictureFile = ref(null);
+        const cityCountry = ref('');
+        const phoneNumber = ref('');
+
+      const handleUpload = (fileList) => {
+        pictureFile.value = fileList[0];
+      };
+
+      const goNext = () => {
+        if (step.value === 1 && pictureFile.value) {
+          const formData = new FormData();
+          formData.append('picture', pictureFile.value.file);
+          formData.append('userId', userId);
+
           $.ajax({
             url: '/profileCreation',
             type: 'POST',
-            data: JSON.stringify({ password: this.password }), // Posljem phone number kot tekst
-            success: function() {
-              this.step = 4; // Prikazem zadnji page to je ALL SET page
-              setTimeout(() => {
-                window.location.href = '/login'; // Redirecta na login  po dveh sekundah prikaza all set strani
-              }, 2000);
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function () {
+              step.value = 2;
+            }
+          });
+        } else if (step.value === 2) {
+          $.ajax({
+            url: '/profileCreation',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ cityCountry: cityCountry.value, userId:userId}),
+            success: function () {
+              step.value = 3;
             }
           });
         }
-      }
-    }).use(naive).mount('#app');
-  </script>
+      };
+
+      const finish = () => {
+        $.ajax({
+          url: '/profileCreation',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ phoneNumber: phoneNumber.value, userId:userId}),
+          success: function () {
+            step.value = 4;
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 2000);
+          }
+        });
+      };
+
+      return {
+        step,
+        cityCountry,
+        phoneNumber,
+        handleUpload,
+        goNext,
+        finish
+      };
+    }
+  }).use(naive).mount('#app');
+</script>
 </body>
 </html>

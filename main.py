@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
 from tinydb import TinyDB, Query
 from datetime import datetime
+import os
 
 db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
@@ -35,7 +36,7 @@ def register():
         
         uporabniki.insert({"ime": ime, "email": email, "geslo": geslo, "id":ids})
         response = make_response(jsonify({"success": True, "redirect_url": url_for('profileCreation')}))
-        response.set_cookie("user_id", ids, max_age=600)
+        response.set_cookie("userId", ids, max_age=600)
         return response
     return render_template("register.html")
 
@@ -47,15 +48,26 @@ def login():
 
 @app.route("/profileCreation", methods=["GET", "POST"])
 def profileCreation():
-    user_id = request.cookies.get("user_id")
-    if not user_id: 
+    userId = request.cookies.get("userId")
+    if not userId: 
         return redirect(url_for("register"))
-    if request.method == "POST":
-        pass
-        if not data:
-            pass
+    
 
-    return render_template("profileCreation.html", user_id=user_id)
+    if request.method == "POST":
+        if 'picture' in request.files:
+            file = request.files['picture']
+            if file.filename != '':
+                file_extension = os.path.splitext(file.filename)[1]
+                filename = f"pfp_{userId}{file_extension}"
+                file_path = os.path.join('static', 'pfp', filename)
+                file.save(file_path)
+                print(userId)
+                return {'message': 'File uploaded successfully', 'path': file_path}, 200
+            else:
+                return {'error': 'No selected file'}, 400
+            
+
+    return render_template("profileCreation.html")
 
 
 
