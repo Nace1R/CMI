@@ -94,38 +94,33 @@
 
     
     <div class="right-box">
-      <h1>Complete registration</h1>
-      <p>Answer one question at a time</p>
+      <h1>Sign Up</h1>
+      <p>One step at a time</p>
       <div class="registration-form">
-        <n-form @submit.prevent="submitForm">
-          
-          <div v-if="step === 0">
-            <n-form-item label="Name">
-              <n-input v-model="name"  placeholder="Enter your name" />
-            </n-form-item>
-            <n-button type="primary" @click="nextStep" block>Next</n-button>
-          </div>
-          
-          <div v-else-if="step === 1">
-            <n-form-item label="Email">
-              <n-input v-model="email"  type="email" placeholder="Enter your email" />
-            </n-form-item>
-            <n-button type="primary" @click="nextStep" block>Next</n-button>
-          </div>
-          
-          <div v-else-if="step === 2">
-            <n-form-item label="Password">
-              <n-input v-model="password" type="password" placeholder="Enter your password" />
-            </n-form-item>
-            <n-button type="primary" @click="nextStep(); submitForm()" native-type="submit" block>Submit</n-button>
-          </div>
-  
-          <div v-else-if="step === 3" style="text-align: center;">
-            <div style="font-size: 48px; color: green;">✅</div>
-            <h2>Thank you, you are all set up!</h2>
-            <p>Redirecting to dashboard...</p>
-          </div>
-        </n-form>
+        <div v-if="step == 1">
+          <h2>1. Upload a nice picture of you :)</h2>
+          <n-upload v-on:change="picture = $event.fileList[0]">
+            <n-button>Pick a picture</n-button>
+          </n-upload>
+          <n-button v-on:click="goNext">Next step</n-button>
+        </div>
+
+        <div v-if="step == 2">
+          <h2>2. Where do you live?</h2>
+          <n-input v-model:value="cityCountry" placeholder="Ljubljana Slovenia"></n-input>
+          <n-button v-on:click="goNext">Next step</n-button>
+        </div>
+
+        <div v-if="step == 3">
+          <h2>3. Your phone number:</h2>
+          <n-input v-model:value="phoneNumber" type="text" placeholder="+386 51 123 123"></n-input>
+          <n-button v-on:click="finish">Finish!</n-button>
+        </div>
+
+        <div v-if="step == 4">
+          <h2>✅ All Set!</h2>
+          <p>Going to login...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -141,49 +136,49 @@
     }
 
     const { createApp } = Vue;
+
     createApp({
+      components: { NUpload, NInput, NButton }, //omogoci moznosti naive ui komponent
       data() {
         return {
-          step: 0,
-          name: '',
-          email: '',
+          step: 1, // zacnem z stepom 1 v tem primeru picture upload
+          picture: null, // pred uploadom slik je vrednost null
+          emacityCountry: '',
           password: ''
         };
       },
       methods: {
-        nextStep() {
-          this.step++;
+        goNext() {
+          if (this.step == 1) {
+            let picture_box = new FormData(); // Naredim skatlo s slikami
+            picture_box.append('picture', this.picture.file); // Postavim sliko v to skatlo
+            $.ajax({
+              url: '/profileCreation',
+              type: 'POST',
+              data: picture_box,
+              processData: false, // Se ne dotikam skatle s slikami = nastavljeno na false
+              contentType: false // Pustim da sam ugotovi type
+            });
+          }
+          if (this.step == 2) {
+            $.ajax({
+              url: '/profileCreation',
+              type: 'POST',
+              data: JSON.stringify({ email: this.email }) 
+            });
+          }
+          this.step = this.step + 1; //Premik na naslednji korak
         },
-       
-        submitForm() {
-          
-
-          const profileData = {
-            name: this.name,
-            email: this.email,
-            password: this.password
-          };
-          console.log('Name:', this.name);
-          console.log('Email:', this.email);
-          console.log('Password:', this.password);
-          
+        finish() {
           $.ajax({
-            // POSTA podatke iz profiledata consta 
-            url: '/profileCreation', 
+            url: '/profileCreation',
             type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(profileData),
-            success: function(response) {
-              console.log(profileData)
-              // Ce je uspesno dobis thank you page
-              this.step = 3;
-              // po 2 sekundah redirect na login
+            data: JSON.stringify({ password: this.password }), // Posljem phone number kot tekst
+            success: function() {
+              this.step = 4; // Prikazem zadnji page to je ALL SET page
               setTimeout(() => {
-                window.location.href = '/login';
+                window.location.href = '/login'; // Redirecta na login  po dveh sekundah prikaza all set strani
               }, 2000);
-            },
-            error: () => {
-              alert('Error saving profile.');
             }
           });
         }
