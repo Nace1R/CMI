@@ -51,19 +51,9 @@ def profileCreation():
     if not user_id: 
         return redirect(url_for("register"))
     if request.method == "POST":
-        print("Request received!")
-        data = request.get_json()
-
+        pass
         if not data:
-            print("no data received!")
-            return jsonify({"success": False, "error": "No data received"}), 400
-        print(data)
-        name = data.get("name")
-        email = data.get("email")
-        password = data.get("password")
-        print(name,email,password)
-
-
+            pass
 
     return render_template("profileCreation.html", user_id=user_id)
 
