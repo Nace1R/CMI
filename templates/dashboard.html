@@ -1,15 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>CMI City Dashboard</title>
-  <script src="https://unpkg.com/vue@3"></script>
-  <script src="https://unpkg.com/naive-ui"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMI City</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/naive-ui"></script>
+    <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .logo {
+            height: 42px;
+            margin-right: 20px;
+        }
+
+
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .username {
+            font-weight: 500;
+            color: #333;
+        }
+
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+
+        .sidebar {
+            background-color: #1B365C; 
+            color: white;
+            transition: width 0.3s ease; 
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .sidebar-expanded {
+            width: 240px;
+        }
+
+
+        .sidebar-collapsed {
+            width: 64px;
+        }
+
+ 
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 12px; 
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1B365C;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+
+        .stat-card {
+            border-left: 4px solid #5F9EA0;
+            padding-left: 12px;
+        }
+
+
+        .activity-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+
+        .activity-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        /*BARVE KO JE IZBRAN ELEMENT V MENIJU*/
+        .n-menu-item-content--selected, 
+        .n-menu-item-content--child-active {
+            background-color: #4682B4 !important; /* #4682B4, */
+        }
+
+        .n-menu-item-content--selected::before,
+        .n-menu-item-content--child-active::before {
+            background-color: #4682B4 !important;
+        }
+    </style>
 </head>
 <body>
-  <!--V IZDELAVI-->
+
+    <div id="app">
+        <div class="navbar">
+            <div class="navbar-left">
+                <n-button quaternary circle @click="toggleSidebar">
+                    <template #icon>
+                        <n-icon>
+                            <i v-if="collapsed" class="las la-angle-right"></i>
+                            <i v-else class="las la-bars"></i>
+                        </n-icon>
+                    </template>
+                </n-button>
+                <img src="{{ url_for('static', filename='slike/logo3.png') }}" alt="CMI Logo" class="logo">
+            </div>
+
+            <div class="navbar-right">
+                <span class="username">Testing user</span>
+                <n-avatar round size="medium" src="{{ url_for('static', filename='slike/favicon5.png') }}"></n-avatar>
+            </div>
+        </div>
+
+
+        <div class="main-container">
+            <div class="sidebar" :class="collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+                <n-menu
+                    v-model:value="activeKey"
+                    :collapsed="collapsed"
+                    :collapsed-width="64"
+                    :collapsed-icon-size="22"
+                    :options="menuOptions"
+                    :indent="18"
+                    inverted
+                />
+            </div>
+
+
+            <div class="content">
+                <div class="dashboard-card">
+                    <div class="card-title">
+                        <i class="las la-home icon"></i>
+                        Welcome to {city}!
+                    </div>
+                    <p>Step into the heart of [City Name], where conversations never stop and connections are just a message away. 
+                    Whether you're a local, a newcomer, or just passing through, this is your space to chat, share, and explore with the community.</p>
+                </div>
+
+
+                <div class="dashboard-card">
+                    <div class="card-title">
+                        <i class="las la-chart-pie icon"></i>
+                        Quick Stats
+                    </div>
+                    <p><b>Here are some key stats about {city}. Or you can navigate through the menu to get more detailed information.</b></p>
+                    <n-grid cols="1 s:2 m:3" responsive="screen" :x-gap="16" :y-gap="16">
+                        <n-grid-item>
+                            <n-card class="stat-card">
+                                <n-space align="center">
+                                    <i class="las la-users" style="font-size: 2rem; color: #5F9EA0;"></i>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Population</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600;">250,000</div>
+                                    </div>
+                                </n-space>
+                            </n-card>
+                        </n-grid-item>
+
+                        <n-grid-item>
+                            <n-card class="stat-card">
+                                <n-space align="center">
+                                    <i class="las la-project-diagram" style="font-size: 2rem; color: #5F9EA0;"></i>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Electricity Usage</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600;">35%</div>
+                                    </div>
+                                </n-space>
+                            </n-card>
+                        </n-grid-item>
+
+                        <n-grid-item>
+                            <n-card class="stat-card">
+                                <n-space align="center">
+                                    <i class="las la-money-bill" style="font-size: 2rem; color: #5F9EA0;"></i>
+                                    <div>
+                                        <div style="font-size: 0.9rem; color: #666;">Budget Utilization</div>
+                                        <div style="font-size: 1.5rem; font-weight: 600;">68%</div>
+                                    </div>
+                                </n-space>
+                            </n-card>
+                        </n-grid-item>
+                    </n-grid>
+                </div>
+
+
+                <div class="dashboard-card">
+                    <div class="card-title">
+                        <i class="las la-history icon"></i>
+                        Recent Updates
+                    </div>
+                    <p><b>Here are the latest updates and activities in {city}.</b></p>
+
+                    <div>
+                        <div class="activity-item">
+                            <n-space align="start">
+                                <n-avatar round size="small" style="background-color: #e6f7ff;">
+                                    <i class="las la-road" style="color: #1890ff;"></i>
+                                </n-avatar>
+                                <div>
+                                    <div style="font-weight: 500;">New infrastructure project approved</div>
+                                    <div style="font-size: 0.85rem; color: #666;">Today, 10:30 AM</div>
+                                    <div style="font-size: 0.85rem; color: #5F9EA0;">Downtown area</div>
+                                </div>
+                            </n-space>
+                        </div>
+
+                        <div class="activity-item">
+                            <n-space align="start">
+                                <n-avatar round size="small" style="background-color: #f6ffed;">
+                                    <i class="las la-file-invoice-dollar" style="color: #52c41a;"></i>
+                                </n-avatar>
+                                <div>
+                                    <div style="font-weight: 500;">Budget report updated</div>
+                                    <div style="font-size: 0.85rem; color: #666;">Yesterday, 4:15 PM</div>
+                                    <div style="font-size: 0.85rem; color: #5F9EA0;">Q2 2025</div>
+                                </div>
+                            </n-space>
+                        </div>
+
+                        <div class="activity-item">
+                            <n-space align="start">
+                                <n-avatar round size="small" style="background-color: #fff2e8;">
+                                    <i class="las la-user-plus" style="color: #fa8c16;"></i>
+                                </n-avatar>
+                                <div>
+                                    <div style="font-weight: 500;">New team member added</div>
+                                    <div style="font-size: 0.85rem; color: #666;">Apr 2, 2025</div>
+                                    <div style="font-size: 0.85rem; color: #5F9EA0;">Urban Planning Department</div>
+                                </div>
+                            </n-space>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for the DOM to be fully loaded before initializing Vue
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the necessary functions from Vue
+            // createApp: Creates a new Vue application
+            // h: The render function for creating virtual DOM elements
+            // ref: Creates a reactive reference that can be updated
+            const { createApp, h, ref } = Vue;
+
+            // This function creates an icon renderer for the menu items
+            // It takes a CSS class name for Line Awesome icons and returns a function
+            // that creates a virtual DOM element with that icon
+            function renderIcon(iconClass) {
+                // Return a function that will be called by Vue when rendering the icon
+                return () => h('i', { class: iconClass, style: 'font-size: 1.2rem;' });
+            }
+
+            // Create the Vue application
+            const app = createApp({
+                // The setup function is where we define reactive state and functions
+                setup() {
+                    // Create reactive variables
+                    // collapsed: Tracks whether the sidebar is collapsed or expanded
+                    const collapsed = ref(false); // Start with expanded sidebar
+
+                    // activeKey: Tracks which menu item is currently selected
+                    const activeKey = ref('dashboard'); // Start with dashboard selected
+
+                    // Define the menu structure with icons and submenus
+                    // This array will be passed to the NaiveUI menu component
+                    const menuOptions = [
+                        // Dashboard menu item (no children)
+                        {
+                            label: 'Dashboard', // The text shown in the menu
+                            key: 'dashboard',    // Unique identifier for this item
+                            icon: renderIcon('las la-tachometer-alt') // Dashboard icon
+                        },
+
+                        // Projects menu item with submenu children
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt'), // City map/guide icon
+                            // Submenu items (children)
+ /*                           children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                        },
+
+                        // Reports menu item with submenu children
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll'), // Poll/voting icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        // Settings menu item with submenu children
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun'), // Weather icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light'), // Traffic icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Social',
+                            key: 'social',
+                            icon: renderIcon('las la-users'), // Social/community icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt'), // Events calendar icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt'), // Electricity/power icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus'), // Public transit/bus icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift'), // Rewards/gift icon
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+
+                        // Help menu item
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle') // About/information icon
+                        }
+                    ];
+
+                    // Function to toggle the sidebar between collapsed and expanded states
+                    function toggleSidebar() {
+                        // The ! operator flips the boolean value (true becomes false, false becomes true)
+                        collapsed.value = !collapsed.value;
+                    }
+
+                    // Return all the variables and functions that should be available in the template
+                    return {
+                        collapsed,     // Whether sidebar is collapsed
+                        activeKey,     // Currently selected menu item
+                        menuOptions,   // Menu structure
+                        toggleSidebar  // Function to toggle sidebar
+                    };
+                }
+            });
+
+            // Add the NaiveUI plugin to our Vue app
+            // This makes all NaiveUI components available to use
+            app.use(naive);
+
+            // Mount the Vue app to the element with id="app" in the HTML
+            // This starts the app and renders it to the page
+            app.mount('#app');
+        });
+    </script>
 </body>
 </html>

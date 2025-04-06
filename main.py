@@ -40,9 +40,23 @@ def register():
         return response
     return render_template("register.html")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-
+    if request.method == "POST":
+        ime = request.form.get("ime")
+        geslo = request.form.get("geslo")
+        user = uporabniki.get(User.ime == ime)
+        if user:
+            # Check if password matches
+            if user["geslo"] == geslo:
+                userId = user["id"]
+                response = make_response(jsonify({"success": True, "redirect_url": url_for('dashboard')}))
+                response.set_cookie("userId", userId, max_age=60*60*24)  # 1 day cookie
+                return response
+            else:
+                return "Wrong password"
+        else:
+            return "User not found"
     return render_template("login.html")
 
 
@@ -54,6 +68,7 @@ def profileCreation():
     
 
     if request.method == "POST":
+        # shranjevanje slike
         if 'picture' in request.files:
             file = request.files['picture']
             if file.filename != '':
@@ -62,14 +77,38 @@ def profileCreation():
                 file_path = os.path.join('static', 'pfp', filename)
                 file.save(file_path)
                 print(userId)
-                return {'message': 'File uploaded successfully', 'path': file_path}, 200
-            else:
-                return {'error': 'No selected file'}, 400
+
+                pot = f"static/pfp/pfp_{userId}{file_extension}"
+                profil.insert({"userId": userId, "pfp": pot})
+        elif request.is_json:
+            data = request.json
+            if 'city' in data:
+                profil.update({"city": data['city']}, Query().userId == userId)
+            elif 'phoneNumber' in data:
+                profil.update({"number": data['phoneNumber']}, Query().userId == userId)
+                #city = request.form.get("city")
+                #number = request.form.get("phoneNumber")
+                return {'message': 'profile succewsfuly created'}, 200
             
 
     return render_template("profileCreation.html")
 
+@app.route("/dashboard")
+def dashboard():
 
+    return render_template("dashboard.html")
+
+
+@app.route("/manageProfile")
+def manageProfile():
+
+    return render_template("manage_profile.html")
+
+@app.route("/logout")
+def logout():
+    response = make_response(redirect(url_for('login')))
+    response.set_cookie('userId', '', expires=0)
+    return response
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080)

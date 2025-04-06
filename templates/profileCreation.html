@@ -3,13 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>CMI City</title>
+  <!-- Nalaganje Vue.js knjižnice -->
   <script src="https://unpkg.com/vue@3"></script>
+  <!-- Nalaganje Naive UI komponent -->
   <script src="https://unpkg.com/naive-ui"></script>
   <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+  <!-- Nalaganje jQuery za AJAX klice -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Nalaganje Line Awesome ikon -->
+  <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <!-- Nalaganje Google pisav -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Favicon ikona -->
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
   <style>
+    /* Osnovni stil za celotno stran */
     body, html {
       margin: 0;
       padding: 0;
@@ -17,40 +25,61 @@
       font-family: 'Poppins', sans-serif;
       background-color: #f5f5f5;
     }
+
+    /* Glavni kontejner aplikacije */
     #app {
       display: flex;
       height: 100vh;
     }
+
+    /* Levi del strani z logotipom in pozdravnim besedilom */
     .left-box {
       width: 40%;
       background-color: #5F9EA0;
       padding: 20px 0 0 30px;
     }
+
+    /* Kontejner za logotip */
     .logo-container {
       width: 400px;
       margin-top: -140px;
       margin-left: 100px;
+      position: relative;
+      z-index: 2;
     }
+
+    /* Stil za logotip */
     .logo-img {
       width: 100%;
       height: auto;
       object-fit: contain;
     }
+
+    /* Kontejner za pozdravno besedilo */
     .welcome-text {
       color: white;
       max-width: 80%;
       margin-left: 100px;
       margin-top: 20px;
+      position: relative;
+      z-index: 2;
     }
+
+    /* Naslov v pozdravnem besedilu */
     .welcome-text h1 {
       font-size: 2rem;
       margin-bottom: 10px;
+      font-weight: 600;
     }
+
+    /* Odstavek v pozdravnem besedilu */
     .welcome-text p {
       font-size: 1rem;
       line-height: 1.6;
       margin: 0 0 20px 0;
     }
+
+    /* Desni del strani z obrazcem */
     .right-box {
       width: 60%;
       background-color: #FFFFFF;
@@ -59,26 +88,218 @@
       align-items: center;
       justify-content: center;
       padding: 40px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border-radius: 16px;
       margin: auto;
+      background-image: linear-gradient(to bottom, #ffffff, #f9fbff);
     }
+
+    /* Naslov v desnem delu */
     .right-box h1 {
-      margin-bottom: 30px;
+      margin-bottom: 10px;
+      color: #1B365C;
+      font-weight: 600;
+      font-size: 2.2rem;
     }
+
+    /* Podnaslov v desnem delu */
     .right-box p {
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       font-size: 1.2rem;
+      color: #666;
     }
+
+    /* Obrazec za registracijo */
     .registration-form {
       width: 100%;
       max-width: 400px;
     }
+
+    /* Stil za korake registracije */
+    .step-container {
+      margin-bottom: 30px;
+      padding: 24px;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: all 0.3s ease;
+      border: 1px solid #eaeef5;
+    }
+
+    /* Naslov koraka */
+    .step-container h2 {
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+      color: #1B365C;
+      font-weight: 500;
+    }
+
+    /* Ikona pred naslovom koraka */
+    .step-icon {
+      margin-right: 12px;
+      font-size: 1.6rem;
+      color: #1B365C;
+    }
+
+    /* Gumbi za navigacijo med koraki */
+    .form-group {
+      margin-top: 28px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Stil za gumbe */
+    .n-button {
+      transition: all 0.3s ease;
+      background-color: #1B365C !important;
+    }
+
+    /* Efekt lebdenja za gumbe */
+    .n-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(27, 54, 92, 0.25) !important;
+    }
+
+    /* Stil za vnosna polja */
+    .n-input {
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .n-input:hover, .n-input:focus {
+      border-color: #1B365C !important;
+      box-shadow: 0 0 0 2px rgba(27, 54, 92, 0.1) !important;
+    }
+
+    /* Animacija za prehod med koraki */
+    .step-transition-enter-active,
+    .step-transition-leave-active {
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .step-transition-enter-from,
+    .step-transition-leave-to {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    /* Indikator napredka */
+    .progress-indicator {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .progress-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 75%;
+      height: 2px;
+      background-color: #e0e0e0;
+      z-index: 0;
+    }
+
+    .progress-step {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 15px;
+      color: #fff;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .progress-step.active {
+      background-color: #1B365C;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(27, 54, 92, 0.3);
+    }
+
+    .progress-step.completed {
+      background-color: #1B365C;
+    }
+
+    .progress-step::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 2px;
+      background-color: #e0e0e0;
+      right: -30px;
+      z-index: -1;
+    }
+
+    .progress-step:last-child::after {
+      display: none;
+    }
+
+    .progress-step.completed::after {
+      background-color: #1B365C;
+    }
+
+    /* Stil za končni korak */
+    .completion-message {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .completion-message h2 {
+      color: #1B365C;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .completion-message p {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #1B365C;
+      margin-bottom: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Glavni kontejner aplikacije -->
   <div id="app">
-    
+
+    <!-- Levi del z logotipom in pozdravnim besedilom -->
     <div class="left-box">
       <div class="logo-container">
         <img src="{{ url_for('static', filename='slike/logo1.png') }}" alt="CMI Logo" class="logo-img" />
@@ -92,130 +313,222 @@
       </div>
     </div>
 
-    
+    <!-- Desni del z obrazcem za ustvarjanje profila -->
     <div class="right-box">
       <h1>Sign Up</h1>
       <p>One step at a time</p>
+
+      <!-- Stepper -->
+      <div class="progress-indicator">
+        <div :class="['progress-step', step >= 1 ? 'active' : '', step > 1 ? 'completed' : '']">1</div>
+        <div :class="['progress-step', step >= 2 ? 'active' : '', step > 2 ? 'completed' : '']">2</div>
+        <div :class="['progress-step', step >= 3 ? 'active' : '', step > 3 ? 'completed' : '']">3</div>
+        <div :class="['progress-step', step >= 4 ? 'active' : '']">4</div>
+      </div>
+
+      <!-- Obrazec za registracijo -->
       <div class="registration-form">
-        <div v-if="step === 1">
-          <h2>1. Upload a nice picture of you :)</h2>
+        <!-- Prvi korak: nalaganje profilne slike -->
+        <div v-if="step === 1" class="step-container">
+          <h2>
+            <i class="las la-camera step-icon"></i>
+            1. Upload a nice picture of you :)
+          </h2>
           <n-upload
             :default-upload="false"
             @update:file-list="handleUpload"
+            accept="image/*"
           >
-            <n-button>Pick a picture</n-button>
+            <n-button type="primary" color="#1B365C">
+              <template #icon><i class="las la-upload"></i></template>
+              Pick a picture
+            </n-button>
           </n-upload>
-        </div>
 
+          <!-- Gumb za nadaljevanje na naslednji korak -->
           <div class="form-group">
-            <n-button @click="goNext">Next step</n-button>
+            <n-button @click="goNext" type="primary" color="#1B365C" :disabled="!pictureFile">
+              <template #icon><i class="las la-arrow-right"></i></template>
+              Next step
+            </n-button>
           </div>
-
-          <div v-if="step === 2">
-            <h2>2. Where do you live?</h2>
-            <n-input v-model:value="cityCountry" placeholder="Ljubljana, Slovenia"></n-input>
-            <div class="form-group">
-              <n-button @click="goNext">Next step</n-button>
-            </div>
-          </div>
-
-          <div v-if="step === 3">
-            <h2>3. Your phone number:</h2>
-            <n-input v-model:value="phoneNumber" placeholder="+386 51 123 123"></n-input>
-            <div class="form-group">
-              <n-button @click="finish">Finish!</n-button>
-            </div>
-          </div>
-          
-          <div v-if="step === 4">
-            <h2>✅ All Set!</h2>
-            <p>Going to login...</p>
-          </div>
- 
         </div>
+
+        <!-- Drugi korak: vnos lokacije bivanja -->
+        <div v-if="step === 2" class="step-container">
+          <h2>
+            <i class="las la-map-marker step-icon"></i>
+            2. Where do you live?
+          </h2>
+          <n-input v-model:value="city" placeholder="Ljubljana, Slovenia">
+            <template #prefix>
+              <i class="las la-city"></i>
+            </template>
+          </n-input>
+
+          <!-- Gumb za nadaljevanje na naslednji korak -->
+          <div class="form-group">
+            <n-button @click="goNext" type="primary" color="#1B365C" :disabled="!city">
+              <template #icon><i class="las la-arrow-right"></i></template>
+              Next step
+            </n-button>
+          </div>
+        </div>
+
+        <!-- Tretji korak: vnos telefonske številke -->
+        <div v-if="step === 3" class="step-container">
+          <h2>
+            <i class="las la-phone step-icon"></i>
+            3. Your phone number:
+          </h2>
+          <n-input v-model:value="phoneNumber" placeholder="+386 51 123 123">
+            <template #prefix>
+              <i class="las la-phone"></i>
+            </template>
+          </n-input>
+
+          <!-- Gumb za zaključek registracije -->
+          <div class="form-group">
+            <n-button @click="finish" type="primary" color="#1B365C" :disabled="!phoneNumber">
+              <template #icon><i class="las la-check"></i></template>
+              Finish!
+            </n-button>
+          </div>
+        </div>
+
+        <!-- Četrti korak: potrditev uspešne registracije -->
+        <div v-if="step === 4" class="step-container completion-message">
+          <i class="las la-check-circle success-icon"></i>
+          <h2>All Set!</h2>
+          <p>Going to login...</p>
+          <n-progress type="line" color="#1B365C" percentage="100" />
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-
+    // COOKIES(PIŠKOTEK ;) ) (choco chip)
+    // Deklaracija spremenljivke za ID uporabnika
     let userId;
-
+    /**
+     * Funkcija za pridobivanje ID uporabnika iz piškotkov (cookies)
+     * @returns {string} ID uporabnika iz piškotkov ali undefined če ne obstaja
+     */
     function getCookies(){
+      // Razdeli piškotke po '; ' in poišči tistega, ki se začne z 'userId='
       const userId = document.cookie
         .split('; ')
         .find(row => row.indexOf('userId=') === 0)
+        // Če najdeš piškotek, razdeli po '=' in vzemi drugi del (vrednost)
         ?.split('=')[1];
       return userId;
     }
-    
+
+    // Pridobi ID uporabnika iz piškotkov
     userId = getCookies()
-    console.log(userId);
+    console.log('ID uporabnika:', userId);
+
+    // Pridobi potrebne funkcije iz Vue.js
     const { createApp, ref } = Vue;
 
+    // Ustvari Vue aplikacijo
     createApp({
+      // Setup funkcija se izvede ob inicializaciji komponente
       setup() {
-        const step = ref(1);
-        const pictureFile = ref(null);
-        const cityCountry = ref('');
-        const phoneNumber = ref('');
+        // Reaktivne spremenljivke za sledenje stanju obrazca
+        const step = ref(1);                // Trenutni korak registracije (1-4)
+        const pictureFile = ref(null);      // Izbrana profilna slika
+        const city = ref('');        // Mesto in država
+        const phoneNumber = ref('');        // Telefonska številka
 
-      const handleUpload = (fileList) => {
-        pictureFile.value = fileList[0];
-      };
+        /**
+         * Funkcija za obravnavo naložene datoteke (slike)
+         * @param {Array} fileList - Seznam izbranih datotek
+         */
+        const handleUpload = (fileList) => {
+          // Shrani prvo datoteko iz seznama
+          pictureFile.value = fileList[0];
+        };
 
-      const goNext = () => {
-        if (step.value === 1 && pictureFile.value) {
-          const formData = new FormData();
-          formData.append('picture', pictureFile.value.file);
-          formData.append('userId', userId);
+        /**
+         * Funkcija za premik na naslednji korak registracije
+         * Pošlje podatke trenutnega koraka na strežnik in premakne na naslednji korak
+         */
+        const goNext = () => {
+          // Prvi korak: pošiljanje profilne slike
+          if (step.value === 1 && pictureFile.value) {
+            // Ustvari FormData objekt za pošiljanje datoteke
+            const formData = new FormData();
+            formData.append('picture', pictureFile.value.file);
+            formData.append('userId', userId);
 
-          $.ajax({
-            url: '/profileCreation',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function () {
-              step.value = 2;
-            }
-          });
-        } else if (step.value === 2) {
+            // Pošlji AJAX zahtevo na strežnik
+            $.ajax({
+              url: '/profileCreation',
+              type: 'POST',
+              data: formData,
+              processData: false,     // Ne pretvori podatkov v niz
+              contentType: false,     // Pusti, da brskalnik sam nastavi Content-Type
+              success: function () {
+                // Ob uspehu premakni na naslednji korak
+                step.value = 2;
+              }
+            });
+          }
+          // Drugi korak: pošiljanje podatkov o lokaciji
+          else if (step.value === 2) {
+            $.ajax({
+              url: '/profileCreation',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ city: city.value, userId: userId }),
+              success: function () {
+                // Ob uspehu premakni na naslednji korak
+                step.value = 3;
+              }
+            });
+          }
+        };
+
+        /**
+         * Funkcija za zaključek registracije
+         * Pošlje zadnje podatke in preusmeri uporabnika na prijavo
+         */
+        const finish = () => {
+          // Pošlji podatke o telefonski številki
           $.ajax({
             url: '/profileCreation',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ cityCountry: cityCountry.value, userId:userId}),
+            data: JSON.stringify({ phoneNumber: phoneNumber.value, userId: userId }),
             success: function () {
-              step.value = 3;
+              // Ob uspehu prikaži zaključni korak
+              step.value = 4;
+              // Počakaj 2 sekundi in preusmeri na prijavo
+              setTimeout(() => {
+                window.location.href = '/logout';
+              }, 2000);
             }
           });
-        }
-      };
+        };
 
-      const finish = () => {
-        $.ajax({
-          url: '/profileCreation',
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({ phoneNumber: phoneNumber.value, userId:userId}),
-          success: function () {
-            step.value = 4;
-            setTimeout(() => {
-              window.location.href = '/login';
-            }, 2000);
-          }
-        });
-      };
-
-      return {
-        step,
-        cityCountry,
-        phoneNumber,
-        handleUpload,
-        goNext,
-        finish
-      };
-    }
-  }).use(naive).mount('#app');
-</script>
+        // Vrni vse spremenljivke in funkcije, ki jih potrebuješ v predlogi
+        return {
+          step,           // Trenutni korak
+          city,    // Mesto in država
+          phoneNumber,    // Telefonska številka
+          pictureFile,    // Izbrana slika
+          handleUpload,   // Funkcija za nalaganje slike
+          goNext,         // Funkcija za premik na naslednji korak
+          finish          // Funkcija za zaključek registracije
+        };
+      }
+    })
+    // Uporabi Naive UI komponente
+    .use(naive)
+    // Priklopi aplikacijo na HTML element z id="app"
+    .mount('#app');
+  </script>
 </body>
 </html>
