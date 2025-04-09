@@ -336,9 +336,6 @@
 
             const app = createApp({
                 setup() {
-                    const collapsed = ref(false);
-                    const activeKey = ref('dashboard');
-
                     // Define the menu structure with icons and submenus
                     // This array will be passed to the NaiveUI menu component
                     const collapsed = ref(false); 
@@ -352,9 +349,7 @@
                             onClick: () => {
                                 window.location.href = '/dashboard';
                             }
-                            label: 'Dashboard', 
-                            key: 'dashboard',    
-                            icon: renderIcon('las la-tachometer-alt') 
+
                         },
 
                         {
@@ -515,7 +510,6 @@
                             onClick: () => {
                                 window.location.href = '/about_us';
                             }
-                            icon: renderIcon('las la-info-circle') 
                         }
                     ];
 
