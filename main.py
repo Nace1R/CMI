@@ -95,8 +95,18 @@ def profileCreation():
 
 @app.route("/dashboard")
 def dashboard():
-
-    return render_template("dashboard.html")
+    userId = request.cookies.get("userId")
+    userData = {"ime": "Guest"}  
+    
+    
+    if userId:
+        user = uporabniki.get(User.id == userId)
+        if user:
+            userData = user
+    else:
+        return redirect(url_for("login"))
+    
+    return render_template("dashboard.html", userData=userData)
 
 
 @app.route("/manageProfile")
@@ -109,6 +119,22 @@ def logout():
     response = make_response(redirect(url_for('login')))
     response.set_cookie('userId', '', expires=0)
     return response
+
+@app.route("/about_us")
+def about_us():
+    
+    userId = request.cookies.get("userId")
+    userData = {"ime": "Guest"}  # Default values
+    
+    # If user is logged in, get their data
+    if userId:
+        user = uporabniki.get(User.id == userId)
+        if user:
+            userData = user
+    else:
+        return redirect(url_for("login"))
+    
+    return render_template("about_us.html", userData=userData)
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080)

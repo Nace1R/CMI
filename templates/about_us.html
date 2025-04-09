@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMI City - About Us</title>
+    <!-- Load Vue.js framework -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- Load Naive UI component library -->
+    <script src="https://unpkg.com/naive-ui"></script>
+    <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+    <!-- Load Line Awesome icons -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- Load Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <style>
+        /* Basic reset and page setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Main app container */
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top navigation bar */
+        .navbar {
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .username {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Main content container with sidebar and content area */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            background-color: #1B365C; /* Dark blue background */
+            color: white;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-expanded {
+            width: 240px;
+        }
+
+        .sidebar-collapsed {
+            width: 64px;
+        }
+
+        /* Main content area */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+
+        /* About Us specific styles */
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .about-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #1B365C;
+        }
+
+        .about-header h1 {
+            font-size: 2.5rem;
+            color: #1B365C;
+            margin-bottom: 16px;
+        }
+
+        .about-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #1B365C;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            font-size: 1.8rem;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        /* Team section */
+        .team-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #f0f0f0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover .member-image {
+            border-color: #1B365C;
+            box-shadow: 0 12px 30px rgba(27, 54, 92, 0.2);
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1B365C;
+            margin-bottom: 8px;
+        }
+
+        .member-role {
+            font-size: 1rem;
+            color: #5F9EA0;
+            margin-bottom: 16px;
+        }
+
+        .member-bio {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+            text-decoration: none;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1B365C;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background-color: #1B365C;
+            color: white;
+        }
+
+        /* Technology Stack Section */
+        .tech-stack-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .tech-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 24px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background-color: #1B365C;
+            color: white;
+        }
+
+        .tech-card i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: #1B365C;
+        }
+
+        .tech-card:hover i {
+            color: white;
+        }
+
+        .tech-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .tech-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .tech-card:hover .tech-desc {
+            color: #e0e0e0;
+        }
+
+        /* Features Section */
+        .features-container {
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background-color: #f0f7ff;
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-icon {
+            background-color: #1B365C;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .feature-icon i {
+            font-size: 1.5rem;
+        }
+
+        .feature-content h3 {
+            margin: 0 0 8px 0;
+            color: #1B365C;
+            font-size: 1.2rem;
+        }
+
+        .feature-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Timeline section */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #1B365C;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid #1B365C;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .timeline-left {
+            left: 0;
+        }
+
+        .timeline-right {
+            left: 50%;
+        }
+
+        .timeline-left::after {
+            right: -10px;
+        }
+
+        .timeline-right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: #1B365C;
+            margin-bottom: 8px;
+        }
+
+        /* Override NaiveUI styles for our color scheme */
+        .n-button--primary-type {
+            background-color: #1B365C !important;
+        }
+
+        .n-button--primary-type:hover {
+            background-color: #264673 !important;
+        }
+
+        .n-menu-item-content--selected,
+        .n-menu-item-content--child-active {
+            background-color: #A8D0E6 !important;
+        }
+
+        .n-menu-item-content--selected::before,
+        .n-menu-item-content--child-active::before {
+            background-color: #A8D0E6 !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <div class="navbar-left">
+                <n-button quaternary circle @click="toggleSidebar">
+                    <template #icon>
+                        <n-icon>
+                            <i v-if="collapsed" class="las la-angle-right"></i>
+                            <i v-else class="las la-bars"></i>
+                        </n-icon>
+                    </template>
+                </n-button>
+                <img src="{{ url_for('static', filename='slike/logo1.png') }}" alt="CMI Logo" class="logo">
+            </div>
+
+            <div class="navbar-right">
+                <span class="username">{{userData.ime}}</span>
+                <n-avatar round size="medium" :src="userProfilePic"></n-avatar>
+            </div>
+        </div>
+
+        <!-- Main Container with Sidebar and Content -->
+        <div class="main-container">
+            <!-- Sidebar with Menu -->
+            <div class="sidebar" :class="collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+                <n-menu
+                    v-model:value="activeKey"
+                    :collapsed="collapsed"
+                    :collapsed-width="64"
+                    :collapsed-icon-size="22"
+                    :options="menuOptions"
+                    :indent="18"
+                    inverted
+                />
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="content">
+                <!-- About Header -->
+                <div class="about-header">
+                    <h1>About CMI</h1>
+                    <p>Learn about our mission, our team, and the story behind CMI - City Management Interface</p>
+                </div>
+
+                <!-- About Section -->
+                <div class="about-section">
+                    <div class="section-title">
+                        <i class="las la-city"></i>
+                        Our Mission
+                    </div>
+                    <div class="about-text">
+                        <p>CMI (City Management Interface) is a revolutionary platform designed to transform how cities are managed and governed. Our mission is to provide a centralized, intuitive interface that empowers city administrators, planners, and decision-makers to efficiently organize, monitor, and optimize all aspects of urban operations.</p>
+
+                        <p>In today's rapidly evolving urban landscapes, cities face unprecedented challenges - from infrastructure management and resource allocation to citizen engagement and sustainability initiatives. CMI was born from the vision that technology can bridge these gaps, creating smarter, more responsive cities that better serve their citizens.</p>
+
+                        <p>We believe that effective city management requires not just powerful tools, but also accessible ones. That's why CMI combines sophisticated data analytics and management capabilities with an intuitive, user-friendly interface that requires minimal training to master.</p>
+                    </div>
+                </div>
+
+                <!-- Team Section -->
+                <div class="about-section">
+                    <div class="section-title">
+                        <i class="las la-users"></i>
+                        Meet Our Team
+                    </div>
+                    <div class="about-text">
+                        <p>Behind CMI is a dedicated team of urban planners, software engineers, and design specialists united by a passion for creating better cities. Our diverse backgrounds and expertise allow us to approach urban challenges from multiple perspectives, resulting in a platform that is both technically robust and practically useful.</p>
+                    </div>
+
+                    <div class="team-container">
+                        <!-- Team Member 1 -->
+                        <div class="team-member">
+                            <img src="{{ url_for('static', filename='slike/team-placeholder-1.jpg') }}" alt="Team Member" class="member-image">
+                            <div class="member-name">Nace Rozman</div>
+                            <div class="member-role">Founder & FrontEnd Developer</div>
+                            <div class="member-bio">
+                                John brings over 10 years of experience in software development and urban planning. His vision drives the technical direction of CMI.
+                            </div>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="lab la-github"></i></a>
+                                <a href="#" class="social-link"><i class="lab la-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="lab la-twitter"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Team Member 2 -->
+                        <div class="team-member">
+                            <img src="{{ url_for('static', filename='slike/team-placeholder-2.jpg') }}" alt="Team Member" class="member-image">
+                            <div class="member-name">Bine Tavčar</div>
+                            <div class="member-role">Founder & Backend Developer</div>
+                            <div class="member-bio">
+                                Jane combines her background in urban planning with UX design expertise to create intuitive interfaces that address real-world city management needs.
+                            </div>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="lab la-dribbble"></i></a>
+                                <a href="#" class="social-link"><i class="lab la-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="lab la-medium"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Our Journey Section -->
+                <div class="about-section">
+                    <div class="section-title">
+                        <i class="las la-road"></i>
+                        Our Journey
+                    </div>
+                    <div class="about-text">
+                        <p>The CMI story began with a simple observation: despite rapid technological advancement, many cities still rely on fragmented, outdated systems to manage critical operations. We set out to change that by creating a unified platform that brings together all aspects of city management.</p>
+                    </div>
+
+                    <div class="timeline">
+                        <!-- Timeline Item 1 -->
+                        <div class="timeline-item timeline-left">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2021</div>
+                                <p>Initial concept development and market research</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 2 -->
+                        <div class="timeline-item timeline-right">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2022</div>
+                                <p>First prototype developed and tested with select municipalities</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="timeline-item timeline-left">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2023</div>
+                                <p>Beta release and expansion to additional cities</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="timeline-item timeline-right">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2024</div>
+                                <p>Official launch of CMI platform with full feature set</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology Stack Section -->
+                <div class="about-section">
+                    <div class="section-title">
+                        <i class="las la-layer-group"></i>
+                        Our Technology
+                    </div>
+                    <div class="about-text">
+                        <p>CMI is built on a modern technology stack designed for performance, scalability, and ease of use. Our platform combines powerful backend systems with an intuitive frontend experience.</p>
+                    </div>
+
+                    <div class="tech-stack-container">
+                        <div class="tech-card">
+                            <i class="lab la-python"></i>
+                            <div class="tech-name">Python</div>
+                            <div class="tech-desc">Powerful backend processing with Flask framework</div>
+                        </div>
+
+                        <div class="tech-card">
+                            <i class="lab la-vuejs"></i>
+                            <div class="tech-name">Vue.js</div>
+                            <div class="tech-desc">Reactive UI components for smooth user experience</div>
+                        </div>
+
+                        <div class="tech-card">
+                            <i class="las la-database"></i>
+                            <div class="tech-name">TinyDB</div>
+                            <div class="tech-desc">Lightweight document database for flexible data storage</div>
+                        </div>
+
+                        <div class="tech-card">
+                            <i class="las la-palette"></i>
+                            <div class="tech-name">Naive UI</div>
+                            <div class="tech-desc">Modern component library for beautiful interfaces</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Features Section -->
+                <div class="about-section">
+                    <div class="section-title">
+                        <i class="las la-star"></i>
+                        Key Features
+                    </div>
+
+                    <div class="features-container">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="las la-tachometer-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Centralized Dashboard</h3>
+                                <p>Get a comprehensive overview of all city operations in one place</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="las la-map-marked-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Interactive City Guides</h3>
+                                <p>Navigate and manage city resources with intuitive mapping tools</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="las la-poll"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Public Engagement</h3>
+                                <p>Collect citizen feedback through polls and interactive surveys</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="las la-cloud-sun"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Real-time Updates</h3>
+                                <p>Stay informed with live weather and traffic information</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the necessary functions from Vue
+            const { createApp, ref, computed, onMounted, h } = Vue;
+
+            
+            const app = createApp({
+                
+                setup() {
+                    // Stanje sidebara
+                    const collapsed = ref(false);
+                    const activeKey = ref('aboutus');
+
+                    
+                    const userData = ref({
+                        ime: 'John Doe',
+                        email: 'john.doe@example.com'
+                    });
+
+                    // Profile picture (placeholder - ce nisi log inan pol je default avatar k ga zaenkrat se ni not :) )
+                    const userProfilePic = ref('{{ url_for("static", filename="pfp/default-avatar.png") }}');
+
+                    // Menu opcije
+                    const menuOptions = [
+                        // Dashboard menu item
+                        {
+                            label: 'Dashboard',
+                            key: 'dashboard',
+                            icon: renderIcon('las la-tachometer-alt'),
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
+                        },
+
+                        // City Guides menu item
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt')
+                        },
+
+                        // Public Polls menu item
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll')
+                        },
+
+                        // Weather Updates menu item
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun')
+                        },
+
+                        // Traffic Updates menu item
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light')
+                        },
+
+                        // Social menu item
+                        {
+                            label: 'Social',
+                            key: 'social',
+                            icon: renderIcon('las la-users')
+                        },
+
+                        // Local Events menu item
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt')
+                        },
+
+                        // Electrical Information menu item
+                        {
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt')
+                        },
+
+                        // Public Transit Info menu item
+                        {
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus')
+                        },
+
+                        // Perks and Rewards menu item
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift')
+                        },
+
+                        // About Us menu item
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle'),
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
+                        }
+                    ];
+
+                    function renderIcon(iconClass) {
+                        return () => h('i', { class: iconClass });
+                    }
+
+                    function toggleSidebar() {
+                        collapsed.value = !collapsed.value;
+                    }
+
+                    return {
+                        collapsed,
+                        activeKey,
+                        userData,
+                        userProfilePic,
+                        menuOptions,
+                        toggleSidebar
+                    };
+                }
+            });
+
+            app.use(naive);
+            app.mount('#app');
+        });
+    </script>
+</body>
+</html>
