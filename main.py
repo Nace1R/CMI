@@ -33,7 +33,6 @@ def register():
         if uporabniki.get(User.ime == ime):
             return jsonify({"success": False, "error": "Uporabnik ze obstaja!"})
 
-        
         uporabniki.insert({"ime": ime, "email": email, "geslo": geslo, "id":ids})
         response = make_response(jsonify({"success": True, "redirect_url": url_for('profileCreation')}))
         response.set_cookie("userId", ids, max_age=600)
@@ -90,7 +89,6 @@ def profileCreation():
                 #number = request.form.get("phoneNumber")
                 return {'message': 'profile succewsfuly created'}, 200
             
-
     return render_template("profileCreation.html")
 
 @app.route("/dashboard")
@@ -121,12 +119,8 @@ def logout():
     return response
 
 @app.route("/about_us")
-def about_us():
-    
+def about_us():    
     userId = request.cookies.get("userId")
-    userData = {"ime": "Guest"}  # Default values
-    
-    # If user is logged in, get their data
     if userId:
         user = uporabniki.get(User.id == userId)
         if user:
