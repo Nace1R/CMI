@@ -8,7 +8,7 @@ uporabniki = db.table('uporabniki')
 admin = db.table('admin')
 profil = db.table('profile-info')
 
-User = Query() 
+User = Query()
 
 app = Flask(__name__)
 #Disabled caching
@@ -26,10 +26,10 @@ def register():
     if request.method == "POST":
         now = datetime.now()
         ids = now.strftime("%Y%m%d%H%M%S")
-        ime = request.form.get("ime")  
+        ime = request.form.get("ime")
         email = request.form.get("email")
         geslo = request.form.get("geslo")
-        
+
         if uporabniki.get(User.ime == ime):
             return jsonify({"success": False, "error": "Uporabnik ze obstaja!"})
 
@@ -62,9 +62,9 @@ def login():
 @app.route("/profileCreation", methods=["GET", "POST"])
 def profileCreation():
     userId = request.cookies.get("userId")
-    if not userId: 
+    if not userId:
         return redirect(url_for("register"))
-    
+
 
     if request.method == "POST":
         # shranjevanje slike
@@ -88,7 +88,7 @@ def profileCreation():
                 #city = request.form.get("city")
                 #number = request.form.get("phoneNumber")
                 return {'message': 'profile succewsfuly created'}, 200
-            
+
     return render_template("profileCreation.html")
 
 @app.route("/dashboard")
@@ -118,8 +118,14 @@ def dashboard():
 
 @app.route("/manageProfile")
 def manageProfile():
-
-    return render_template("manage_profile.html")
+    userId = request.cookies.get("userId")
+    if userId:
+        user = uporabniki.get(User.id == userId)
+        if user:
+            userData = user
+    else:
+        return redirect(url_for("login"))
+    return render_template("manage_profile.html",userData=userData)
 
 @app.route("/logout")
 def logout():
@@ -128,7 +134,7 @@ def logout():
     return response
 
 @app.route("/about_us")
-def about_us():    
+def about_us():
     userId = request.cookies.get("userId")
     if userId:
         user = uporabniki.get(User.id == userId)
@@ -136,7 +142,7 @@ def about_us():
             userData = user
     else:
         return redirect(url_for("login"))
-    
+
 
 
     pfp_path = url_for('static', filename='slike/default-avatar.png')

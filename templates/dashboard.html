@@ -176,6 +176,44 @@
         .n-menu-item-content--child-active::before {
             background-color: #4682B4 !important;
         }
+
+
+        .n-dropdown,
+    .n-dropdown *,
+    .n-base-selection,
+    .n-base-selection *,
+    .n-input,
+    .n-input *,
+    .n-button,
+    .n-button * {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+    .n-dropdown-menu {
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        background-color: white !important;
+    }
+    .n-dropdown-option {
+        background-color: white !important;
+    }
+
+    .n-dropdown-option:hover {
+        background-color: #f5f5f5 !important;
+    }
+    .username {
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+    }
+    .n-base-selection__border,
+    .n-base-selection__state-border {
+        border: none !important;
+        box-shadow: none !important;
+        display: none !important;
+    }
     </style>
 </head>
 <body>
@@ -195,7 +233,9 @@
             </div>
 
             <div class="navbar-right">
-                <span class="username">{{userData.ime}}</span>
+                <n-dropdown :options="UserOptions">
+                    <n-button><span class="username">{{userData.ime}}</span> </n-button>
+                </n-dropdown>
                 <n-avatar round size="medium" src="{{ pfp_path }}"></n-avatar>
             </div>
         </div>
@@ -333,7 +373,10 @@
 
                 return () => h('i', { class: iconClass, style: 'font-size: 1.2rem;' });
             }
-
+            const userData = ref({
+                        ime: 'John Doe',
+                        email: 'john.doe@example.com'
+            });
             const app = createApp({
                 setup() {
                     // Define the menu structure with icons and submenus
@@ -512,6 +555,24 @@
                             }
                         }
                     ];
+                    const UserOptions = [
+                        {
+                            label: "Manage Profile",
+                            key: "manageProfile",
+                            //Zaenkrat se ne deluje moram preverit zakaj!!!!!(onclick)
+                            onClick: () => {
+                                window.location.href = '/manageProfile';
+                            }
+                        },
+                        {
+                            label: "Logout",
+                            key: "logout",
+                            //Zaenkrat se ne deluje moram preverit zakaj!!!!!(onclick)
+                            onClick: () => {
+                                window.location.href = '/logout';
+                            }
+                        }
+                    ];
 
                     function toggleSidebar() {
                         collapsed.value = !collapsed.value;
@@ -522,6 +583,7 @@
                         collapsed,     // Ali je sidebar oz. menu collapsan ali  ne
                         activeKey,     // Ctrenutno izbran item
                         menuOptions,   // opcije iz menija
+                        UserOptions,
                         toggleSidebar  
                     };
                 }
