@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
-from tinydb import TinyDB, Query
+from tinydb import TinyDB, Query, where
 from datetime import datetime
 import os
 
@@ -33,7 +33,6 @@ def register():
         if uporabniki.get(User.ime == ime):
             return jsonify({"success": False, "error": "Uporabnik ze obstaja!"})
 
-        
         uporabniki.insert({"ime": ime, "email": email, "geslo": geslo, "id":ids})
         response = make_response(jsonify({"success": True, "redirect_url": url_for('profileCreation')}))
         response.set_cookie("userId", ids, max_age=600)
@@ -90,13 +89,31 @@ def profileCreation():
                 #number = request.form.get("phoneNumber")
                 return {'message': 'profile succewsfuly created'}, 200
             
-
     return render_template("profileCreation.html")
 
 @app.route("/dashboard")
 def dashboard():
+    userId = request.cookies.get("userId", None)
+    userData = {"ime": "Guest"}
+    pfp_path = url_for('static', filename='slike/default-avatar.png')
 
-    return render_template("dashboard.html")
+    if not userId:
+        return redirect(url_for("login"))
+
+    user = uporabniki.get(where('id') == userId)
+    if not user:
+        return redirect(url_for("login"))
+
+    userData = user
+
+    profile = profil.get(where('userId') == userId)
+    if profile:
+        pfp_path = '/' + profile.get('pfp', 'slike/default-avatar.png')
+
+
+    print("User Data:", userData)
+    print("PFP:", pfp_path)
+    return render_template("dashboard.html", userData=userData,pfp_path=pfp_path)
 
 
 @app.route("/manageProfile")
@@ -109,6 +126,31 @@ def logout():
     response = make_response(redirect(url_for('login')))
     response.set_cookie('userId', '', expires=0)
     return response
+
+@app.route("/about_us")
+def about_us():    
+    userId = request.cookies.get("userId")
+    if userId:
+        user = uporabniki.get(User.id == userId)
+        if user:
+            userData = user
+    else:
+        return redirect(url_for("login"))
+    
+
+
+    pfp_path = url_for('static', filename='slike/default-avatar.png')
+    profile = profil.get(where('userId') == userId)
+    if profile:
+        pfp_path = '/' + profile.get('pfp', 'slike/default-avatar.png')
+
+    return render_template("about_us.html", userData=userData, pfp_path=pfp_path)
+
+
+def pfp():
+    pass
+#dava to v funkcijo za dobivanje slike pfp
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080)

@@ -91,9 +91,9 @@
 
 
         .sidebar {
-            background-color: #1B365C; 
+            background-color: #1B365C;
             color: white;
-            transition: width 0.3s ease; 
+            transition: width 0.3s ease;
             overflow-y: auto;
             overflow-x: hidden;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -109,7 +109,7 @@
             width: 64px;
         }
 
- 
+
         .content {
             flex: 1;
             padding: 20px;
@@ -120,7 +120,7 @@
 
         .dashboard-card {
             background-color: white;
-            border-radius: 12px; 
+            border-radius: 12px;
             padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -167,7 +167,7 @@
             padding-bottom: 0;
         }
         /*BARVE KO JE IZBRAN ELEMENT V MENIJU*/
-        .n-menu-item-content--selected, 
+        .n-menu-item-content--selected,
         .n-menu-item-content--child-active {
             background-color: #4682B4 !important; /* #4682B4, */
         }
@@ -195,8 +195,8 @@
             </div>
 
             <div class="navbar-right">
-                <span class="username">Testing user</span>
-                <n-avatar round size="medium" src="{{ url_for('static', filename='slike/favicon5.png') }}"></n-avatar>
+                <span class="username">{{userData.ime}}</span>
+                <n-avatar round size="medium" src="{{ pfp_path }}"></n-avatar>
             </div>
         </div>
 
@@ -221,7 +221,7 @@
                         <i class="las la-home icon"></i>
                         Welcome to {city}!
                     </div>
-                    <p>Step into the heart of [City Name], where conversations never stop and connections are just a message away. 
+                    <p>Step into the heart of [City Name], where conversations never stop and connections are just a message away.
                     Whether you're a local, a newcomer, or just passing through, this is your space to chat, share, and explore with the community.</p>
                 </div>
 
@@ -325,48 +325,37 @@
     </div>
 
     <script>
-        // Wait for the DOM to be fully loaded before initializing Vue
         document.addEventListener('DOMContentLoaded', function() {
-            // Get the necessary functions from Vue
-            // createApp: Creates a new Vue application
-            // h: The render function for creating virtual DOM elements
-            // ref: Creates a reactive reference that can be updated
             const { createApp, h, ref } = Vue;
 
-            // This function creates an icon renderer for the menu items
-            // It takes a CSS class name for Line Awesome icons and returns a function
-            // that creates a virtual DOM element with that icon
+            
             function renderIcon(iconClass) {
-                // Return a function that will be called by Vue when rendering the icon
+
                 return () => h('i', { class: iconClass, style: 'font-size: 1.2rem;' });
             }
 
-            // Create the Vue application
             const app = createApp({
-                // The setup function is where we define reactive state and functions
                 setup() {
-                    // Create reactive variables
-                    // collapsed: Tracks whether the sidebar is collapsed or expanded
-                    const collapsed = ref(false); // Start with expanded sidebar
-
-                    // activeKey: Tracks which menu item is currently selected
-                    const activeKey = ref('dashboard'); // Start with dashboard selected
-
                     // Define the menu structure with icons and submenus
                     // This array will be passed to the NaiveUI menu component
+                    const collapsed = ref(false); 
+                    const activeKey = ref('dashboard'); 
+
                     const menuOptions = [
-                        // Dashboard menu item (no children)
                         {
                             label: 'Dashboard', // The text shown in the menu
                             key: 'dashboard',    // Unique identifier for this item
-                            icon: renderIcon('las la-tachometer-alt') // Dashboard icon
+                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
+
                         },
 
-                        // Projects menu item with submenu children
                         {
                             label: 'City Guides',
                             key: 'guides',
-                            icon: renderIcon('las la-map-marked-alt'), // City map/guide icon
+                            icon: renderIcon('las la-map-marked-alt'), 
                             // Submenu items (children)
  /*                           children: [
                                 {
@@ -384,11 +373,10 @@
                             ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
                         },
 
-                        // Reports menu item with submenu children
                         {
                             label: 'Public Polls',
                             key: 'polls',
-                            icon: renderIcon('las la-poll'), // Poll/voting icon
+                            icon: renderIcon('las la-poll'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -405,11 +393,10 @@
                             ]*/
                         },
 
-                        // Settings menu item with submenu children
                         {
                             label: 'Weather Updates',
                             key: 'wUpdates',
-                            icon: renderIcon('las la-cloud-sun'), // Weather icon
+                            icon: renderIcon('las la-cloud-sun'),
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -425,7 +412,7 @@
                         {
                             label: 'Traffic Updates',
                             key: 'tUpdates',
-                            icon: renderIcon('las la-traffic-light'), // Traffic icon
+                            icon: renderIcon('las la-traffic-light'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -440,7 +427,7 @@
                         {
                             label: 'Social',
                             key: 'social',
-                            icon: renderIcon('las la-users'), // Social/community icon
+                            icon: renderIcon('las la-users'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -455,7 +442,7 @@
                         {
                             label: 'Local Events',
                             key: 'lEvents',
-                            icon: renderIcon('las la-calendar-alt'), // Events calendar icon
+                            icon: renderIcon('las la-calendar-alt'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -470,7 +457,7 @@
                         {
                             label: 'Electrical Information',
                             key: 'eInfo',
-                            icon: renderIcon('las la-bolt'), // Electricity/power icon
+                            icon: renderIcon('las la-bolt'),
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -485,7 +472,7 @@
                         {
                             label: 'Public Transit Info',
                             key: 'ptInfo',
-                            icon: renderIcon('las la-bus'), // Public transit/bus icon
+                            icon: renderIcon('las la-bus'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -500,7 +487,7 @@
                         {
                             label: 'Perks and Rewards',
                             key: 'PaR',
-                            icon: renderIcon('las la-gift'), // Rewards/gift icon
+                            icon: renderIcon('las la-gift'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -514,36 +501,33 @@
                         },
 
 
-                        // Help menu item
+                        // About Us menu item
+                        
                         {
                             label: 'About Us',
                             key: 'aboutus',
-                            icon: renderIcon('las la-info-circle') // About/information icon
+                            icon: renderIcon('las la-info-circle'), // About/information icon
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
                         }
                     ];
 
-                    // Function to toggle the sidebar between collapsed and expanded states
                     function toggleSidebar() {
-                        // The ! operator flips the boolean value (true becomes false, false becomes true)
                         collapsed.value = !collapsed.value;
                     }
 
-                    // Return all the variables and functions that should be available in the template
+
                     return {
-                        collapsed,     // Whether sidebar is collapsed
-                        activeKey,     // Currently selected menu item
-                        menuOptions,   // Menu structure
-                        toggleSidebar  // Function to toggle sidebar
+                        collapsed,     // Ali je sidebar oz. menu collapsan ali  ne
+                        activeKey,     // Ctrenutno izbran item
+                        menuOptions,   // opcije iz menija
+                        toggleSidebar  
                     };
                 }
             });
 
-            // Add the NaiveUI plugin to our Vue app
-            // This makes all NaiveUI components available to use
             app.use(naive);
-
-            // Mount the Vue app to the element with id="app" in the HTML
-            // This starts the app and renders it to the page
             app.mount('#app');
         });
     </script>

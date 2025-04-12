@@ -1,1 +1,30 @@
-{"uporabniki": {"1": {"ime": "bine", "email": "bine", "geslo": "bine", "id": "20250406143740"}}, "profile-info": {"1": {"userId": "20250406143740", "pfp": "static/pfp/pfp_20250406143740.jpg", "city": "Vodice", "number": "32323"}}}
+{
+  "uporabniki": {
+    "1": {
+      "ime": "bine",
+      "email": "bine",
+      "geslo": "bine",
+      "id": "20250411121455"
+    },
+    "2": {
+      "ime": "nace",
+      "email": "nace@gmail.com",
+      "geslo": "nace",
+      "id": "20250411123639"
+    }
+  },
+  "profile-info": {
+    "1": {
+      "userId": "20250411121455",
+      "pfp": "static/pfp/pfp_20250411121455.jpg",
+      "city": "Ljubljana",
+      "number": "064297766"
+    },
+    "2": {
+      "userId": "20250411123639",
+      "pfp": "static/pfp/pfp_20250411123639.jpeg",
+      "city": "Skofja Loka, Slovenia",
+      "number": "+386 51 369 536"
+    }
+  }
+}
