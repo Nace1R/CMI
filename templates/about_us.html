@@ -492,7 +492,7 @@
             </div>
 
             <div class="navbar-right">
-                <n-dropdown :options="UserOptions">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
                     <n-button><span class="username">{{userData.ime}}</span> </n-button>
                 </n-dropdown>
                 <n-avatar round size="medium" src="{{pfp_path}}"></n-avatar>
@@ -550,7 +550,7 @@
                     <div class="team-container">
                         <!-- Team Member 1 -->
                         <div class="team-member">
-                            <img src="{{ url_for('static', filename='slike/team-placeholder-1.jpg') }}" alt="Team Member" class="member-image">
+                            <img src="{{ url_for('static', filename='slike/nace_team_member_1.jpg') }}" alt="Team Member" class="member-image">
                             <div class="member-name">Nace Rozman</div>
                             <div class="member-role">Founder & FrontEnd Developer</div>
                             <div class="member-bio">
@@ -565,7 +565,7 @@
 
                         <!-- Team Member 2 -->
                         <div class="team-member">
-                            <img src="{{ url_for('static', filename='slike/team-placeholder-2.jpg') }}" alt="Team Member" class="member-image">
+                            <img src="{{ url_for('static', filename='slike/bine_team_member1.jpg') }}" alt="Team Member" class="member-image">
                             <div class="member-name">Bine Tavčar</div>
                             <div class="member-role">Founder & Backend Developer</div>
                             <div class="member-bio">
@@ -835,7 +835,7 @@
                             label: "Manage Profile",
                             key: "manageProfile",
                             onClick: () => {
-                                alert('pritisnjeno')
+                                alert('pritisnjeno');
                                 window.location.href = '/manageProfile';
                             }
                         },
@@ -846,7 +846,16 @@
                                 window.location.href = '/logout';
                             }
                         }
-                    ];
+                    ];  
+                    //handla selection v dropdownu navbar-right sepravi na usernamu desno zgoraj
+                    const handleSelect = (key) => {
+                        if (key === 'manageProfile') {
+                            window.location.href = '/manageProfile';
+                        } else if (key === 'logout') {
+                            window.location.href = '/logout';
+                        }
+                    };
+                    
                     function renderIcon(iconClass) {
                         return () => h('i', { class: iconClass });
                     }
@@ -861,6 +870,7 @@
                         userData,
                         UserOptions,
                         menuOptions,
+                        handleSelect,
                         toggleSidebar
                     };
                 }

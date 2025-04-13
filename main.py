@@ -115,18 +115,6 @@ def dashboard():
     print("PFP:", pfp_path)
     return render_template("dashboard.html", userData=userData,pfp_path=pfp_path)
 
-
-@app.route("/manageProfile")
-def manageProfile():
-    userId = request.cookies.get("userId")
-    if userId:
-        user = uporabniki.get(User.id == userId)
-        if user:
-            userData = user
-    else:
-        return redirect(url_for("login"))
-    return render_template("manage_profile.html",userData=userData)
-
 @app.route("/logout")
 def logout():
     response = make_response(redirect(url_for('login')))
@@ -157,6 +145,108 @@ def pfp():
     pass
 #dava to v funkcijo za dobivanje slike pfp
 
+
+@app.route("/manageProfile")
+def manageProfile():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------
+# ostali siti
+
+@app.route("/cityGuides")
+def cityGudies():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/publicPolls")
+def publicPolls():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/weatherData")
+def weatherData():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/trafficData")
+def trafficData():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/localEvents")
+def localEvents():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/eleInfo")
+def eleInfo():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/publicTrans")
+def publicTrans():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+@app.route("/perksRewards")
+def perksRewards():
+    userId = request.cookies.get("userId")
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    return render_template("manage_profile.html")
+
+# konec ostlaih sitou
+#----------------------------------------------------------
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080)

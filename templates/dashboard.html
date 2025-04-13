@@ -233,7 +233,7 @@
             </div>
 
             <div class="navbar-right">
-                <n-dropdown :options="UserOptions">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
                     <n-button><span class="username">{{userData.ime}}</span> </n-button>
                 </n-dropdown>
                 <n-avatar round size="medium" src="{{ pfp_path }}"></n-avatar>
@@ -573,6 +573,14 @@
                             }
                         }
                     ];
+                    //handla selection v dropdownu navbar-right sepravi na usernamu desno zgoraj
+                    const handleSelect = (key) => {
+                        if (key === 'manageProfile') {
+                            window.location.href = '/manageProfile';
+                        } else if (key === 'logout') {
+                            window.location.href = '/logout';
+                        }
+                    };
 
                     function toggleSidebar() {
                         collapsed.value = !collapsed.value;
@@ -584,6 +592,7 @@
                         activeKey,     // Ctrenutno izbran item
                         menuOptions,   // opcije iz menija
                         UserOptions,
+                        handleSelect,
                         toggleSidebar  
                     };
                 }
