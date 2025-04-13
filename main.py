@@ -173,7 +173,7 @@ def cityGudies():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("city_guides.html")
 
 @app.route("/publicPolls")
 def publicPolls():
@@ -183,7 +183,7 @@ def publicPolls():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("PublicPolls.html")
 
 @app.route("/weatherData")
 def weatherData():
@@ -193,7 +193,7 @@ def weatherData():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("weatherData.html")
 
 @app.route("/trafficData")
 def trafficData():
@@ -203,7 +203,7 @@ def trafficData():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("TrafficData.html")
 
 @app.route("/localEvents")
 def localEvents():
@@ -213,9 +213,9 @@ def localEvents():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("localEvents.html")
 
-@app.route("/eleInfo")
+@app.route("/electricalInfo")
 def eleInfo():
     userId = request.cookies.get("userId")
     if not userId:
@@ -223,9 +223,9 @@ def eleInfo():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("Electrical_Info.html")
 
-@app.route("/publicTrans")
+@app.route("/publicTransit")
 def publicTrans():
     userId = request.cookies.get("userId")
     if not userId:
@@ -233,7 +233,7 @@ def publicTrans():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("Public_Transit_Data.html")
 
 @app.route("/perksRewards")
 def perksRewards():
@@ -243,7 +243,7 @@ def perksRewards():
     if request.method == "POST":
             pass
     
-    return render_template("manage_profile.html")
+    return render_template("PerksAndRewards.html")
 
 # konec ostlaih sitou
 #----------------------------------------------------------

@@ -399,6 +399,9 @@
                             label: 'City Guides',
                             key: 'guides',
                             icon: renderIcon('las la-map-marked-alt'), 
+                            onClick: () => {
+                                window.location.href = '/cityGuides';
+                            }
                             // Submenu items (children)
  /*                           children: [
                                 {
@@ -419,7 +422,10 @@
                         {
                             label: 'Public Polls',
                             key: 'polls',
-                            icon: renderIcon('las la-poll'), 
+                            icon: renderIcon('las la-poll'),
+                            onClick: () => {
+                                window.location.href = '/publicPolls';
+                            } 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -440,6 +446,9 @@
                             label: 'Weather Updates',
                             key: 'wUpdates',
                             icon: renderIcon('las la-cloud-sun'),
+                            onClick: () => {
+                                window.location.href = '/weatherData';
+                            } 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -455,7 +464,10 @@
                         {
                             label: 'Traffic Updates',
                             key: 'tUpdates',
-                            icon: renderIcon('las la-traffic-light'), 
+                            icon: renderIcon('las la-traffic-light'),
+                            onClick: () => {
+                                window.location.href = '/trafficData';
+                            }  
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -467,10 +479,10 @@
                                 }
                             ]*/
                         },
-                        {
-                            label: 'Social',
-                            key: 'social',
-                            icon: renderIcon('las la-users'), 
+                  //      {
+                  //          label: 'Social',
+                  //          key: 'social',
+                   //         icon: renderIcon('las la-users'), 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -481,11 +493,14 @@
                                     key: 'ustavi-key-tu'
                                 }
                             ]*/
-                        },
+                   //     },
                         {
                             label: 'Local Events',
                             key: 'lEvents',
-                            icon: renderIcon('las la-calendar-alt'), 
+                            icon: renderIcon('las la-calendar-alt'),
+                            onClick: () => {
+                                window.location.href = '/localEvents';
+                            }  
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -501,6 +516,9 @@
                             label: 'Electrical Information',
                             key: 'eInfo',
                             icon: renderIcon('las la-bolt'),
+                            onClick: () => {
+                                window.location.href = '/electricalInfo';
+                            } 
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -515,7 +533,10 @@
                         {
                             label: 'Public Transit Info',
                             key: 'ptInfo',
-                            icon: renderIcon('las la-bus'), 
+                            icon: renderIcon('las la-bus'),
+                            onClick: () => {
+                                window.location.href = '/publicTransit';
+                            }  
                             /*children: [
                                 {
                                     label: 'Testing submenus',
@@ -530,7 +551,10 @@
                         {
                             label: 'Perks and Rewards',
                             key: 'PaR',
-                            icon: renderIcon('las la-gift'), 
+                            icon: renderIcon('las la-gift'),
+                            onClick: () => {
+                                window.location.href = '/perksRewards';
+                            }  
                             /*children: [
                                 {
                                     label: 'Testing submenus',
