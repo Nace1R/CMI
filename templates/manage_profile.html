@@ -4,9 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load Vue.js framework -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- Load Naive UI component library -->
+    <script src="https://unpkg.com/naive-ui"></script>
+    <!--Poppinssssssss-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>CMI City</title>
+    <style>
+        /*Here goes the styling*/
+    </style>
 </head>
 <body>
-    <p>DEVELOPMENT WAITING</p>
+    <h1>Manage your profile!</h1>
+    <n-avatar round size="medium" src="{{pfp_path}}"></n-avatar>
+    <p><b>{{username}}</b></p>
+    <n-space>
+        <n-button @click="editM">Edit Profile</n-button>
+    </n-space>
+    <n-space vertical class="input-fields">
+        <n-input value={{username}}>Username</n-input>
+        <n-input value={{email}}>Email</n-input>
+        <n-input value={{password}}>Password</n-input>
+        <n-input value={{pNumber}}>Phone Number</n-input>
+    </n-space>
 </body>
+<script>
+    import { defineComponent } from 'vue';
+    import { NSpace, NCard, NAvatar, NText, NButton, NDivider, NInput } from 'naive-ui';
+    function editM(){
+        alert('ngajngw');
+    }
+
+    app.use(naive);
+    app.mount('#app');
+</script>
 </html>

@@ -187,12 +187,18 @@ def publicPolls():
 
 @app.route("/weatherData")
 def weatherData():
+    apiKey = "8d80c9afce8da5a191e74cb02596e828"
+    apiCall = f"https://api.openweathermap.org/data/2.5/weather?q={mesto}&appid={apiKey}&units=metric"
     userId = request.cookies.get("userId")
     if not userId:
         return redirect(url_for("login"))
     if request.method == "POST":
-            pass
-    
+        result = profil.get(User.userId == userId)
+        mesto = result[0]['city']
+        print(mesto)
+        response = requests.get(apiCall)
+
+
     return render_template("weatherData.html")
 
 @app.route("/trafficData")
