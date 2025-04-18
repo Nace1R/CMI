@@ -13,29 +13,337 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
     <title>CMI City</title>
     <style>
-        /*Here goes the styling*/
-        .input-fields {
-            max-width: 400px;
-            margin-top: 20px;
+        /* Basic reset and page setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+            color: #333;
+        }
+
+        #app {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Profile header styling */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 30px;
+            position: relative;
+        }
+
+        .profile-picture i {
+            font-size: 60px;
+            color: white;
+        }
+
+        .profile-picture-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #0057b8;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .profile-email {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+        }
+
+        .edit-profile-btn {
+            background-color: #0057b8 !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 4px !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+        }
+
+        /* Section styling */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 20px 0;
+        }
+
+        /* Form fields styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .form-value {
+            font-size: 16px;
+            color: #333;
+            padding: 10px 0;
+            border-left: 3px solid #0057b8;
+            padding-left: 10px;
+            background-color: #f5f5f5;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0057b8;
+            box-shadow: 0 0 0 2px rgba(0, 87, 184, 0.2);
+        }
+
+        .form-input:disabled {
+            background-color: #f5f5f5;
+            color: #333;
+            cursor: not-allowed;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #0057b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #004494;
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: #0057b8;
+            padding: 0;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn-text:hover {
+            color: #004494;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-picture {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input styling for Naive UI */
+        .n-input {
+            margin-bottom: 0 !important;
+        }
+
+        .n-input__input-el {
+            padding: 10px !important;
+            border-radius: 4px !important;
+            background-color: #f5f5f5 !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-size: 16px !important;
+            color: #333 !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .n-input__input-el:focus {
+            border-color: #0057b8 !important;
+            box-shadow: 0 0 0 2px rgba(0, 87, 184, 0.2) !important;
+        }
+
+        /* Button styling for Naive UI */
+        .n-button {
+            background-color: #0057b8 !important;
+            color: white !important;
+            border: none !important;
+            padding: 10px 20px !important;
+            border-radius: 4px !important;
+            font-weight: 500 !important;
+            transition: background-color 0.2s !important;
+        }
+
+        .n-button:hover {
+            background-color: #004494 !important;
+        }
+
+        .back-button {
+            background: white !important;
+            color: #0057b8 !important;
+            border: 1px solid #0057b8 !important;
+            padding: 8px 16px !important;
+            font-weight: 500 !important;
+            border-radius: 4px !important;
+            box-shadow: none !important;
+            display: flex !important;
+            align-items: center !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .back-button:hover {
+            background: #f0f7ff !important;
+            color: #004494 !important;
+            transform: translateX(-5px) !important;
+            box-shadow: 0 2px 8px rgba(0, 87, 184, 0.15) !important;
         }
     </style>
 </head>
 <body>
-    <div id = "app">
-    <h1>Manage your profile!</h1>
-    <n-avatar round size="medium" src="{{pfp}}"></n-avatar>
-    <p><b>{{username}}</b></p>
-    <n-space>
-        <n-button @click="editM">Edit Profile</n-button>
-    </n-space>
-    <n-space vertical class="input-fields">
-        <n-input  v-model:value="username" :disabled="!active">Username</n-input>
-        <n-input v-model:value="email":disabled="!active">Email</n-input>
-        <n-input v-model:value="password":disabled="!active">Password</n-input>
-        <n-input v-model:value="number":disabled="!active">Phone Number</n-input>
-        <n-input v-model:value="mesto":disabled="!active">Phone Number</n-input>
-    </n-space>
-</div>
+    <div id="app">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="margin: 0;">Manage your profile</h1>
+            <n-button @click="goBack" class="back-button">
+                <template #icon>
+                    <i class="las la-arrow-left" style="margin-right: 5px;"></i>
+                </template>
+                Back to Dashboard
+            </n-button>
+        </div>
+        <div class="profile-header">
+            <div class="profile-picture">
+                <i class="las la-user" v-if="!pfp"></i>
+                <img v-else :src="pfp" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <div class="profile-picture-edit" v-if="active">
+                    <i class="las la-camera"></i>
+                </div>
+            </div>
+            <div class="profile-info">
+                <h2 class="profile-name">{{username}}</h2>
+                <p class="profile-email">{{email}}</p>
+            </div>
+            <n-button @click="editM" class="edit-profile-btn">
+                Edit Profile
+            </n-button>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Profile details</h3>
+            <p class="section-subtitle">View and manage your profile information.</p>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <div v-if="!active" class="form-value">{{username}}</div>
+                    <n-input v-else v-model:value="username" placeholder="Enter your username"></n-input>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div v-if="!active" class="form-value">{{email}}</div>
+                    <n-input v-else v-model:value="email" placeholder="Enter your email"></n-input>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div v-if="!active" class="form-value">{{password}}</div>
+                    <n-input v-else v-model:value="password" type="text" placeholder="Enter your password"></n-input>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <div v-if="!active" class="form-value">{{mesto}}</div>
+                    <n-input v-else v-model:value="mesto" placeholder="Enter your city"></n-input>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">Contact information</h3>
+            <p class="section-subtitle">View and manage your contact details.</p>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <div v-if="!active" class="form-value">{{number}}</div>
+                    <n-input v-else v-model:value="number" placeholder="Enter your phone number"></n-input>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     //KLIC ZA PODATKE IZ MAINPY
@@ -57,10 +365,18 @@
           password: userDATA.password,
           number: userDATA.number,
           pfp: userDATA.pfp,
-          mesto: userDATA.mesto
-
+          mesto: userDATA.mesto,
+          active: false
         }
       },
+      methods:{
+        editM() {
+          this.active = !this.active;
+        },
+        goBack() {
+          window.location.href = '/dashboard';
+        }
+      }
     }).use(naive).mount('#app')
   </script>
 </html>

@@ -1,1 +1,75 @@
-<!--DEVELOPMENT WAITING-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load Vue.js framework -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- Load Naive UI component library -->
+    <script src="https://unpkg.com/naive-ui"></script>
+    <!--Query-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--Poppinssssssss-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <title>CMI City</title>
+    <style>
+          body {
+            font-family: 'Poppins', sans-serif;
+            }
+    </style>
+</head>
+<body>
+    <h1>View weather data for your city!</h1>
+    <div id="app">
+        <h3>Weather data in real time!</h3>
+        <p>Temperature: {{temp}}°C</p>
+        <p>Weather status: {{status}}</p>
+        <p>Feels like: {{feels}}°C</p>
+        <p>Humidity: {{humid}}%</p>
+        <p>Wind speed: {{wind}} km/h</p>
+        <p>Sunrise will be at: {{sunrise}}</p>
+        <p>Sunset will be at: {{sunset}}</p>
+        <n-button @click="seeMore">
+            See More!
+        </n-button>
+    </div>
+
+</body>
+<script>
+    const weatherData={
+        temp: '{{temp}}',
+        status: '{{status}}',
+        feels: '{{feels}}',
+        humid: '{{humid}}',
+        wind: '{{wind}}',
+        sunrise: '{{sunrise}}',
+        sunset: '{{sunset}}'
+
+    }
+</script>
+<script>
+    Vue.createApp({
+      setup() {
+        function seeMore() {
+          $.ajax({
+            url: "/weatherFor",       // Flask endpoint
+            method: "POST",           // or "GET" if you're not submitting anything
+            success: function () {
+              window.location.href = "/weatherFor"; // Redirect on success
+            },
+            error: function (err) {
+              console.error("Failed to reach /weatherFor:", err);
+              alert("Something went wrong!");
+            }
+          });
+        }
+  
+        return {
+          seeMore
+        };
+      }
+    }).use(naive).mount('#app');
+  </script>
+
+</html>

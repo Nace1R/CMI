@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import requests
 
+
 db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
 admin = db.table('admin')
@@ -227,8 +228,8 @@ def weatherData():
     feels = data["main"]["feels_like"]
     humid = data["main"]["humidity"]
     wind = data["wind"]["speed"]
-    sunrise = data["sys"]["sunrise"]
-    sunset = data["sys"]["sunset"]
+    sunrise = datetime.fromtimestamp(data["sys"]["sunrise"]).strftime('%H:%M:%S')
+    sunset = datetime.fromtimestamp(data["sys"]["sunset"]).strftime('%H:%M:%S')
 
 
     # FORECAST
