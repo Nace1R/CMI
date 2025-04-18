@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from tinydb import TinyDB, Query, where
 from datetime import datetime
 import os
+import requests
 
 db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
@@ -141,8 +142,12 @@ def about_us():
     return render_template("about_us.html", userData=userData, pfp_path=pfp_path)
 
 
-def pfp():
-    pass
+def getPfp(userId):
+    pfp_path = url_for('static', filename='slike/default-avatar.png')
+    profile = profil.get(where('userId') == userId)
+    if profile:
+        pfp_path = '/' + profile.get('pfp', 'slike/default-avatar.png')
+    return pfp_path
 #dava to v funkcijo za dobivanje slike pfp
 
 
@@ -151,10 +156,19 @@ def manageProfile():
     userId = request.cookies.get("userId")
     if not userId:
         return redirect(url_for("login"))
-    if request.method == "POST":
-            pass
+
+    result = profil.get(User.userId == userId)
+    print(userId)
+    mesto = result['city']
+    number = result['number']
+    result1 = uporabniki.get(User.id == userId)
+    username = result1['ime']
+    email = result1['email']
+    password = result1['geslo']
+    pfp = getPfp(userId)
     
-    return render_template("manage_profile.html")
+    
+    return render_template("manage_profile.html",number=number,mesto=mesto,username=username,email=email,password=password,pfp=pfp)
 
 
 
@@ -188,18 +202,39 @@ def publicPolls():
 @app.route("/weatherData")
 def weatherData():
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
-    apiCall = f"https://api.openweathermap.org/data/2.5/weather?q={mesto}&appid={apiKey}&units=metric"
+    
     userId = request.cookies.get("userId")
     if not userId:
         return redirect(url_for("login"))
-    if request.method == "POST":
-        result = profil.get(User.userId == userId)
-        mesto = result[0]['city']
-        print(mesto)
-        response = requests.get(apiCall)
+    result = profil.get(User.userId == userId)
+    mesto = result['city']
+    print(mesto)
+    apiCall = f"https://api.openweathermap.org/data/2.5/weather?q={mesto}&appid={apiKey}&units=metric"
+    response = requests.get(apiCall)
+    data = response.json()
+
+    #TRENUTNO VREME
+    print(data["main"]["temp"]) # temperatura curr
+    print(data["weather"][0]["main"]) # stanje vremena curr
+    print(data["main"]["feels_like"]) # feels like curr
+    print(data["main"]["humidity"]) #humidity curr
+    print(data["wind"]["speed"]) #vetr hitrost
+    print(data["sys"]["sunrise"]) # sunrise
+    print(data["sys"]["sunset"]) # sunset
+
+    temp = data["main"]["temp"]
+    status =data["weather"][0]["main"]
+    feels = data["main"]["feels_like"]
+    humid = data["main"]["humidity"]
+    wind = data["wind"]["speed"]
+    sunrise = data["sys"]["sunrise"]
+    sunset = data["sys"]["sunset"]
 
 
-    return render_template("weatherData.html")
+    # FORECAST
+
+
+    return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset)
 
 @app.route("/trafficData")
 def trafficData():

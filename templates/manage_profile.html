@@ -10,33 +10,53 @@
     <script src="https://unpkg.com/naive-ui"></script>
     <!--Poppinssssssss-->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
     <title>CMI City</title>
     <style>
         /*Here goes the styling*/
+        .input-fields {
+            max-width: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+    <div id = "app">
     <h1>Manage your profile!</h1>
-    <n-avatar round size="medium" src="{{pfp_path}}"></n-avatar>
+    <n-avatar round size="medium" src="{{pfp}}"></n-avatar>
     <p><b>{{username}}</b></p>
     <n-space>
         <n-button @click="editM">Edit Profile</n-button>
     </n-space>
     <n-space vertical class="input-fields">
-        <n-input value={{username}}>Username</n-input>
-        <n-input value={{email}}>Email</n-input>
-        <n-input value={{password}}>Password</n-input>
-        <n-input value={{pNumber}}>Phone Number</n-input>
+        <n-input  v-model:value="username" :disabled="!active">Username</n-input>
+        <n-input v-model:value="email":disabled="!active">Email</n-input>
+        <n-input v-model:value="password":disabled="!active">Password</n-input>
+        <n-input v-model:value="number":disabled="!active">Phone Number</n-input>
     </n-space>
+</div>
 </body>
 <script>
-    import { defineComponent } from 'vue';
-    import { NSpace, NCard, NAvatar, NText, NButton, NDivider, NInput } from 'naive-ui';
-    function editM(){
-        alert('ngajngw');
-    }
-
-    app.use(naive);
-    app.mount('#app');
-</script>
+    //KLIC ZA PODATKE IZ MAINPY
+    const userDATA = {
+      username: "{{ username }}",
+      email: "{{ email }}",
+      password: "{{ password }}",
+      number: "{{ number }}",
+      pfp: "{{ pfp }}"
+    };
+  </script>
+<script>
+    Vue.createApp({
+      data() {
+        return {
+          username: userDATA.username,
+          email: userDATA.email,
+          password: userDATA.password,
+          number: userDATA.number,
+          pfp: userDATA.pfp
+        }
+      },
+    }).use(naive).mount('#app')
+  </script>
 </html>
