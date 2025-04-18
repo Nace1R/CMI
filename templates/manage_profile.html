@@ -33,6 +33,7 @@
         <n-input v-model:value="email":disabled="!active">Email</n-input>
         <n-input v-model:value="password":disabled="!active">Password</n-input>
         <n-input v-model:value="number":disabled="!active">Phone Number</n-input>
+        <n-input v-model:value="mesto":disabled="!active">Phone Number</n-input>
     </n-space>
 </div>
 </body>
@@ -43,7 +44,8 @@
       email: "{{ email }}",
       password: "{{ password }}",
       number: "{{ number }}",
-      pfp: "{{ pfp }}"
+      pfp: "{{ pfp }}",
+      mesto: "{{ mesto }}"
     };
   </script>
 <script>
@@ -54,7 +56,9 @@
           email: userDATA.email,
           password: userDATA.password,
           number: userDATA.number,
-          pfp: userDATA.pfp
+          pfp: userDATA.pfp,
+          mesto: userDATA.mesto
+
         }
       },
     }).use(naive).mount('#app')
