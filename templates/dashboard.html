@@ -229,7 +229,7 @@
                         </n-icon>
                     </template>
                 </n-button>
-                <img src="{{ url_for('static', filename='slike/logo3.png') }}" alt="CMI Logo" class="logo">
+                <img src="{{ url_for('static', filename='slike/logo2.png') }}" alt="CMI Logo" class="logo">
             </div>
 
             <div class="navbar-right">
@@ -259,9 +259,9 @@
                 <div class="dashboard-card">
                     <div class="card-title">
                         <i class="las la-home icon"></i>
-                        Welcome to {city}!
+                        Welcome to {{mesto}}!
                     </div>
-                    <p>Step into the heart of [City Name], where conversations never stop and connections are just a message away.
+                    <p>Step into the heart of <b>{{mesto}}</b>, where conversations never stop and connections are just a message away.
                     Whether you're a local, a newcomer, or just passing through, this is your space to chat, share, and explore with the community.</p>
                 </div>
 
@@ -271,7 +271,7 @@
                         <i class="las la-chart-pie icon"></i>
                         Quick Stats
                     </div>
-                    <p><b>Here are some key stats about {city}. Or you can navigate through the menu to get more detailed information.</b></p>
+                    <p><b>Here are some key stats about {{mesto}}. Or you can navigate through the menu to get more detailed information.</b></p>
                     <n-grid cols="1 s:2 m:3" responsive="screen" :x-gap="16" :y-gap="16">
                         <n-grid-item>
                             <n-card class="stat-card">
@@ -317,7 +317,7 @@
                         <i class="las la-history icon"></i>
                         Recent Updates
                     </div>
-                    <p><b>Here are the latest updates and activities in {city}.</b></p>
+                    <p><b>Here are the latest updates and activities in {{mesto}}.</b></p>
 
                     <div>
                         <div class="activity-item">
@@ -364,6 +364,13 @@
         </div>
     </div>
 
+
+    <script>
+        // Weather data from Flask
+        const data = {
+            mesto: '{{mesto}}',
+        };
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const { createApp, h, ref } = Vue;
@@ -612,7 +619,8 @@
 
 
                     return {
-                        collapsed,     // Ali je sidebar oz. menu collapsan ali  ne
+                        collapsed,// Ali je sidebar oz. menu collapsan ali  ne
+                        mesto: data.mesto,   //mesto data  
                         activeKey,     // Ctrenutno izbran item
                         menuOptions,   // opcije iz menija
                         UserOptions,

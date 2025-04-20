@@ -105,7 +105,9 @@ def dashboard():
     user = uporabniki.get(where('id') == userId)
     if not user:
         return redirect(url_for("login"))
-
+    #prikaz mesta na dashboardu
+    result = profil.get(User.userId == userId)
+    mesto = result['city']
     userData = user
 
     profile = profil.get(where('userId') == userId)
@@ -115,7 +117,7 @@ def dashboard():
 
     print("User Data:", userData)
     print("PFP:", pfp_path)
-    return render_template("dashboard.html", userData=userData,pfp_path=pfp_path)
+    return render_template("dashboard.html", userData=userData,pfp_path=pfp_path,mesto=mesto)
 
 @app.route("/logout")
 def logout():
