@@ -205,8 +205,11 @@ def weatherData():
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
     
     userId = request.cookies.get("userId")
+    userData = {"ime": "Guest"}
+    user = uporabniki.get(where('id') == userId)
     if not userId:
         return redirect(url_for("login"))
+    userData = user
     result = profil.get(User.userId == userId)
     mesto = result['city']
     print(mesto)
@@ -231,11 +234,12 @@ def weatherData():
     sunrise = datetime.fromtimestamp(data["sys"]["sunrise"]).strftime('%H:%M:%S')
     sunset = datetime.fromtimestamp(data["sys"]["sunset"]).strftime('%H:%M:%S')
 
-
+    #profilna slika
+    pfp = getPfp(userId)
     # FORECAST
 
 
-    return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset)
+    return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset,userData=userData,pfp=pfp)
 
 @app.route("/trafficData")
 def trafficData():

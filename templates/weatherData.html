@@ -3,73 +3,752 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMI City</title>
     <!-- Load Vue.js framework -->
     <script src="https://unpkg.com/vue@3"></script>
     <!-- Load Naive UI component library -->
     <script src="https://unpkg.com/naive-ui"></script>
-    <!--Query-->
+    <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+    <!-- Load Line Awesome icons -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--Poppinssssssss-->
+    <!-- Load Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
-    <title>CMI City</title>
     <style>
-          body {
+        /* Basic reset and page setup */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
             font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Main app container */
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top navigation bar */
+        .navbar {
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .username {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Main content container with sidebar and content area */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            background-color: #1B365C; /* Dark blue background */
+            color: white;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-expanded {
+            width: 240px;
+        }
+
+        .sidebar-collapsed {
+            width: 64px;
+        }
+
+        /* Main content area */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+
+        /* Weather specific styles */
+        .weather-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .weather-header h1 {
+            color: #1B365C;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .weather-header p {
+            color: #666;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .weather-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #1B365C, #3B5C8C);
+            border-radius: 2px;
+        }
+
+        /* Current conditions highlight */
+        .current-conditions {
+            background: linear-gradient(135deg, #1B365C, #3B5C8C);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(27, 54, 92, 0.2);
+        }
+
+        .current-temp {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .current-status {
+            font-size: 20px;
+            opacity: 0.9;
+            margin: 5px 0 0 0;
+        }
+
+        .current-icon {
+            font-size: 60px;
+            margin-right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Weather data grid */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Weather data styling */
+        .weather-item {
+            font-size: 16px;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            border-left: 5px solid #1B365C;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .weather-item:hover {
+            transform: translateY(-5px);
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-left-color: #3B5C8C;
+        }
+
+        .weather-icon {
+            font-size: 28px;
+            margin-right: 15px;
+            color: #1B365C;
+            background: linear-gradient(135deg, #e6eef8, #f8fafd);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-text {
+            flex: 1;
+        }
+
+        .weather-value {
+            font-weight: 600;
+            color: #1B365C;
+            font-size: 18px;
+        }
+
+        .weather-label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        /* Button styling */
+        .weather-button {
+            background: linear-gradient(135deg, #1B365C, #2A4A7C) !important;
+            color: white !important;
+            border: none !important;
+            padding: 14px 28px !important;
+            border-radius: 50px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.5px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 8px 20px rgba(27, 54, 92, 0.25) !important;
+            margin-top: 20px !important;
+            display: block !important;
+            width: 200px !important;
+            margin: 30px auto 0 !important;
+            text-align: center !important;
+        }
+
+        .weather-button:hover {
+            background: linear-gradient(135deg, #2A4A7C, #1B365C) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 12px 25px rgba(27, 54, 92, 0.35) !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .weather-grid {
+                grid-template-columns: 1fr;
             }
+
+            .current-temp {
+                font-size: 36px;
+            }
+
+            .current-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 40px;
+            }
+        }
+        /*BREZ OBROBE ZA DROPDOWN BUTTONE POMEMBNO!!!!!!!!!!!*/
+  /* Target all Naive UI dropdown-related elements */
+  .n-dropdown,
+    .n-dropdown *,
+    .n-base-selection,
+    .n-base-selection *,
+    .n-input,
+    .n-input *,
+    .n-button,
+    .n-button * {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+    .n-dropdown-menu {
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        background-color: white !important;
+    }
+    .n-dropdown-option {
+        background-color: white !important;
+    }
+
+    .n-dropdown-option:hover {
+        background-color: #f5f5f5 !important;
+    }
+    .username {
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+    }
+    .n-base-selection__border,
+    .n-base-selection__state-border {
+        border: none !important;
+        box-shadow: none !important;
+        display: none !important;
+    }
+    /*konec sekcije za dropdowne*/
     </style>
 </head>
 <body>
-    <h1>View weather data for your city!</h1>
     <div id="app">
-        <h3>Weather data in real time!</h3>
-        <p>Temperature: {{temp}}°C</p>
-        <p>Weather status: {{status}}</p>
-        <p>Feels like: {{feels}}°C</p>
-        <p>Humidity: {{humid}}%</p>
-        <p>Wind speed: {{wind}} km/h</p>
-        <p>Sunrise will be at: {{sunrise}}</p>
-        <p>Sunset will be at: {{sunset}}</p>
-        <n-button @click="seeMore">
-            See More!
-        </n-button>
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <div class="navbar-left">
+                <n-button quaternary circle @click="toggleSidebar">
+                    <template #icon>
+                        <n-icon>
+                            <i v-if="collapsed" class="las la-angle-right"></i>
+                            <i v-else class="las la-bars"></i>
+                        </n-icon>
+                    </template>
+                </n-button>
+                <img src="{{ url_for('static', filename='slike/logo1.png') }}" alt="CMI Logo" class="logo">
+            </div>
+
+            <div class="navbar-right">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
+                    <n-button><span class="username">{{userData.ime}}</span> </n-button>
+                </n-dropdown>
+                <n-avatar round size="medium" src="{{pfp}}"></n-avatar>
+            </div>
+        </div>
+
+        <!-- Main Container with Sidebar and Content -->
+        <div class="main-container">
+            <!-- Sidebar with Menu -->
+            <div class="sidebar" :class="collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+                <n-menu
+                    v-model:value="activeKey"
+                    :collapsed="collapsed"
+                    :collapsed-width="64"
+                    :collapsed-icon-size="22"
+                    :options="menuOptions"
+                    :indent="18"
+                    inverted
+                />
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="content">
+                <!-- Weather Header -->
+                <div class="weather-header">
+                    <h1>Weather Dashboard</h1>
+                    <p>Current weather conditions and forecast for your city</p>
+                </div>
+
+                <!-- Current Weather Conditions -->
+                <div class="current-conditions">
+                    <div class="current-icon">
+                        <i class="las la-sun"></i>
+                    </div>
+                    <div>
+                        <div class="current-temp">{{temp}}°C</div>
+                        <div class="current-status">{{status}}</div>
+                    </div>
+                </div>
+
+                <!-- Weather Details Grid -->
+                <div class="weather-grid">
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-temperature-high"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Temperature</span>
+                            <span class="weather-value">{{temp}}°C</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-cloud"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Weather Status</span>
+                            <span class="weather-value">{{status}}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-thermometer-three-quarters"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Feels Like</span>
+                            <span class="weather-value">{{feels}}°C</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-tint"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Humidity</span>
+                            <span class="weather-value">{{humid}}%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-wind"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Wind Speed</span>
+                            <span class="weather-value">{{wind}} km/h</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-sun"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Sunrise</span>
+                            <span class="weather-value">{{sunrise}}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-item">
+                        <div class="weather-icon">
+                            <i class="las la-moon"></i>
+                        </div>
+                        <div class="weather-text">
+                            <span class="weather-label">Sunset</span>
+                            <span class="weather-value">{{sunset}}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- See More Button -->
+                <n-button @click="seeMore" class="weather-button">
+                    See More!
+                </n-button>
+            </div>
+        </div>
     </div>
 
-</body>
-<script>
-    const weatherData={
-        temp: '{{temp}}',
-        status: '{{status}}',
-        feels: '{{feels}}',
-        humid: '{{humid}}',
-        wind: '{{wind}}',
-        sunrise: '{{sunrise}}',
-        sunset: '{{sunset}}'
-
-    }
-</script>
-<script>
-    Vue.createApp({
-      setup() {
-        function seeMore() {
-          $.ajax({
-            url: "/weatherFor",       // Flask endpoint
-            method: "POST",           // or "GET" if you're not submitting anything
-            success: function () {
-              window.location.href = "/weatherFor"; // Redirect on success
-            },
-            error: function (err) {
-              console.error("Failed to reach /weatherFor:", err);
-              alert("Something went wrong!");
-            }
-          });
-        }
-  
-        return {
-          seeMore
+    <script>
+        // Weather data from Flask
+        const weatherData = {
+            temp: '{{temp}}',
+            status: '{{status}}',
+            feels: '{{feels}}',
+            humid: '{{humid}}',
+            wind: '{{wind}}',
+            sunrise: '{{sunrise}}',
+            sunset: '{{sunset}}',
+            pfp: "{{ pfp }}" //tu samo za to da profilna slika dela
         };
-      }
-    }).use(naive).mount('#app');
-  </script>
+    </script>
+    
+    <script>
+        const { createApp, ref, h } = Vue;
+        
+        createApp({
+            setup() {
+                // Sidebar state
+                const collapsed = ref(false);
+                const activeKey = ref('weather');
+                
+                // User data
+                const userData = ref({
+                    ime: 'John Doe',
+                    email: 'john.doe@example.com'
+                });
+                
+                // Menu options
+                const menuOptions = [
+                        {
+                            label: 'Dashboard', // The text shown in the menu
+                            key: 'dashboard',    // Unique identifier for this item
+                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
 
+                        },
+
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt'), 
+                            onClick: () => {
+                                window.location.href = '/cityGuides';
+                            }
+                            // Submenu items (children)
+ /*                           children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                        },
+
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll'),
+                            onClick: () => {
+                                window.location.href = '/publicPolls';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun'),
+                            onClick: () => {
+                                window.location.href = '/weatherData';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light'),
+                            onClick: () => {
+                                window.location.href = '/trafficData';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                  //      {
+                  //          label: 'Social',
+                  //          key: 'social',
+                   //         icon: renderIcon('las la-users'), 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                   //     },
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt'),
+                            onClick: () => {
+                                window.location.href = '/localEvents';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt'),
+                            onClick: () => {
+                                window.location.href = '/electricalInfo';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus'),
+                            onClick: () => {
+                                window.location.href = '/publicTransit';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift'),
+                            onClick: () => {
+                                window.location.href = '/perksRewards';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+
+                        // About Us menu item
+                        
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle'), // About/information icon
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
+                        }
+                    ];
+                
+                // User dropdown options
+                const UserOptions = [
+                    {
+                        label: "Manage Profile",
+                        key: "manageProfile",
+                        onClick: () => {
+                            window.location.href = '/manageProfile';
+                        }
+                    },
+                    {
+                        label: "Logout",
+                        key: "logout",
+                        onClick: () => {
+                            window.location.href = '/logout';
+                        }
+                    }
+                ];
+                
+                // Handle dropdown selection
+                const handleSelect = (key) => {
+                    if (key === 'manageProfile') {
+                        window.location.href = '/manageProfile';
+                    } else if (key === 'logout') {
+                        window.location.href = '/logout';
+                    }
+                };
+                
+                // Helper function to render icons
+                function renderIcon(iconClass) {
+                    return () => h('i', { class: iconClass });
+                }
+                
+                // Toggle sidebar collapsed state
+                function toggleSidebar() {
+                    collapsed.value = !collapsed.value;
+                }
+                
+                // Weather functionality
+                function seeMore() {
+                    $.ajax({
+                        url: "/weatherFor",
+                        method: "POST",
+                        success: function () {
+                            window.location.href = "/weatherFor";
+                        },
+                        error: function (err) {
+                            console.error("Failed to reach /weatherFor:", err);
+                            alert("Something went wrong!");
+                        }
+                    });
+                }
+                
+                return {
+                    collapsed,
+                    activeKey,
+                    userData,
+                    menuOptions,
+                    UserOptions,
+                    handleSelect,
+                    toggleSidebar,
+                    seeMore,
+                    // Weather data
+                    temp: weatherData.temp,
+                    status: weatherData.status,
+                    feels: weatherData.feels,
+                    humid: weatherData.humid,
+                    wind: weatherData.wind,
+                    sunrise: weatherData.sunrise,
+                    sunset: weatherData.sunset
+                };
+            }
+        }).use(naive).mount('#app');
+    </script>
+</body>
 </html>
