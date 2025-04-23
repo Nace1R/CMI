@@ -1,15 +1,14 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
 from tinydb import TinyDB, Query, where
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import requests
 
-
+# tinyDB začetk
 db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
 admin = db.table('admin')
 profil = db.table('profile-info')
-
 User = Query()
 
 app = Flask(__name__)
@@ -105,6 +104,7 @@ def dashboard():
     user = uporabniki.get(where('id') == userId)
     if not user:
         return redirect(url_for("login"))
+    
     #prikaz mesta na dashboardu
     result = profil.get(User.userId == userId)
     mesto = result['city']
@@ -238,7 +238,6 @@ def weatherData():
 
     #profilna slika
     pfp = getPfp(userId)
-    # FORECAST
 
 
 
@@ -267,6 +266,15 @@ def weatherFor():
     dataF = response.json()
     pfp = getPfp(userId)
 
+    currentTime = datetime.now()
+
+    startDate = currentTime + timedelta(days=1) # trenutn cajt plus en dan sepravi isti cs nasledn dan
+
+    startDate = startDate.replace(hour=0, minute=0, second=0, microsecond=0) #nasledn dan začetk dneva 0000
+
+    for i in range(len(dataF["list"])):
+        print(i)
+
     dan1 = {
         "ura1": {
             "čas" : dataF["list"][0]["dt_txt"],
@@ -283,16 +291,16 @@ def weatherFor():
     }
     dan2 = {
         "ura1": {
-            "čas" : dataF["list"][0]["dt_txt"],
-            "temp" : dataF["list"][0]["main"]["temp"],
-            "status": dataF["list"][0]["weather"]["main"],
-            "status": dataF["list"][0]["wind"]["speed"]
+            "čas" : dataF["list"][4]["dt_txt"],
+            "temp" : dataF["list"][4]["main"]["temp"],
+            "status": dataF["list"][4]["weather"]["main"],
+            "status": dataF["list"][4]["wind"]["speed"]
         },
         "ura2" : {
-            "čas" : dataF["list"][1]["dt_txt"],
-            "temp" : dataF["list"][1]["main"]["temp"],
-            "status": dataF["list"][1]["weather"]["main"],
-            "status": dataF["list"][1]["wind"]["speed"]
+            "čas" : dataF["list"][5]["dt_txt"],
+            "temp" : dataF["list"][5]["main"]["temp"],
+            "status": dataF["list"][5]["weather"]["main"],
+            "status": dataF["list"][5]["wind"]["speed"]
         }
     }
 
