@@ -246,7 +246,7 @@ def weatherData():
 
 
 
-@app.route("/weatherFor")
+@app.route("/weatherFor") #NE DELA NITI MAL
 def weatherFor():
 
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
@@ -264,12 +264,37 @@ def weatherFor():
     print(mesto)
     apiCall = f"https://api.openweathermap.org/data/2.5/forecast?q={mesto}&appid={apiKey}&units=metric"
     response = requests.get(apiCall)
-    data = response.json()
+    dataF = response.json()
     pfp = getPfp(userId)
 
-
-
-
+    dan1 = {
+        "ura1": {
+            "čas" : dataF["list"][0]["dt_txt"],
+            "temp" : dataF["list"][0]["main"]["temp"],
+            "status": dataF["list"][0]["weather"]["main"],
+            "wind": dataF["list"][0]["wind"]["speed"]
+        },
+        "ura2" : {
+            "čas" : dataF["list"][1]["dt_txt"],
+            "temp" : dataF["list"][1]["main"]["temp"],
+            "status": dataF["list"][1]["weather"]["main"],
+            "wind": dataF["list"][1]["wind"]["speed"]
+        }
+    }
+    dan2 = {
+        "ura1": {
+            "čas" : dataF["list"][0]["dt_txt"],
+            "temp" : dataF["list"][0]["main"]["temp"],
+            "status": dataF["list"][0]["weather"]["main"],
+            "status": dataF["list"][0]["wind"]["speed"]
+        },
+        "ura2" : {
+            "čas" : dataF["list"][1]["dt_txt"],
+            "temp" : dataF["list"][1]["main"]["temp"],
+            "status": dataF["list"][1]["weather"]["main"],
+            "status": dataF["list"][1]["wind"]["speed"]
+        }
+    }
 
     return render_template("weatherFor.html",userData=userData, pfp=pfp)
 
