@@ -73,13 +73,13 @@ def profileCreation():
         if 'picture' in request.files:
             file = request.files['picture']
             if file.filename != '':
-                file_extension = os.path.splitext(file.filename)[1]
-                filename = f"pfp_{userId}{file_extension}"
+                fileExtension = os.path.splitext(file.filename)[1]
+                filename = f"pfp_{userId}{fileExtension}"
                 file_path = os.path.join('static', 'pfp', filename)
                 file.save(file_path)
                 print(userId)
 
-                pot = f"static/pfp/pfp_{userId}{file_extension}"
+                pot = f"static/pfp/pfp_{userId}{fileExtension}"
                 profil.insert({"userId": userId, "pfp": pot})
         elif request.is_json:
             data = request.json
@@ -207,7 +207,7 @@ def weatherData():
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
     
     userId = request.cookies.get("userId")
-    userData = {"ime": "Guest"}
+    userData = {"ime": "gost"}
     user = uporabniki.get(where('id') == userId)
     if not userId:
         return redirect(url_for("login"))
@@ -241,7 +241,37 @@ def weatherData():
     # FORECAST
 
 
+
     return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset,userData=userData,pfp=pfp)
+
+
+
+@app.route("/weatherFor")
+def weatherFor():
+
+    apiKey = "8d80c9afce8da5a191e74cb02596e828"
+    userId = request.cookies.get("userId")
+    userData = {"ime": "gost"}
+    user = uporabniki.get(where('id') == userId)
+    if not userId:
+        return redirect(url_for("login"))
+    
+
+
+    userData = user
+    result = profil.get(User.userId == userId)
+    mesto = result['city']
+    print(mesto)
+    apiCall = f"https://api.openweathermap.org/data/2.5/forecast?q={mesto}&appid={apiKey}&units=metric"
+    response = requests.get(apiCall)
+    data = response.json()
+    pfp = getPfp(userId)
+
+
+
+
+
+    return render_template("weatherFor.html",userData=userData, pfp=pfp)
 
 @app.route("/trafficData")
 def trafficData():
