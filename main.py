@@ -245,7 +245,7 @@ def weatherData():
 
 
 
-@app.route("/weatherFor") #NE DELA NITI MAL
+@app.route("/weatherFor",methods=["GET" , "POST"]) #NE DELA NITI MAL
 def weatherFor():
 
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
@@ -275,7 +275,7 @@ def weatherFor():
     for i in range(len(dataF["list"])):
         print(i)
 
-    dan1 = {
+    '''dan1 = {
         "ura1": {
             "čas" : dataF["list"][0]["dt_txt"],
             "temp" : dataF["list"][0]["main"]["temp"],
@@ -302,7 +302,7 @@ def weatherFor():
             "status": dataF["list"][5]["weather"]["main"],
             "status": dataF["list"][5]["wind"]["speed"]
         }
-    }
+    }'''    
 
     return render_template("weatherFor.html",userData=userData, pfp=pfp)
 
