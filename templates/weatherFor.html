@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,52 +11,518 @@
     <script src="https://unpkg.com/naive-ui"></script>
     <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
     <!-- Load Line Awesome icons -->
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Load Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    
+        .navbar {
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+    
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+    
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+    
+        .username {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+    
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+    
+        .sidebar {
+            background-color: #1B365C;
+            color: white;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar-expanded {
+            width: 240px;
+        }
+    
+        .sidebar-collapsed {
+            width: 64px;
+        }
+    
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+    
+        .forecast-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+    
+        .forecast-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+    
+        .forecast-section h2 {
+            font-size: 20px;
+            color: #1B365C;
+            margin-bottom: 12px;
+        }
+    
+        .forecast-section ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .forecast-section li {
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #333;
+        }
+    
+        .forecast-section hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 10px 0;
+        }
+    
+        /* BARVE KO JE IZBRAN ELEMENT V MENIJU */
+        .n-menu-item-content--selected,
+        .n-menu-item-content--child-active {
+            background-color: #4682B4 !important;
+        }
+    
+        .n-menu-item-content--selected::before,
+        .n-menu-item-content--child-active::before {
+            background-color: #4682B4 !important;
+        }
+    
+        /* BREZ OBROBE ZA DROPDOWN BUTTONE */
+        .n-dropdown,
+        .n-dropdown *,
+        .n-base-selection,
+        .n-base-selection *,
+        .n-input,
+        .n-input *,
+        .n-button,
+        .n-button * {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+        }
+    
+        .n-dropdown-menu {
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+            background-color: white !important;
+        }
+    
+        .n-dropdown-option {
+            background-color: white !important;
+        }
+    
+        .n-dropdown-option:hover {
+            background-color: #f5f5f5 !important;
+        }
+    
+        .n-base-selection__border,
+        .n-base-selection__state-border {
+            border: none !important;
+            box-shadow: none !important;
+            display: none !important;
+        }
+    </style>
+    
 </head>
+
 <body>
-    <h1>TODAY</h1>
-    <ul>
-        {% for time, info in forToday.items() %}
-            <li>
-                <strong>{{ time }}</strong><br>
-                Temperature: {{ info.temp }}°C<br>
-                Status: {{ info.status }}<br>
-                Wind: {{ info.wind }} m/s<br>
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
+    <div id="app">
+        <!-- Top Navbar -->
+        <div class="navbar">
+            <div class="navbar-left">
+                <n-button quaternary circle @click="toggleSidebar">
+                    <template #icon>
+                        <n-icon>
+                            <i v-if="collapsed" class="las la-angle-right"></i>
+                            <i v-else class="las la-bars"></i>
+                        </n-icon>
+                    </template>
+                </n-button>
+                <img src="{{ url_for('static', filename='slike/logo2.png') }}" alt="CMI Logo" class="logo">
+            </div>
 
-    <h1>TOMMOROW</h1>
-    <ul>
-        {% for time, info in forTommorow.items() %}
-            <li>
-                <strong>{{ time }}</strong><br>
-                Temperature: {{ info.temp }}°C<br>
-                Status: {{ info.status }}<br>
-                Wind: {{ info.wind }} m/s<br>
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
+            <div class="navbar-right">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
+                    <n-button><span class="username">{{userData.ime}}</span> </n-button>
+                </n-dropdown>
+                <n-avatar round size="medium" src="{{pfp}}"></n-avatar>
+            </div>
+        </div>
 
-    <h1>DAY AFTER TOMMOROW</h1>
-    <ul>
-        {% for time, info in forDayAftrTom.items() %}
-            <li>
-                <strong>{{ time }}</strong><br>
-                Temperature: {{ info.temp }}°C<br>
-                Status: {{ info.status }}<br>
-                Wind: {{ info.wind }} m/s<br>
-            </li>
-            <hr>
-        {% endfor %}
-    </ul>
+        <!-- Main Container with Sidebar and Content -->
+        <div class="main-container">
+            <!-- Sidebar with Menu -->
+            <div class="sidebar" :class="collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+                <n-menu v-model:value="activeKey" :collapsed="collapsed" :collapsed-width="64" :collapsed-icon-size="22"
+                    :options="menuOptions" :indent="18" inverted />
+            </div>
+
+
+            <div class="content">
+                <div class="forecast-section">
+                    <h2>TODAY</h2>
+                    <ul>
+                        {% for time, info in forToday.items() %}
+                        <li>
+                            <strong>{{ time }}</strong><br>
+                            Temperature: {{ info.temp }}°C<br>
+                            Status: {{ info.status }}<br>
+                            Wind: {{ info.wind }} m/s<br>
+                        </li>
+                        <hr>
+                        {% endfor %}
+                    </ul>
+                </div>
+            
+                <div class="forecast-section">
+                    <h2>TOMORROW</h2>
+                    <ul>
+                        {% for time, info in forTommorow.items() %}
+                        <li>
+                            <strong>{{ time }}</strong><br>
+                            Temperature: {{ info.temp }}°C<br>
+                            Status: {{ info.status }}<br>
+                            Wind: {{ info.wind }} m/s<br>
+                        </li>
+                        <hr>
+                        {% endfor %}
+                    </ul>
+                </div>
+            
+                <div class="forecast-section">
+                    <h2>DAY AFTER TOMORROW</h2>
+                    <ul>
+                        {% for time, info in forDayAftrTom.items() %}
+                        <li>
+                            <strong>{{ time }}</strong><br>
+                            Temperature: {{ info.temp }}°C<br>
+                            Status: {{ info.status }}<br>
+                            Wind: {{ info.wind }} m/s<br>
+                        </li>
+                        <hr>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
 </body>
+<script>
+     const { createApp, ref, h } = Vue;
+
+    createApp({
+        setup() {
+                // Sidebar state
+                const collapsed = ref(false);
+                const activeKey = ref('weatherFor');
+
+                // User data
+                const userData = ref({
+                    ime: 'John Doe',
+                    email: 'john.doe@example.com'
+                });
+
+                // Menu options
+                const menuOptions = [
+                        {
+                            label: 'Dashboard', // The text shown in the menu
+                            key: 'dashboard',    // Unique identifier for this item
+                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
+
+                        },
+
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt'),
+                            onClick: () => {
+                                window.location.href = '/cityGuides';
+                            }
+                            // Submenu items (children)
+ /*                           children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                        },
+
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll'),
+                            onClick: () => {
+                                window.location.href = '/publicPolls';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun'),
+                            onClick: () => {
+                                window.location.href = '/weatherData';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light'),
+                            onClick: () => {
+                                window.location.href = '/trafficData';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                  //      {
+                  //          label: 'Social',
+                  //          key: 'social',
+                   //         icon: renderIcon('las la-users'),
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                   //     },
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt'),
+                            onClick: () => {
+                                window.location.href = '/localEvents';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt'),
+                            onClick: () => {
+                                window.location.href = '/electricalInfo';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus'),
+                            onClick: () => {
+                                window.location.href = '/publicTransit';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift'),
+                            onClick: () => {
+                                window.location.href = '/perksRewards';
+                            }
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+
+                        // About Us menu item
+
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle'), // About/information icon
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
+                        }
+                    ];
+
+                // User dropdown options
+                const UserOptions = [
+                    {
+                        label: "Manage Profile",
+                        key: "manageProfile",
+                        onClick: () => {
+                            window.location.href = '/manageProfile';
+                        }
+                    },
+                    {
+                        label: "Logout",
+                        key: "logout",
+                        onClick: () => {
+                            window.location.href = '/logout';
+                        }
+                    }
+                ];
+
+                // Handle dropdown selection
+                const handleSelect = (key) => {
+                    if (key === 'manageProfile') {
+                        window.location.href = '/manageProfile';
+                    } else if (key === 'logout') {
+                        window.location.href = '/logout';
+                    }
+                };
+
+                // Helper function to render icons
+                function renderIcon(iconClass) {
+                    return () => h('i', { class: iconClass });
+                }
+
+                // Toggle sidebar collapsed state
+                function toggleSidebar() {
+                    collapsed.value = !collapsed.value;
+                }            
+
+            return {
+                    collapsed,
+                    activeKey,
+                    userData,
+                    menuOptions,
+                    UserOptions,
+                    handleSelect,
+                    toggleSidebar,
+                };
+        }
+    })
+        .use(naive)
+        .mount('#app');
+</script>
+
 </html>

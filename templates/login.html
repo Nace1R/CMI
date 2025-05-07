@@ -14,89 +14,117 @@
     body, html {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      height: 100%;
       font-family: 'Poppins', sans-serif;
       background-color: #f5f5f5;
     }
-
+  
     #app {
       display: flex;
       height: 100vh;
+      flex-direction: row;
     }
-
+  
     .left-box {
-      width: 40%;
+      flex: 2;
       background-color: #5F9EA0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 20px 0 0 30px;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 40px;
+      color: white;
+      text-align: center;
     }
-
+  
     .logo-container {
-      width: 400px;
-      margin-top: -140px;
-      margin-left: 100px;
+      max-width: 300px;
+      margin-bottom: 30px;
     }
-
+  
     .logo-img {
       width: 100%;
       height: auto;
-      object-fit: contain;
     }
-
-    .welcome-text {
-      color: white;
-      max-width: 80%;
-      margin-left: 100px;
-      margin-top: 20px;
-    }
-
+  
     .welcome-text h1 {
       font-size: 2rem;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
-
+  
     .welcome-text p {
       font-size: 1rem;
       line-height: 1.6;
-      margin: 0 0 20px 0;
+      max-width: 600px;
+      margin: 0 auto;
     }
-
-    /* Registration box styling */
+  
     .right-box {
-      width: 60%;
+      flex: 1;
       background-color: #FFFFFF;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      padding: 40px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      margin: auto;
+      align-items: center;
+      padding: 60px 20px;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.05);
     }
-
-    .right-box h1 {
-      margin-bottom: 30px;
-    }
-
-    .right-box p {
-      margin-bottom: 40px;
-      font-size: 1.2rem;
-    }
-
-    .registration-form {
+  
+    .right-box-inner {
       width: 100%;
       max-width: 400px;
     }
-
+  
+    .right-box h1 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+  
+    .right-box p {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+  
     .continue-button {
       margin-top: 20px;
       width: 100%;
     }
+  
+    /* Responsive Layout */
+    @media (max-width: 1024px) {
+      #app {
+        flex-direction: column;
+      }
+  
+      .left-box,
+      .right-box {
+        flex: none;
+        width: 100%;
+        padding: 30px 20px;
+      }
+  
+      .right-box-inner {
+        max-width: 100%;
+      }
+    }
+  
+    @media (max-width: 480px) {
+      .welcome-text h1,
+      .right-box h1 {
+        font-size: 1.5rem;
+      }
+  
+      .welcome-text p,
+      .right-box p {
+        font-size: 0.9rem;
+      }
+    }
   </style>
+  
+  
+  
 </head>
 <body>
   <div id="app">
@@ -115,20 +143,21 @@
       </div>
     </div>
 
-    <div class="right-box">
-      <h1>Log In</h1>
-      <p>Log In to your account!</p>
-      <div class="registration-form">
-        <n-space vertical>
-          <n-input size="large" round placeholder="Username" maxlength="12" show-count clearable id="username"></n-input>
-          <n-input size="large" round type="password" placeholder="Password" show-password-on="click" :maxlength="8" id="password"></n-input>
-        </n-space>
-        <n-button class="continue-button" round type="primary" size="large" style="background-color: #000000;" onclick="sendLOGData()" >
-          Log In
-        </n-button>
-      </div>
+<div class="right-box">
+  <div class="right-box-inner">
+    <h1>Log In</h1>
+    <p>Log in to your account!</p>
+    <div class="registration-form">
+      <n-space vertical>
+        <n-input size="large" round placeholder="Username" maxlength="12" show-count clearable id="username"></n-input>
+        <n-input size="large" round type="password" placeholder="Password" show-password-on="click" :maxlength="8" id="password"></n-input>
+      </n-space>
+      <n-button class="continue-button" round type="primary" size="large" style="background-color: #000000;" onclick="sendLOGData()">
+        Log In
+      </n-button>
     </div>
   </div>
+</div>
   <script>
     const { createApp } = Vue;
     const app = createApp({});
