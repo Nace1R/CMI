@@ -247,33 +247,91 @@ def weatherData():
 
 @app.route("/weatherFor",methods=["GET" , "POST"]) #NE DELA NITI MAL
 def weatherFor():
-
+    #default za page
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
     userId = request.cookies.get("userId")
     userData = {"ime": "gost"}
     user = uporabniki.get(where('id') == userId)
     if not userId:
         return redirect(url_for("login"))
-    
-
-
     userData = user
     result = profil.get(User.userId == userId)
     mesto = result['city']
     print(mesto)
+    pfp = getPfp(userId)
+    
+    #forecast
+
+
     apiCall = f"https://api.openweathermap.org/data/2.5/forecast?q={mesto}&appid={apiKey}&units=metric"
     response = requests.get(apiCall)
     dataF = response.json()
-    pfp = getPfp(userId)
 
-    currentTime = datetime.now()
 
-    startDate = currentTime + timedelta(days=1) # trenutn cajt plus en dan sepravi isti cs nasledn dan
+    today = datetime.today().date()
+    tommorow = today + timedelta(days=1)
+    dayAfterTom = today + timedelta(days=2)
 
-    startDate = startDate.replace(hour=0, minute=0, second=0, microsecond=0) #nasledn dan začetk dneva 0000
 
-    for i in range(len(dataF["list"])):
-        print(i)
+    def getDate(index):
+        dt = datetime.strptime(dataF["list"][index-1]["dt_txt"], "%Y-%m-%d %H:%M:%S") #ai
+        date_only = dt.date()
+        return date_only
+
+    def getUra(index):
+        dt = datetime.strptime(dataF["list"][index-1]["dt_txt"], "%Y-%m-%d %H:%M:%S")
+        time_only = dt.time()
+        return time_only
+    
+    index = 0
+
+    forToday = {}
+    forTommorow = {}
+    forDayAftrTom = {}
+
+    for vremeU in dataF["list"]:
+        index += 1
+        dan = getDate(index)
+        if today == dan:
+            print("---------------------------DANES----------------------------")
+            
+            vremeFor = {
+                "čas" : dataF["list"][index]["dt_txt"],
+                "temp" : dataF["list"][index]["main"]["temp"],
+                "status": dataF["list"][index]["weather"][0]["main"],
+                "wind": dataF["list"][index]["wind"]["speed"],
+                "index" : index
+            }
+
+            forToday[f"{getUra(index)}"] = vremeFor
+            print(forToday)
+        
+        elif tommorow ==  dan:
+            print("---------------------------TOMMOROW----------------------------")
+            vremeForT = {
+                "čas" : dataF["list"][index]["dt_txt"],
+                "temp" : dataF["list"][index]["main"]["temp"],
+                "status": dataF["list"][index]["weather"][0]["main"],
+                "wind": dataF["list"][index]["wind"]["speed"],
+                "index" : index
+            }
+            forTommorow[f"{getUra(index)}"] = vremeForT
+            print(forTommorow)
+
+
+        elif dayAfterTom ==  dan:
+            print("---------------------------DAY AFTER TOMMOROW----------------------------")
+            vremeForDT = {
+                "čas" : dataF["list"][index]["dt_txt"],
+                "temp" : dataF["list"][index]["main"]["temp"],
+                "status": dataF["list"][index]["weather"][0]["main"],
+                "wind": dataF["list"][index]["wind"]["speed"],
+                "index" : index
+            }
+            forDayAftrTom[f"{getUra(index)}"] = vremeForDT
+            print(forDayAftrTom)
+
+
 
     '''dan1 = {
         "ura1": {
@@ -304,7 +362,7 @@ def weatherFor():
         }
     }'''    
 
-    return render_template("weatherFor.html",userData=userData, pfp=pfp)
+    return render_template("weatherFor.html",userData=userData, pfp=pfp, forToday=forToday,forTommorow = forTommorow, forDayAftrTom = forDayAftrTom)
 
 @app.route("/trafficData")
 def trafficData():

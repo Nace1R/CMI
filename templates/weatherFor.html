@@ -19,6 +19,43 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
 </head>
 <body>
-    <p>adadwd</p>
+    <h1>TODAY</h1>
+    <ul>
+        {% for time, info in forToday.items() %}
+            <li>
+                <strong>{{ time }}</strong><br>
+                Temperature: {{ info.temp }}°C<br>
+                Status: {{ info.status }}<br>
+                Wind: {{ info.wind }} m/s<br>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+
+    <h1>TOMMOROW</h1>
+    <ul>
+        {% for time, info in forTommorow.items() %}
+            <li>
+                <strong>{{ time }}</strong><br>
+                Temperature: {{ info.temp }}°C<br>
+                Status: {{ info.status }}<br>
+                Wind: {{ info.wind }} m/s<br>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+
+    <h1>DAY AFTER TOMMOROW</h1>
+    <ul>
+        {% for time, info in forDayAftrTom.items() %}
+            <li>
+                <strong>{{ time }}</strong><br>
+                Temperature: {{ info.temp }}°C<br>
+                Status: {{ info.status }}<br>
+                Wind: {{ info.wind }} m/s<br>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
 </body>
 </html>
