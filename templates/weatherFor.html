@@ -20,164 +20,213 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    height: 75px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 20px;
+}
+
+.username {
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
     
-        .navbar {
-            height: 64px;
-            background-color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 10;
-        }
-    
-        #app {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-    
-        .navbar-left {
-            display: flex;
-            align-items: center;
-        }
-    
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-    
-        .logo {
-            height: 40px;
-            margin-right: 20px;
-        }
-    
-        .username {
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-        }
-    
-        .main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-    
-        .sidebar {
-            background-color: #1B365C;
-            color: white;
-            transition: width 0.3s ease;
-            overflow-y: auto;
-            overflow-x: hidden;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-    
-        .sidebar-expanded {
-            width: 240px;
-        }
-    
-        .sidebar-collapsed {
-            width: 64px;
-        }
-    
-        .content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: #f5f5f5;
-        }
-    
-        .forecast-section {
-            background-color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-    
-        .forecast-section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-        }
-    
-        .forecast-section h2 {
-            font-size: 20px;
-            color: #1B365C;
-            margin-bottom: 12px;
-        }
-    
-        .forecast-section ul {
-            list-style: none;
-            padding: 0;
-        }
-    
-        .forecast-section li {
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: #333;
-        }
-    
-        .forecast-section hr {
-            border: none;
-            border-top: 1px solid #eee;
-            margin: 10px 0;
-        }
-    
-        /* BARVE KO JE IZBRAN ELEMENT V MENIJU */
-        .n-menu-item-content--selected,
-        .n-menu-item-content--child-active {
-            background-color: #4682B4 !important;
-        }
-    
-        .n-menu-item-content--selected::before,
-        .n-menu-item-content--child-active::before {
-            background-color: #4682B4 !important;
-        }
-    
-        /* BREZ OBROBE ZA DROPDOWN BUTTONE */
-        .n-dropdown,
-        .n-dropdown *,
-        .n-base-selection,
-        .n-base-selection *,
-        .n-input,
-        .n-input *,
-        .n-button,
-        .n-button * {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-            background-color: transparent !important;
-        }
-    
-        .n-dropdown-menu {
-            border: none !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
-            background-color: white !important;
-        }
-    
-        .n-dropdown-option {
-            background-color: white !important;
-        }
-    
-        .n-dropdown-option:hover {
-            background-color: #f5f5f5 !important;
-        }
-    
-        .n-base-selection__border,
-        .n-base-selection__state-border {
-            border: none !important;
-            box-shadow: none !important;
-            display: none !important;
-        }
+}
+
+.sidebar {
+    background-color: #1B365C;
+    color: white;
+    transition: width 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-expanded {
+    width: 240px;
+}
+
+.sidebar-collapsed {
+    width: 64px;
+}
+
+/* MAIN CONTENT AREA FIXED */
+.content {
+    flex: 1;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* center vertically */
+    align-items: center;       /* center horizontally */
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* HEADING ABOVE CARDS */
+.forecast-heading {
+    align-self: flex-start;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1B365C;
+    margin-bottom: 24px;
+    margin-left: 10px;
+}
+
+/* FORECAST CARD LAYOUT */
+.forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 100%;
+}
+
+/* INDIVIDUAL FORECAST CARD */
+.forecast-section {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 320px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-left: 5px solid #1B365C;
+}
+
+.forecast-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-left-color: #3B5C8C;
+}
+
+.forecast-section h2 {
+    font-size: 20px;
+    color: #1B365C;
+    margin-bottom: 16px;
+    text-align: center;
+    width: 100%;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.forecast-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.forecast-section li {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+}
+
+.forecast-section li strong {
+    color: #1B365C;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.forecast-section hr {
+    display: none;
+}
+
+/* SELECTED MENU ITEM COLOR FIX */
+.n-menu-item-content--selected,
+.n-menu-item-content--child-active {
+    background-color: #4682B4 !important;
+}
+
+.n-menu-item-content--selected::before,
+.n-menu-item-content--child-active::before {
+    background-color: #4682B4 !important;
+}
+
+/* NAIVE UI CLEANING */
+.n-dropdown,
+.n-dropdown *,
+.n-base-selection,
+.n-base-selection *,
+.n-input,
+.n-input *,
+.n-button,
+.n-button * {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.n-dropdown-menu {
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+    background-color: white !important;
+}
+
+.n-dropdown-option {
+    background-color: white !important;
+}
+
+.n-dropdown-option:hover {
+    background-color: #f5f5f5 !important;
+}
+
+.n-base-selection__border,
+.n-base-selection__state-border {
+    border: none !important;
+    box-shadow: none !important;
+    display: none !important;
+}
+
     </style>
-    
+
 </head>
 
 <body>
@@ -212,313 +261,317 @@
                     :options="menuOptions" :indent="18" inverted />
             </div>
 
+ <div class="content">
+    <h1 class="forecast-heading">Weather Forecast for 3-days</h1>
 
-            <div class="content">
-                <div class="forecast-section">
-                    <h2>TODAY</h2>
-                    <ul>
-                        {% for time, info in forToday.items() %}
-                        <li>
-                            <strong>{{ time }}</strong><br>
-                            Temperature: {{ info.temp }}°C<br>
-                            Status: {{ info.status }}<br>
-                            Wind: {{ info.wind }} m/s<br>
-                        </li>
-                        <hr>
-                        {% endfor %}
-                    </ul>
-                </div>
-            
-                <div class="forecast-section">
-                    <h2>TOMORROW</h2>
-                    <ul>
-                        {% for time, info in forTommorow.items() %}
-                        <li>
-                            <strong>{{ time }}</strong><br>
-                            Temperature: {{ info.temp }}°C<br>
-                            Status: {{ info.status }}<br>
-                            Wind: {{ info.wind }} m/s<br>
-                        </li>
-                        <hr>
-                        {% endfor %}
-                    </ul>
-                </div>
-            
-                <div class="forecast-section">
-                    <h2>DAY AFTER TOMORROW</h2>
-                    <ul>
-                        {% for time, info in forDayAftrTom.items() %}
-                        <li>
-                            <strong>{{ time }}</strong><br>
-                            Temperature: {{ info.temp }}°C<br>
-                            Status: {{ info.status }}<br>
-                            Wind: {{ info.wind }} m/s<br>
-                        </li>
-                        <hr>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            
+    <div class="forecast-container">
+        <div class="forecast-section">
+            <h2>TODAY</h2>
+            <ul>
+                {% for time, info in forToday.items() %}
+                <li>
+                    <strong>{{ time }}</strong><br>
+                    Temperature: {{ info.temp }}°C<br>
+                    Status: {{ info.status }}<br>
+                    Wind: {{ info.wind }} m/s<br>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="forecast-section">
+            <h2>TOMORROW</h2>
+            <ul>
+                {% for time, info in forTommorow.items() %}
+                <li>
+                    <strong>{{ time }}</strong><br>
+                    Temperature: {{ info.temp }}°C<br>
+                    Status: {{ info.status }}<br>
+                    Wind: {{ info.wind }} m/s<br>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="forecast-section">
+            <h2>DAY AFTER TOMORROW</h2>
+            <ul>
+                {% for time, info in forDayAftrTom.items() %}
+                <li>
+                    <strong>{{ time }}</strong><br>
+                    Temperature: {{ info.temp }}°C<br>
+                    Status: {{ info.status }}<br>
+                    Wind: {{ info.wind }} m/s<br>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
-     const { createApp, ref, h } = Vue;
+    const { createApp, ref, h } = Vue;
 
     createApp({
         setup() {
-                // Sidebar state
-                const collapsed = ref(false);
-                const activeKey = ref('weatherFor');
+            // Sidebar state
+            const collapsed = ref(false);
+            const activeKey = ref('weatherFor');
 
-                // User data
-                const userData = ref({
-                    ime: 'John Doe',
-                    email: 'john.doe@example.com'
-                });
+            // User data
+            const userData = ref({
+                ime: 'John Doe',
+                email: 'john.doe@example.com'
+            });
 
-                // Menu options
-                const menuOptions = [
+            // Menu options
+            const menuOptions = [
+                {
+                    label: 'Dashboard', // The text shown in the menu
+                    key: 'dashboard',    // Unique identifier for this item
+                    icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                    onClick: () => {
+                        window.location.href = '/dashboard';
+                    }
+
+                },
+
+                {
+                    label: 'City Guides',
+                    key: 'guides',
+                    icon: renderIcon('las la-map-marked-alt'),
+                    onClick: () => {
+                        window.location.href = '/cityGuides';
+                    }
+                    // Submenu items (children)
+                    /*                           children: [
+                                                   {
+                                                       label: 'Testing submenus',
+                                                       key: 'ustavi-key-tu'
+                                                   },
+                                                   {
+                                                       label: 'Testing submenus',
+                                                       key: 'ustavi-key-tu'
+                                                   },
+                                                   {
+                                                       label: 'Testing submenus',
+                                                       key: 'ustavi-key-tu'
+                                                   }
+                                               ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                },
+
+                {
+                    label: 'Public Polls',
+                    key: 'polls',
+                    icon: renderIcon('las la-poll'),
+                    onClick: () => {
+                        window.location.href = '/publicPolls';
+                    }
+                    /*children: [
                         {
-                            label: 'Dashboard', // The text shown in the menu
-                            key: 'dashboard',    // Unique identifier for this item
-                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
-                            onClick: () => {
-                                window.location.href = '/dashboard';
-                            }
-
-                        },
-
-                        {
-                            label: 'City Guides',
-                            key: 'guides',
-                            icon: renderIcon('las la-map-marked-alt'),
-                            onClick: () => {
-                                window.location.href = '/cityGuides';
-                            }
-                            // Submenu items (children)
- /*                           children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
-                        },
-
-                        {
-                            label: 'Public Polls',
-                            key: 'polls',
-                            icon: renderIcon('las la-poll'),
-                            onClick: () => {
-                                window.location.href = '/publicPolls';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                        },
-
-                        {
-                            label: 'Weather Updates',
-                            key: 'wUpdates',
-                            icon: renderIcon('las la-cloud-sun'),
-                            onClick: () => {
-                                window.location.href = '/weatherData';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                        },
-
-                        {
-                            label: 'Traffic Updates',
-                            key: 'tUpdates',
-                            icon: renderIcon('las la-traffic-light'),
-                            onClick: () => {
-                                window.location.href = '/trafficData';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                        },
-                  //      {
-                  //          label: 'Social',
-                  //          key: 'social',
-                   //         icon: renderIcon('las la-users'),
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                   //     },
-                        {
-                            label: 'Local Events',
-                            key: 'lEvents',
-                            icon: renderIcon('las la-calendar-alt'),
-                            onClick: () => {
-                                window.location.href = '/localEvents';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
                         },
                         {
-                            label: 'Electrical Information',
-                            key: 'eInfo',
-                            icon: renderIcon('las la-bolt'),
-                            onClick: () => {
-                                window.location.href = '/electricalInfo';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
                         },
                         {
-                            label: 'Public Transit Info',
-                            key: 'ptInfo',
-                            icon: renderIcon('las la-bus'),
-                            onClick: () => {
-                                window.location.href = '/publicTransit';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                        },
-                        {
-                            label: 'Perks and Rewards',
-                            key: 'PaR',
-                            icon: renderIcon('las la-gift'),
-                            onClick: () => {
-                                window.location.href = '/perksRewards';
-                            }
-                            /*children: [
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                },
-                                {
-                                    label: 'Testing submenus',
-                                    key: 'ustavi-key-tu'
-                                }
-                            ]*/
-                        },
-
-
-                        // About Us menu item
-
-                        {
-                            label: 'About Us',
-                            key: 'aboutus',
-                            icon: renderIcon('las la-info-circle'), // About/information icon
-                            onClick: () => {
-                                window.location.href = '/about_us';
-                            }
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
                         }
-                    ];
+                    ]*/
+                },
 
-                // User dropdown options
-                const UserOptions = [
+                {
+                    label: 'Weather Updates',
+                    key: 'wUpdates',
+                    icon: renderIcon('las la-cloud-sun'),
+                    onClick: () => {
+                        window.location.href = '/weatherData';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
+
+                {
+                    label: 'Traffic Updates',
+                    key: 'tUpdates',
+                    icon: renderIcon('las la-traffic-light'),
+                    onClick: () => {
+                        window.location.href = '/trafficData';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
+                //      {
+                //          label: 'Social',
+                //          key: 'social',
+                //         icon: renderIcon('las la-users'),
+                /*children: [
                     {
-                        label: "Manage Profile",
-                        key: "manageProfile",
-                        onClick: () => {
-                            window.location.href = '/manageProfile';
-                        }
+                        label: 'Testing submenus',
+                        key: 'ustavi-key-tu'
                     },
                     {
-                        label: "Logout",
-                        key: "logout",
-                        onClick: () => {
-                            window.location.href = '/logout';
-                        }
+                        label: 'Testing submenus',
+                        key: 'ustavi-key-tu'
                     }
-                ];
+                ]*/
+                //     },
+                {
+                    label: 'Local Events',
+                    key: 'lEvents',
+                    icon: renderIcon('las la-calendar-alt'),
+                    disabled:true,
+                    onClick: () => {
+                        window.location.href = '/localEvents';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
+                {
+                    label: 'Electrical Information',
+                    key: 'eInfo',
+                    icon: renderIcon('las la-bolt'),
+                    disabled:true,
+                    onClick: () => {
+                        window.location.href = '/electricalInfo';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
+                {
+                    label: 'Public Transit Info',
+                    key: 'ptInfo',
+                    icon: renderIcon('las la-bus'),
+                    disabled:true,
+                    onClick: () => {
+                        window.location.href = '/publicTransit';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
+                {
+                    label: 'Perks and Rewards',
+                    key: 'PaR',
+                    icon: renderIcon('las la-gift'),
+                    disabled:true,
+                    onClick: () => {
+                        window.location.href = '/perksRewards';
+                    }
+                    /*children: [
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        },
+                        {
+                            label: 'Testing submenus',
+                            key: 'ustavi-key-tu'
+                        }
+                    ]*/
+                },
 
-                // Handle dropdown selection
-                const handleSelect = (key) => {
-                    if (key === 'manageProfile') {
+
+                // About Us menu item
+
+                {
+                    label: 'About Us',
+                    key: 'aboutus',
+                    icon: renderIcon('las la-info-circle'), // About/information icon
+                    onClick: () => {
+                        window.location.href = '/about_us';
+                    }
+                }
+            ];
+
+            // User dropdown options
+            const UserOptions = [
+                {
+                    label: "Manage Profile",
+                    key: "manageProfile",
+                    onClick: () => {
                         window.location.href = '/manageProfile';
-                    } else if (key === 'logout') {
+                    }
+                },
+                {
+                    label: "Logout",
+                    key: "logout",
+                    onClick: () => {
                         window.location.href = '/logout';
                     }
-                };
-
-                // Helper function to render icons
-                function renderIcon(iconClass) {
-                    return () => h('i', { class: iconClass });
                 }
+            ];
 
-                // Toggle sidebar collapsed state
-                function toggleSidebar() {
-                    collapsed.value = !collapsed.value;
-                }            
+            // Handle dropdown selection
+            const handleSelect = (key) => {
+                if (key === 'manageProfile') {
+                    window.location.href = '/manageProfile';
+                } else if (key === 'logout') {
+                    window.location.href = '/logout';
+                }
+            };
+
+            // Helper function to render icons
+            function renderIcon(iconClass) {
+                return () => h('i', { class: iconClass });
+            }
+
+            // Toggle sidebar collapsed state
+            function toggleSidebar() {
+                collapsed.value = !collapsed.value;
+            }
 
             return {
-                    collapsed,
-                    activeKey,
-                    userData,
-                    menuOptions,
-                    UserOptions,
-                    handleSelect,
-                    toggleSidebar,
-                };
+                collapsed,
+                activeKey,
+                userData,
+                menuOptions,
+                UserOptions,
+                handleSelect,
+                toggleSidebar,
+            };
         }
     })
         .use(naive)
