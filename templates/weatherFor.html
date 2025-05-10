@@ -20,20 +20,26 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
     <style>
-body {
-    font-family: 'Poppins', sans-serif;
+/* Basic reset and page setup */
+body, html {
     margin: 0;
     padding: 0;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
+/* Main app container */
 #app {
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+/* Top navigation bar */
 .navbar {
-    height: 75px;
+    height: 64px;
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -65,14 +71,16 @@ body {
     cursor: pointer;
 }
 
+/* Main content container with sidebar and content area */
 .main-container {
     display: flex;
     flex: 1;
-    
+    overflow: hidden;
 }
 
+/* Sidebar styling */
 .sidebar {
-    background-color: #1B365C;
+    background-color: #1B365C; /* Dark blue background */
     color: white;
     transition: width 0.3s ease;
     overflow-y: auto;
@@ -88,68 +96,109 @@ body {
     width: 64px;
 }
 
-/* MAIN CONTENT AREA FIXED */
+/* Main content area */
 .content {
     flex: 1;
     background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
-    justify-content: center;   /* center vertically */
-    align-items: center;       /* center horizontally */
     padding: 20px;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
-/* HEADING ABOVE CARDS */
+/* Forecast header styling */
 .forecast-heading {
-    align-self: flex-start;
-    font-size: 28px;
-    font-weight: 600;
     color: #1B365C;
-    margin-bottom: 24px;
-    margin-left: 10px;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+    text-align: center;
 }
 
-/* FORECAST CARD LAYOUT */
+.forecast-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #1B365C, #3B5C8C);
+    border-radius: 2px;
+}
+
+/* Forecast container layout */
 .forecast-container {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     max-width: 100%;
+    margin-top: 20px;
 }
 
-/* INDIVIDUAL FORECAST CARD */
+/* Individual forecast card */
 .forecast-section {
     background-color: white;
     border-radius: 16px;
     padding: 24px;
     width: 320px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     border-left: 5px solid #1B365C;
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
 }
 
 .forecast-section:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     border-left-color: #3B5C8C;
 }
 
+/* Forecast card header */
 .forecast-section h2 {
-    font-size: 20px;
+    font-size: 22px;
     color: #1B365C;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     text-align: center;
     width: 100%;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #e0e0e0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.forecast-section h2::before {
+    content: '';
+    font-family: 'Line Awesome Free';
+    font-weight: 900;
+    margin-right: 10px;
+    font-size: 24px;
+    color: #1B365C;
+}
+
+.forecast-section:nth-child(1) h2::before {
+    content: '\f185'; /* sun icon for today */
+}
+
+.forecast-section:nth-child(2) h2::before {
+    content: '\f186'; /* moon icon for tomorrow */
+}
+
+.forecast-section:nth-child(3) h2::before {
+    content: '\f0c2'; /* cloud icon for day after tomorrow */
+}
+
+/* Forecast list styling */
 .forecast-section ul {
     list-style: none;
     padding: 0;
@@ -159,23 +208,77 @@ body {
 
 .forecast-section li {
     background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 12px;
-    font-size: 14px;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 15px;
     line-height: 1.6;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.forecast-section li:hover {
+    background-color: #f0f4f8;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
 }
 
 .forecast-section li strong {
     color: #1B365C;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(27, 54, 92, 0.1);
+    padding-bottom: 6px;
 }
 
-.forecast-section hr {
-    display: none;
+/* Weather info styling */
+.weather-info {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.weather-info i {
+    width: 24px;
+    color: #1B365C;
+    margin-right: 8px;
+}
+
+/* Status-based styling */
+.forecast-section li[data-status="Clear"] {
+    border-left: 4px solid #FFD700;
+}
+
+.forecast-section li[data-status="Clouds"] {
+    border-left: 4px solid #A9A9A9;
+}
+
+.forecast-section li[data-status="Rain"] {
+    border-left: 4px solid #4682B4;
+}
+
+.forecast-section li[data-status="Snow"] {
+    border-left: 4px solid #E0FFFF;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .forecast-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .forecast-section {
+        width: 90%;
+        max-width: none;
+    }
 }
 
 /* SELECTED MENU ITEM COLOR FIX */
@@ -224,7 +327,6 @@ body {
     box-shadow: none !important;
     display: none !important;
 }
-
     </style>
 
 </head>
@@ -261,54 +363,90 @@ body {
                     :options="menuOptions" :indent="18" inverted />
             </div>
 
- <div class="content">
-    <h1 class="forecast-heading">Weather Forecast for 3-days</h1>
+            <!-- Main Content Area -->
+            <div class="content">
+                <!-- Weather Forecast Header -->
+                <div class="forecast-heading">
+                    <h1>Weather Forecast for 3-days</h1>
+                </div>
 
-    <div class="forecast-container">
-        <div class="forecast-section">
-            <h2>TODAY</h2>
-            <ul>
-                {% for time, info in forToday.items() %}
-                <li>
-                    <strong>{{ time }}</strong><br>
-                    Temperature: {{ info.temp }}°C<br>
-                    Status: {{ info.status }}<br>
-                    Wind: {{ info.wind }} m/s<br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                <!-- Forecast Cards Container -->
+                <div class="forecast-container">
+                    <!-- Today's Forecast -->
+                    <div class="forecast-section">
+                        <h2>TODAY</h2>
+                        <ul>
+                            {% for time, info in forToday.items() %}
+                            <li data-status="{{ info.status }}">
+                                <strong>{{ time }}</strong>
+                                <div class="weather-info">
+                                    <i class="las la-temperature-high"></i>
+                                    <span>Temperature: {{ info.temp }}°C</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-cloud"></i>
+                                    <span>Status: {{ info.status }}</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-wind"></i>
+                                    <span>Wind: {{ info.wind }} m/s</span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
 
-        <div class="forecast-section">
-            <h2>TOMORROW</h2>
-            <ul>
-                {% for time, info in forTommorow.items() %}
-                <li>
-                    <strong>{{ time }}</strong><br>
-                    Temperature: {{ info.temp }}°C<br>
-                    Status: {{ info.status }}<br>
-                    Wind: {{ info.wind }} m/s<br>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                    <!-- Tomorrow's Forecast -->
+                    <div class="forecast-section">
+                        <h2>TOMORROW</h2>
+                        <ul>
+                            {% for time, info in forTommorow.items() %}
+                            <li data-status="{{ info.status }}">
+                                <strong>{{ time }}</strong>
+                                <div class="weather-info">
+                                    <i class="las la-temperature-high"></i>
+                                    <span>Temperature: {{ info.temp }}°C</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-cloud"></i>
+                                    <span>Status: {{ info.status }}</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-wind"></i>
+                                    <span>Wind: {{ info.wind }} m/s</span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
 
-        <div class="forecast-section">
-            <h2>DAY AFTER TOMORROW</h2>
-            <ul>
-                {% for time, info in forDayAftrTom.items() %}
-                <li>
-                    <strong>{{ time }}</strong><br>
-                    Temperature: {{ info.temp }}°C<br>
-                    Status: {{ info.status }}<br>
-                    Wind: {{ info.wind }} m/s<br>
-                </li>
-                {% endfor %}
-            </ul>
+                    <!-- Day After Tomorrow's Forecast -->
+                    <div class="forecast-section">
+                        <h2>DAY AFTER TOMORROW</h2>
+                        <ul>
+                            {% for time, info in forDayAftrTom.items() %}
+                            <li data-status="{{ info.status }}">
+                                <strong>{{ time }}</strong>
+                                <div class="weather-info">
+                                    <i class="las la-temperature-high"></i>
+                                    <span>Temperature: {{ info.temp }}°C</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-cloud"></i>
+                                    <span>Status: {{ info.status }}</span>
+                                </div>
+                                <div class="weather-info">
+                                    <i class="las la-wind"></i>
+                                    <span>Wind: {{ info.wind }} m/s</span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
 </body>
 <script>
     const { createApp, ref, h } = Vue;

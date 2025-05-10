@@ -2,86 +2,222 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CMI City</title>
   <script src="https://unpkg.com/vue@3"></script>
   <script src="https://unpkg.com/naive-ui"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/slike/favicon5.png') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
 
   <style>
-    body, html {
+    /* Reset and base styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      height: 100vh;
+    }
+    
+    body, html {
+      height: 100%;
       font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background-color: #f5f5f5;
     }
 
+    /* Main container */
     #app {
       display: flex;
-      height: 100vh;
+      min-height: 100vh;
+      width: 100%;
     }
 
+    /* Left content section */
     .left-box {
       width: 40%;
       background-color: #5F9EA0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 20px 0 0 30px;
+      justify-content: center;
+      padding: 40px;
+      position: relative;
     }
 
+    /* Logo styling */
     .logo-container {
-      width: 400px;
-      margin-top: -140px;
-      margin-left: 100px;
+      text-align: center;
+      margin-bottom: 40px;
     }
 
     .logo-img {
       width: 100%;
+      max-width: 300px;
       height: auto;
-      object-fit: contain;
     }
 
+    /* Welcome text section */
     .welcome-text {
       color: white;
-      max-width: 80%;
-      margin-left: 100px;
-      margin-top: 20px;
+      margin-bottom: 40px;
     }
 
     .welcome-text h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
 
     .welcome-text p {
-      font-size: 1rem;
+      font-size: 16px;
       line-height: 1.6;
-      margin: 0 0 20px 0;
+      opacity: 0.9;
     }
 
+    /* Button container */
     .button-group {
       display: flex;
-      gap: 90px;
-      margin-left: 180px;
-      margin-top: 60px;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
     }
 
+    /* Button styling */
+    .auth-button {
+      width: 150px !important;
+      height: 50px !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+    }
+
+    /* Link styling */
+    a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Carousel section */
     .carousel-container {
       width: 60%;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .carousel-img {
       width: 100%;
-      height: 100vh;
+      height: 100%;
       object-fit: cover;
     }
-    a {
-      color: white;
-      text-decoration: none;
+
+    /* Responsive styles */
+    /* Large devices (desktops, less than 1200px) */
+    @media (max-width: 1200px) {
+      .left-box {
+        padding: 30px;
+      }
       
+      .welcome-text h1 {
+        font-size: 28px;
+      }
+      
+      .welcome-text p {
+        font-size: 15px;
+      }
+    }
+
+    /* Medium devices (tablets, less than 992px) */
+    @media (max-width: 992px) {
+      .left-box {
+        width: 45%;
+        padding: 25px;
+      }
+      
+      .carousel-container {
+        width: 55%;
+      }
+      
+      .logo-img {
+        max-width: 250px;
+      }
+      
+      .welcome-text h1 {
+        font-size: 24px;
+      }
+      
+      .welcome-text p {
+        font-size: 14px;
+      }
+      
+      .auth-button {
+        width: 130px !important;
+      }
+    }
+
+    /* Small devices (landscape phones, less than 768px) */
+    @media (max-width: 768px) {
+      #app {
+        flex-direction: column;
+      }
+      
+      .left-box {
+        width: 100%;
+        order: 2;
+        padding: 40px 20px;
+        min-height: auto;
+      }
+      
+      .carousel-container {
+        width: 100%;
+        height: 40vh;
+        order: 1;
+      }
+      
+      .logo-container {
+        margin-bottom: 30px;
+      }
+      
+      .logo-img {
+        max-width: 220px;
+      }
+      
+      .welcome-text {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      
+      .button-group {
+        margin-top: 10px;
+      }
+    }
+
+    /* Extra small devices (portrait phones, less than 576px) */
+    @media (max-width: 576px) {
+      .left-box {
+        padding: 30px 15px;
+      }
+      
+      .welcome-text h1 {
+        font-size: 22px;
+      }
+      
+      .welcome-text p {
+        font-size: 14px;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      .auth-button {
+        width: 180px !important;
+      }
     }
   </style>
 </head>
@@ -95,17 +231,23 @@
       <div class="welcome-text">
         <h1>Welcome to CMI</h1>
         <p>
-            CMI is your centralized platform for smart and efficient urban governance. Designed with modern cities in mind, it empowers administrators, planners, and decision-makers to seamlessly organize, monitor, and optimize every aspect of city operations — all from one intuitive interface.
-            From infrastructure management and public services to planning, analytics, and real-time monitoring, CMI provides the tools you need to keep your city connected, responsive, and future-ready. Whether you're overseeing transportation networks, utilities or development projects, CMI enables data-driven decisions that make your city safer, smarter, and more sustainable.
-            Welcome to the future of urban management — welcome to CMI.
+          CMI is your centralized platform for smart and efficient urban governance. Designed with modern cities in mind, it empowers administrators, planners, and decision-makers to seamlessly organize, monitor, and optimize every aspect of city operations — all from one intuitive interface.
+        </p>
+        <br>
+        <p>
+          From infrastructure management and public services to planning, analytics, and real-time monitoring, CMI provides the tools you need to keep your city connected, responsive, and future-ready. Whether you're overseeing transportation networks, utilities or development projects, CMI enables data-driven decisions that make your city safer, smarter, and more sustainable.
+        </p>
+        <br>
+        <p>
+          Welcome to the future of urban management — welcome to CMI.
         </p>
       </div>
 
       <div class="button-group">
-        <n-button round type="primary" size="large" color="#1B365C" style="width: 150px;">
+        <n-button round type="primary" size="large" color="#1B365C" class="auth-button">
           <a href="/login">Login</a>
         </n-button>
-        <n-button round type="primary" size="large" color="#1B365C" style="width: 150px;">
+        <n-button round type="primary" size="large" color="#1B365C" class="auth-button">
           <a href="/register">Register</a>
         </n-button>
       </div>

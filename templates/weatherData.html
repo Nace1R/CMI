@@ -285,6 +285,26 @@
             left: 100%;
         }
 
+        /* Help text styling */
+        .help-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 12px auto 30px;
+            color: #777;
+            font-size: 13px;
+            font-style: italic;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .help-text i {
+            margin-right: 6px;
+            font-size: 16px;
+            color: #1B365C;
+            opacity: 0.7;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .weather-grid {
@@ -480,8 +500,14 @@
                         <template #icon>
                             <i class="las la-arrow-right" style="margin-right: 8px;"></i>
                         </template>
-                        See More Details
+                        3-day Forecast
                     </n-button>
+                </div>
+
+                <!-- Help Text -->
+                <div class="help-text">
+                    <i class="las la-question-circle"></i>
+                    <span>Click to view the detailed 3-day forecast</span>
                 </div>
             </div>
         </div>
