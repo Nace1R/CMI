@@ -601,11 +601,14 @@
                             ]);
 
                             // Add admin option if user is admin
-                            const isAdmin = "{{ 'true' if isAdmin else 'false' }}";
+                            const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
                             if (isAdmin) {
                                 UserOptions.value.push({
                                     label: "Admin Panel",
-                                    key: "adminPanel"
+                                    key: "adminPanel",
+                                    onClick: () => {
+                                        window.location.href = '/adminDashboard';
+                                    }
                                 });
                             }
 
