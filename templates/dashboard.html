@@ -355,6 +355,8 @@
                                     <div style="font-weight: 500;">New team member added</div>
                                     <div style="font-size: 0.85rem; color: #666;">Apr 2, 2025</div>
                                     <div style="font-size: 0.85rem; color: #5F9EA0;">Urban Planning Department</div>
+                                        <!-- Add a hidden input field with the isAdmin value -->
+                                        <!--<input type="hidden" id="isAdminInput" value="{{ 'true' if isAdmin else 'false' }}">-->
                                 </div>
                             </n-space>
                         </div>
@@ -363,7 +365,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         // Weather data from Flask
@@ -591,24 +592,28 @@
                             }
                         }
                     ];
-                    const UserOptions = [
-                        {
-                            label: "Manage Profile",
-                            key: "manageProfile",
-                            //Zaenkrat se ne deluje moram preverit zakaj!!!!!(onclick)
-                            onClick: () => {
-                                window.location.href = '/manageProfile';
+                        // Initialize UserOptions as a ref with an array
+                        const UserOptions = ref([
+                                {
+                                    label: "Manage Profile",
+                                    key: "manageProfile"
+                                }
+                            ]);
+
+                            // Add admin option if user is admin
+                            const isAdmin = "{{ 'true' if isAdmin else 'false' }}";
+                            if (isAdmin) {
+                                UserOptions.value.push({
+                                    label: "Admin Panel",
+                                    key: "adminPanel"
+                                });
                             }
-                        },
-                        {
-                            label: "Logout",
-                            key: "logout",
-                            //Zaenkrat se ne deluje moram preverit zakaj!!!!!(onclick)
-                            onClick: () => {
-                                window.location.href = '/logout';
-                            }
-                        }
-                    ];
+
+                            // Always add logout
+                            UserOptions.value.push({
+                                label: "Logout",
+                                key: "logout"
+                            });
                     //handla selection v dropdownu navbar-right sepravi na usernamu desno zgoraj
                     const handleSelect = (key) => {
                         if (key === 'manageProfile') {

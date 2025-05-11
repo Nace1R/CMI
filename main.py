@@ -9,6 +9,13 @@ db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
 admin = db.table('admin')
 profil = db.table('profile-info')
+polls = db.table('polls') # ime, rezultat, creditGet
+
+
+admins = db.table('admins') # userId, država 
+rewards = db.table('rewards')
+
+
 User = Query()
 
 app = Flask(__name__)
@@ -117,7 +124,11 @@ def dashboard():
 
     print("User Data:", userData)
     print("PFP:", pfp_path)
-    return render_template("dashboard.html", userData=userData,pfp_path=pfp_path,mesto=mesto)
+
+    #isAdmin = admins.contains(User.userId == userId)
+    isAdmin = bool(admins.contains(User.userId == userId))
+    print(isAdmin)
+    return render_template("dashboard.html", userData=userData,pfp_path=pfp_path,mesto=mesto, userId = userId, isAdmin=isAdmin)
 
 @app.route("/logout")
 def logout():
@@ -142,7 +153,9 @@ def about_us():
     if profile:
         pfp_path = '/' + profile.get('pfp', 'slike/default-avatar.png')
 
-    return render_template("about_us.html", userData=userData, pfp_path=pfp_path)
+
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("about_us.html", userData=userData, pfp_path=pfp_path, isAdmin=isAdmin)
 
 
 def getPfp(userId):
@@ -189,8 +202,8 @@ def cityGudies():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
-    return render_template("city_guides.html")
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("city_guides.html", isAdmin=isAdmin)
 
 @app.route("/publicPolls")
 def publicPolls():
@@ -199,8 +212,8 @@ def publicPolls():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
-    return render_template("PublicPolls.html")
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("PublicPolls.html", isAdmin=isAdmin)
 
 @app.route("/weatherData")
 def weatherData():
@@ -240,8 +253,8 @@ def weatherData():
     pfp = getPfp(userId)
 
 
-
-    return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset,userData=userData,pfp=pfp)
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("weatherData.html", temp=temp, status=status, feels=feels, humid=humid, wind=wind, sunrise=sunrise, sunset=sunset,userData=userData,pfp=pfp, isAdmin=isAdmin)
 
 
 
@@ -361,8 +374,8 @@ def weatherFor():
             "status": dataF["list"][5]["wind"]["speed"]
         }
     }'''    
-
-    return render_template("weatherFor.html",userData=userData, pfp=pfp, forToday=forToday,forTommorow = forTommorow, forDayAftrTom = forDayAftrTom)
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("weatherFor.html",userData=userData, pfp=pfp, forToday=forToday,forTommorow = forTommorow, forDayAftrTom = forDayAftrTom, isAdmin=isAdmin)
 
 @app.route("/trafficData")
 def trafficData():
@@ -371,8 +384,8 @@ def trafficData():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
-    return render_template("TrafficData.html")
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("TrafficData.html", isAdmin = isAdmin)
 
 @app.route("/localEvents")
 def localEvents():
@@ -381,8 +394,8 @@ def localEvents():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
-    return render_template("localEvents.html")
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("localEvents.html", isAdmin=isAdmin)
 
 @app.route("/electricalInfo")
 def eleInfo():
@@ -411,8 +424,8 @@ def perksRewards():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
-    return render_template("PerksAndRewards.html")
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("PerksAndRewards.html", isAdmin=isAdmin)
 @app.route("/adminDashboard")
 def adminDashboard():
     userId = request.cookies.get("userId")
@@ -422,14 +435,34 @@ def adminDashboard():
     if request.method == "POST":
             pass
     
+
+
+
+
+
+    # vedno
     userData = user
     pfp = getPfp(userId)
-    result = profil.get(User.userId == userId)
-    
-    return render_template("adDashboard.html",userData=userData,pfp=pfp)
+    isAdmin = admins.contains(User.userId == userId)
+    return render_template("adDashboard.html",userData=userData,pfp=pfp, isAdmin=isAdmin)
+
+#admins.insert({'userId': 20250411121455, 'mesto': 'Ljubljana'})
+#admins.insert({'userId': 20250411123639, 'mesto': 'Skofja Loka'})
+
+
+
 
 # konec ostlaih sitou
 #----------------------------------------------------------
+# support defi
+
+
+def isAdmin(userId):
+    isAdmin = admins.contains(User.userId == userId)
+    return isAdmin
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=8080)

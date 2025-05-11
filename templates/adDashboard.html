@@ -133,14 +133,6 @@
             <div id="app">
                 <div class="navbar">
                     <div class="navbar-left">
-                        <n-button quaternary circle @click="toggleSidebar">
-                            <template #icon>
-                                <n-icon>
-                                    <i v-if="collapsed" class="las la-angle-right"></i>
-                                    <i v-else class="las la-bars"></i>
-                                </n-icon>
-                            </template>
-                        </n-button>
                         <img src="{{ url_for('static', filename='slike/logo2.png') }}" alt="CMI Logo" class="logo">
                     </div>
 
@@ -175,53 +167,48 @@
 
             createApp({
               setup() {
+                
                 // User data
                 const userData = ref({
                     ime: 'Admin User',
-                    email: 'admin@example.com'
+                    email: 'admin@example.com',
+                    isAdmin: true  // Example condition - set to true or false based on your logic
                 });
-
-                // Sidebar state
-                const collapsed = ref(false);
-
-                // User dropdown options
                 const UserOptions = [
-                    {
-                        label: "Manage Profile",
-                        key: "manageProfile",
-                        onClick: () => {
-                            window.location.href = '/manageProfile';
+                        {
+                            label: "Manage Profile",
+                            key: "manageProfile",
+                            onClick: () => {
+                                alert('pritisnjeno');
+                                window.location.href = '/manageProfile';
+                            }
+                        },
+                        {
+                            label: "Admin Panel",
+                            key: "logout",
+                            onClick: () => {
+                                window.location.href = '/logout';
+                            }
+                        },
+                        {
+                            label: "Logout",
+                            key: "logout",
+                            onClick: () => {
+                                window.location.href = '/logout';
+                            }
                         }
-                    },
-                    {
-                        label: "Logout",
-                        key: "logout",
-                        onClick: () => {
+                    ];  
+                    const handleSelect = (key) => {
+                        if (key === 'manageProfile') {
+                            window.location.href = '/manageProfile';
+                        } else if (key === 'logout') {
                             window.location.href = '/logout';
                         }
-                    }
-                ];
-
-                // Handle dropdown selection
-                const handleSelect = (key) => {
-                    if (key === 'manageProfile') {
-                        window.location.href = '/manageProfile';
-                    } else if (key === 'logout') {
-                        window.location.href = '/logout';
-                    }
-                };
-
-                // Toggle sidebar
-                function toggleSidebar() {
-                    collapsed.value = !collapsed.value;
-                }
-
+                    };
                 return {
                     userData,
-                    collapsed,
                     UserOptions,
-                    handleSelect,
-                    toggleSidebar
+                    handleSelect
                 };
               },
               methods:{
