@@ -413,6 +413,20 @@ def perksRewards():
             pass
     
     return render_template("PerksAndRewards.html")
+@app.route("/adminDashboard")
+def adminDashboard():
+    userId = request.cookies.get("userId")
+    user = uporabniki.get(where('id') == userId)
+    if not userId:
+        return redirect(url_for("login"))
+    if request.method == "POST":
+            pass
+    
+    userData = user
+    pfp = getPfp(userId)
+    result = profil.get(User.userId == userId)
+    
+    return render_template("adDashboard.html",userData=userData,pfp=pfp)
 
 # konec ostlaih sitou
 #----------------------------------------------------------
