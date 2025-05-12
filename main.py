@@ -7,11 +7,11 @@ import requests
 # tinyDB začetk
 db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
-admin = db.table('admin')
+
 profil = db.table('profile-info')
+
+
 polls = db.table('polls') # ime, rezultat, creditGet
-
-
 admins = db.table('admins') # userId, država 
 rewards = db.table('rewards')
 
@@ -258,7 +258,7 @@ def weatherData():
 
 
 
-@app.route("/weatherFor",methods=["GET" , "POST"]) #NE DELA NITI MAL
+@app.route("/weatherFor",methods=["GET" , "POST"])
 def weatherFor():
     #default za page
     apiKey = "8d80c9afce8da5a191e74cb02596e828"
@@ -426,25 +426,79 @@ def perksRewards():
             pass
     isAdmin = admins.contains(User.userId == userId)
     return render_template("PerksAndRewards.html", isAdmin=isAdmin)
+
+
+#---------------- ADMIN SHIT -------------------------
+
+
+
 @app.route("/adminDashboard")
 def adminDashboard():
     userId = request.cookies.get("userId")
     user = uporabniki.get(where('id') == userId)
     if not userId:
         return redirect(url_for("login"))
+    isAdmin = admins.contains(User.userId == userId)
+    if isAdmin == False:
+        return redirect(url_for("Dashboard"))
     if request.method == "POST":
             pass
     
 
 
-
-
-
     # vedno
     userData = user
     pfp = getPfp(userId)
-    isAdmin = admins.contains(User.userId == userId)
+
     return render_template("adDashboard.html",userData=userData,pfp=pfp, isAdmin=isAdmin)
+
+# endpointi za polls, rewards in events za admine k dodajajo
+@app.route("/addPoll", methods=["POST"])
+def addPoll():
+    userId = request.cookies.get("userId")
+    userData = admins.get(User.userId == userId)
+    if userData:
+        mesto = userData['mesto']
+        print(mesto)
+    data = request.json
+    ime = data['ime']
+    opis = data['opis']
+    trajanje = data['trajanje']
+    #ime opis trajanje
+
+    #backend 
+    timeAddS = datetime.today()
+    timeAdd = timeAddS.strftime('%Y-%m-%d %H:%M:%S') # cas dodelitve
+    #userId je ze
+    #mesto je ze
+
+    polls.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto})
+
+
+
+"""
+poll = {
+Ime: "lala" ( pride iz frontenda)
+Opis: "blabla" (pride iz frontenda)
+trajanje: "1dan" ( pride iz frontenda)
+časDodelitve: " 12.5.2025 12.12" ("disabled input za računanje časa) (backend auto)
+Kdo: "adminIme" (backend auto)
+mesto : "mesto" (backend auto)
+}
+
+"""
+
+@app.route("/addEvent", methods=["POST"])
+def addEvent():
+    pass
+
+@app.route("/addReward", methods=["POST"])
+def addReward():
+    pass
+
+
+
+#-------------------KONEC ADMIN----------------------------------------
 
 #admins.insert({'userId': 20250411121455, 'mesto': 'Ljubljana'})
 #admins.insert({'userId': 20250411123639, 'mesto': 'Skofja Loka'})
