@@ -225,7 +225,7 @@ def publicPolls():
         Opis = poll.get('Opis')
         trajanje = poll.get('trajanje')
         timeAdd = poll.get('timeAdd')
-        mesto = poll.get('mesto')
+        mesto = poll.get('mesto')s
         showPollData.append({
         "Ime": Ime,
         "Opis": Opis,
@@ -235,7 +235,7 @@ def publicPolls():
 
     isAdmin = admins.contains(User.userId == userId)
     return render_template("PublicPolls.html", isAdmin=isAdmin)
-
+    # NUJNO DODAT POLLID ZA POVEZAVE MED RAZULTATI
 """
 poll = {
 Ime: "lala" ( pride iz frontenda)
