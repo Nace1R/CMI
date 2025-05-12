@@ -11,7 +11,7 @@ uporabniki = db.table('uporabniki')
 profil = db.table('profile-info')
 
 
-polls = db.table('polls') # ime, rezultat, creditGet
+pollsT = db.table('polls') # ime, rezultat, creditGet
 admins = db.table('admins') # userId, država 
 rewards = db.table('rewards')
 
@@ -201,9 +201,12 @@ def cityGudies():
     if not userId:
         return redirect(url_for("login"))
     if request.method == "POST":
-            pass
+        pass
+
     isAdmin = admins.contains(User.userId == userId)
     return render_template("city_guides.html", isAdmin=isAdmin)
+
+
 
 @app.route("/publicPolls")
 def publicPolls():
@@ -212,8 +215,37 @@ def publicPolls():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
+    
+    
+    polls = pollsT.all()
+    print(polls)
+    showPollData = []
+    for poll in polls:
+        Ime = poll.get('Ime')
+        Opis = poll.get('Opis')
+        trajanje = poll.get('trajanje')
+        timeAdd = poll.get('timeAdd')
+        mesto = poll.get('mesto')
+        showPollData.append({
+        "Ime": Ime,
+        "Opis": Opis,
+        "timeLeft": "", # trajanje - timeAdd
+        "mesto": mesto
+    })
+
     isAdmin = admins.contains(User.userId == userId)
     return render_template("PublicPolls.html", isAdmin=isAdmin)
+
+"""
+poll = {
+Ime: "lala" ( pride iz frontenda)
+Opis: "blabla" (pride iz frontenda)
+trajanje: "1dan" ( pride iz frontenda)
+časDodelitve: " 12.5.2025 12.12" ("disabled input za računanje časa) (backend auto)
+Kdo: "adminIme" (backend auto)
+mesto : "mesto" (backend auto)
+}
+"""
 
 @app.route("/weatherData")
 def weatherData():
@@ -472,7 +504,7 @@ def addPoll():
     #userId je ze
     #mesto je ze
 
-    polls.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto})
+    pollsT.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto})
 
 
 
@@ -485,7 +517,6 @@ trajanje: "1dan" ( pride iz frontenda)
 Kdo: "adminIme" (backend auto)
 mesto : "mesto" (backend auto)
 }
-
 """
 
 @app.route("/addEvent", methods=["POST"])
