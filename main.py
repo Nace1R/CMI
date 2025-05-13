@@ -3,6 +3,7 @@ from tinydb import TinyDB, Query, where
 from datetime import datetime, timedelta
 import os
 import requests
+import uuid
 
 # tinyDB začetk
 db = TinyDB('database/database.json')
@@ -12,6 +13,7 @@ profil = db.table('profile-info')
 
 
 pollsT = db.table('polls') # ime, rezultat, creditGet
+pollResults = db.table('pollResults') # pollId, yes: integer, no: integer
 admins = db.table('admins') # userId, država 
 rewards = db.table('rewards')
 
@@ -216,26 +218,38 @@ def publicPolls():
     if request.method == "POST":
             pass
     
-    
+
+    userMestoData = profil.search(User.userId == userId)
+    userMesto = userMestoData['city']
+
     polls = pollsT.all()
     print(polls)
     showPollData = []
     for poll in polls:
-        Ime = poll.get('Ime')
-        Opis = poll.get('Opis')
-        trajanje = poll.get('trajanje')
-        timeAdd = poll.get('timeAdd')
-        mesto = poll.get('mesto')s
-        showPollData.append({
-        "Ime": Ime,
-        "Opis": Opis,
-        "timeLeft": "", # trajanje - timeAdd
-        "mesto": mesto
-    })
+        mesto = poll.get('mesto')
+        if userMesto == mesto:
+            Ime = poll.get('Ime')
+            Opis = poll.get('Opis')
+            pollId = poll.get('pollId')
+            exDate = poll.get('exDate')
+            zdle = datetime.today()
+            if zdle < exDate:
+                timeLeft = exDate - datetime.today()
+                showPollData.append({
+                    "Ime": Ime,
+                    "Opis": Opis,
+                    "timeLeft": timeLeft,
+                    "mesto": mesto,
+                    "pollId": pollId
+                })
+            else: 
+                polls.remove(User.pollId == pollId) # zaenkrat
+
+
+            #SHOW rezultate coming soon
 
     isAdmin = admins.contains(User.userId == userId)
-    return render_template("PublicPolls.html", isAdmin=isAdmin)
-    # NUJNO DODAT POLLID ZA POVEZAVE MED RAZULTATI
+    return render_template("PublicPolls.html", isAdmin=isAdmin, showPollData = showPollData)
 """
 poll = {
 Ime: "lala" ( pride iz frontenda)
@@ -488,23 +502,25 @@ def adminDashboard():
 @app.route("/addPoll", methods=["POST"])
 def addPoll():
     userId = request.cookies.get("userId")
-    userData = admins.get(User.userId == userId)
-    if userData:
-        mesto = userData['mesto']
+    aUserData = admins.get(User.userId == userId)
+    if aUserData:
+        mesto = aUserData['mesto']
         print(mesto)
     data = request.json
     ime = data['ime']
     opis = data['opis']
-    trajanje = data['trajanje']
-    #ime opis trajanje
 
+
+    trajanje = data['trajanje'] # dobi integer število dni
     #backend 
     timeAddS = datetime.today()
-    timeAdd = timeAddS.strftime('%Y-%m-%d %H:%M:%S') # cas dodelitve
+    timeAdd = timeAddS.strftime('%Y-%m-%d %H:%M:%S') # cas dodelitve 
     #userId je ze
     #mesto je ze
-
-    pollsT.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto})
+    # za expiration
+    exDate = timeAdd + timedelta(days=trajanje)
+    pollId = uuid.uuid4()
+    pollsT.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto, "pollId" : pollId, "exDate": exDate})
 
 
 
@@ -542,9 +558,9 @@ def addReward():
 # support defi
 
 
-def isAdmin(userId):
-    isAdmin = admins.contains(User.userId == userId)
-    return isAdmin
+#def isAdmin(userId):
+#    isAdmin = admins.contains(User.userId == userId)
+#    return isAdmin
 
 
 

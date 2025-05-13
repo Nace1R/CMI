@@ -745,31 +745,38 @@
                     ];
 
                 // User dropdown options
-                const UserOptions = [
-                    {
-                        label: "Manage Profile",
-                        key: "manageProfile",
-                        onClick: () => {
-                            window.location.href = '/manageProfile';
-                        }
-                    },
-                    {
-                        label: "Logout",
-                        key: "logout",
-                        onClick: () => {
-                            window.location.href = '/logout';
-                        }
-                    }
-                ];
+                const UserOptions = ref([
+                                {
+                                    label: "Manage Profile",
+                                    key: "manageProfile"
+                                }
+                            ]);
 
-                // Handle dropdown selection
-                const handleSelect = (key) => {
-                    if (key === 'manageProfile') {
-                        window.location.href = '/manageProfile';
-                    } else if (key === 'logout') {
-                        window.location.href = '/logout';
-                    }
-                };
+                            // če je user admin oziroma je v bazi zabelezen kot admin potem mu prikazi oz. pushaj v navbaru v dropwodn ta gumb
+                            const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
+                            if (isAdmin) {
+                                UserOptions.value.push({
+                                    label: "Admin Dashboard",
+                                    key: "adminPanel",
+                                });
+                            }
+
+                            // Always add logout
+                            UserOptions.value.push({
+                                label: "Logout",
+                                key: "logout"
+                            });
+                    //handla selection v dropdownu navbar-right sepravi na usernamu desno zgoraj
+                    const handleSelect = (key) => {
+                        if (key === 'manageProfile') {
+                            window.location.href = '/manageProfile';
+                        } else if (key === 'logout') {
+                            window.location.href = '/logout';
+                            //TO DODAJAM ZDEJ POUSOD DA DELA REDIRECT SE ZA ADMIN PANEL
+                        }else if (key === 'adminPanel') {
+                            window.location.href = '/adminDashboard';
+                        }
+                    };
 
                 // Helper function to render icons
                 function renderIcon(iconClass) {

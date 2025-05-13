@@ -355,7 +355,7 @@
                                     <div style="font-weight: 500;">New team member added</div>
                                     <div style="font-size: 0.85rem; color: #666;">Apr 2, 2025</div>
                                     <div style="font-size: 0.85rem; color: #5F9EA0;">Urban Planning Department</div>
-                                        <!-- Add a hidden input field with the isAdmin value -->
+                                        <!-- HIDDEN INPUT UPORABLJEN ZA TESTING PRIKAZOVANJA ADMIN DASHBOARD GUMBA V DROPDOWNU -->
                                         <!--<input type="hidden" id="isAdminInput" value="{{ 'true' if isAdmin else 'false' }}">-->
                                 </div>
                             </n-space>
@@ -592,7 +592,7 @@
                             }
                         }
                     ];
-                        // Initialize UserOptions as a ref with an array
+                        //SPREMENJEN USEROPTION ZARADI ADMINPANEL GUMBA
                         const UserOptions = ref([
                                 {
                                     label: "Manage Profile",
@@ -600,15 +600,12 @@
                                 }
                             ]);
 
-                            // Add admin option if user is admin
+                            // če je user admin oziroma je v bazi zabelezen kot admin potem mu prikazi oz. pushaj v navbaru v dropwodn ta gumb
                             const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
                             if (isAdmin) {
                                 UserOptions.value.push({
-                                    label: "Admin Panel",
+                                    label: "Admin Dashboard",
                                     key: "adminPanel",
-                                    onClick: () => {
-                                        window.location.href = '/adminDashboard';
-                                    }
                                 });
                             }
 
@@ -623,6 +620,9 @@
                             window.location.href = '/manageProfile';
                         } else if (key === 'logout') {
                             window.location.href = '/logout';
+                            //TO DODAJAM ZDEJ POUSOD DA DELA REDIRECT SE ZA ADMIN PANEL
+                        }else if (key === 'adminPanel') {
+                            window.location.href = '/adminDashboard';
                         }
                     };
 
