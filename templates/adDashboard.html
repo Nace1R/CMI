@@ -67,20 +67,35 @@
         </template>
         Back to Dashboard
         </n-button>
+
+        <div class="modal1">
         <!--Modal za polle zaenkrat mi se ne dela tko kot je treba da je form noter-->
         <h3>Manage Polls</h3>
         <n-button @click="showPollModal = true">Create Poll</n-button>
 
-        <n-modal
-        v-model:show="showPollModal"
-        preset="dialog"
-        title="Create a new poll"
-        content="Are you sure?"
-        positive-text="Save"
-        negative-text="Discard"
-        @positive-click="handleConfirm"
-        @negative-click="handleCancel"
-        />
+        <n-modal v-model:show="showPollModal" title="Create a new poll">
+        <template #default>
+            <n-form>
+                <n-form-item label="Poll Title">
+                    <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
+                </n-form-item>
+                <n-form-item label="Poll Description">
+                    <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
+                </n-form-item>
+                <n-form-item label="Poll Duration">
+                    <n-input number v-model:value="pollDuration" :min="1" />
+                </n-form-item>
+            </n-form>
+
+        </template>
+        <template #action>
+            <n-button @click="handleConfirmPolls">Save changes</n-button>
+            <n-button type="primary" @click="handleCancelPolls">Discard changes</n-button>
+        </template>
+        </n-modal>
+
+        </div>
+        <div class="modal2">
         <!--MODAL za evente ampak se ne prikaze se rabim najt tezavo-->
         <h3>Manage Events</h3>
         <n-button @click="showEventModal = true">Create Event</n-button>
@@ -88,30 +103,30 @@
         <n-modal
         v-model:show="showEventModal"
         preset="dialog"
-        title="Create a new poll"
+        title="Create a new event"
         content="Are you sure?"
         positive-text="Save"
         negative-text="Discard"
-        @positive-click="handleConfirm"
-        @negative-click="handleCancel"
+        @positive-click="handleConfirmEvents"
+        @negative-click="handleCancelEvents"
         />
-
-
-        <!--Modal za rewards se tud ne prikaze se-->
+        </div>
+        <div class="modal3">
+        <!--Modal za rewards-->
         <h3>Manage Rewards</h3>
         <n-button @click="showRewardModal = true">Create Reward</n-button>
 
         <n-modal
         v-model:show="showRewardModal"
         preset="dialog"
-        title="Create a new poll"
+        title="Create a new reward"
         content="Are you sure?"
         positive-text="Save"
         negative-text="Discard"
-        @positive-click="handleConfirm"
-        @negative-click="handleCancel"
+        @positive-click="handleConfirmRewards"
+        @negative-click="handleCancelRewards"
         />
-
+            </div>
 
 
     </div>
@@ -137,6 +152,11 @@
             //SPREMENLJIVKE ZA POLL
             const pollTitle = ref("");
             const pollDescription = ref("");
+            const pollDuration = ref(50);
+
+            //SPREMENLJIVKE ZA EVENTS
+            const eventTitle = ref("");
+            const eventDescription = ref("");
 
 
             const userData = ref({
@@ -160,15 +180,35 @@
             else if (key === 'logout') window.location.href = '/logout';
             else if (key === 'adminPanel') window.location.href = '/adminDashboard';
             };
-
-            const handleConfirm = () => {
+            //ZAENKRAT SAMO HANDLAM CONFIRME ZA EVENTE IN POLLE REWARDI PRIDEJO NA KONCU
+            const handleConfirmPolls = () => {
             message.success('Confirmed!');
-            showModal.value = false;
+            showPollModal.value = false;
             };
 
-            const handleCancel = () => {
+            const handleConfirmEvents = () => {
+            message.success('Confirmed!');
+            showEventModal.value = false;
+            };
+
+            const handleConfirmRewards = () => {
+            message.success('Confirmed!');
+            showRewardModal.value = false;
+            };
+            //ZAENKRAT SAMO HANDLAM CANCELE ZA POLLE IN EVENTE IN REWARDE
+            const handleCancelPolls = () => {
             message.info('Cancelled');
-            showModal.value = false;
+            showPollModal.value = false;
+            };
+
+            const handleCancelEvents = () => {
+            message.info('Cancelled');
+            showPollModal.value = false;
+            };
+
+            const handleCancelRewards = () => {
+            message.info('Cancelled');
+            showRewardModal.value = false;
             };
 
             const goBack = () => {
@@ -182,8 +222,12 @@
                 userData,
                 UserOptions,
                 handleSelect,
-                handleConfirm,
-                handleCancel,
+                handleConfirmPolls,
+                handleConfirmEvents,
+                handleConfirmRewards,
+                handleCancelPolls,
+                handleCancelEvents,
+                handleCancelRewards,
                 goBack
             };
         }

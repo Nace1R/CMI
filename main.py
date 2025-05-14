@@ -101,6 +101,7 @@ def profileCreation():
 
     return render_template("profileCreation.html")
 
+
 @app.route("/dashboard")
 def dashboard():
     userId = request.cookies.get("userId", None)
@@ -190,11 +191,7 @@ def manageProfile():
 
 
 
-
-
-
-
-#-----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------
 # ostali siti
 
 @app.route("/cityGuides")
@@ -217,11 +214,11 @@ def publicPolls():
         return redirect(url_for("login"))
     if request.method == "POST":
             pass
-    
 
     userMestoData = profil.search(User.userId == userId)
     userMesto = userMestoData['city']
 
+    #show poll info
     polls = pollsT.all()
     print(polls)
     showPollData = []
@@ -245,11 +242,14 @@ def publicPolls():
             else: 
                 polls.remove(User.pollId == pollId) # zaenkrat
 
-
             #SHOW rezultate coming soon
 
+    #vedno
+    user = uporabniki.get(where('id') == userId)
+    userData = user
     isAdmin = admins.contains(User.userId == userId)
-    return render_template("PublicPolls.html", isAdmin=isAdmin, showPollData = showPollData)
+    pfp = getPfp(userId)
+    return render_template("PublicPolls.html", isAdmin=isAdmin, showPollData = showPollData, userData=userData, pfp=pfp)
 """
 poll = {
 Ime: "lala" ( pride iz frontenda)
@@ -554,7 +554,7 @@ def addReward():
 
 
 # konec ostlaih sitou
-#----------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 # support defi
 
 
