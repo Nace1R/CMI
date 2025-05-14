@@ -73,26 +73,35 @@
         <h3>Manage Polls</h3>
         <n-button @click="showPollModal = true">Create Poll</n-button>
 
-        <n-modal v-model:show="showPollModal" title="Create a new poll">
-        <template #default>
-            <n-form>
-                <n-form-item label="Poll Title">
-                    <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
-                </n-form-item>
-                <n-form-item label="Poll Description">
-                    <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
-                </n-form-item>
-                <n-form-item label="Poll Duration">
-                    <n-input number v-model:value="pollDuration" :min="1" />
-                </n-form-item>
-            </n-form>
+        <n-modal
+        v-model:show="showPollModal"
+        preset="dialog"
+        title="Create a new poll"
+        positive-text="Save"
+        negative-text="Cancel"
+        @positive-click="handleConfirmPolls"
+        @negative-click="handleCancelPolls"
+      >
 
-        </template>
-        <template #action>
-            <n-button @click="handleConfirmPolls">Save changes</n-button>
-            <n-button type="primary" @click="handleCancelPolls">Discard changes</n-button>
-        </template>
-        </n-modal>
+      <!--IKONA V MODALU-->
+      <template #icon>
+        <i class="las la-poll" style="font-size: 24px; color: #1B365C;"></i>
+      </template>
+        <n-form>
+          <n-form-item label="Poll Title">
+            <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
+          </n-form-item>
+          <n-form-item label="Poll Description">
+            <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
+          </n-form-item>
+          <n-form-item label="Poll Duration">
+            <n-input type="number" placeholder="Enter poll's duration" v-model:value="pollDuration" :min=1 />
+          </n-form-item>
+          <n-form-item label="Poll Reward">
+            <n-input type="number" placeholder="Enter poll's reward" v-model:value="pollDuration" :min=1 />
+          </n-form-item>
+        </n-form>
+      </n-modal>
 
         </div>
         <div class="modal2">
@@ -103,13 +112,26 @@
         <n-modal
         v-model:show="showEventModal"
         preset="dialog"
-        title="Create a new event"
-        content="Are you sure?"
+        title="Create a new poll"
         positive-text="Save"
-        negative-text="Discard"
+        negative-text="Cancel"
         @positive-click="handleConfirmEvents"
         @negative-click="handleCancelEvents"
-        />
+      >
+      
+      <!--IKONA V MODALU-->
+      <template #icon>
+        <i class=" las la-calendar" style="font-size: 24px; color: #1B365C;"></i>
+      </template>
+        <n-form>
+          <n-form-item label="Event Title">
+            <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
+          </n-form-item>
+          <n-form-item label="Event Description">
+            <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
+          </n-form-item>
+        </n-form>
+      </n-modal>
         </div>
         <div class="modal3">
         <!--Modal za rewards-->
@@ -165,21 +187,21 @@
             });
 
             const UserOptions = ref([
-            { label: 'Manage Profile', key: 'manageProfile' }
-            ]);
+                { label: 'Manage Profile', key: 'manageProfile' }
+                ]);
 
-            const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
-            if (isAdmin) {
-            UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
-            }
+                const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
+                if (isAdmin) {
+                UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
+                }
 
-            UserOptions.value.push({ label: 'Logout', key: 'logout' });
+                UserOptions.value.push({ label: 'Logout', key: 'logout' });
 
             const handleSelect = (key) => {
-            if (key === 'manageProfile') window.location.href = '/manageProfile';
-            else if (key === 'logout') window.location.href = '/logout';
-            else if (key === 'adminPanel') window.location.href = '/adminDashboard';
-            };
+                if (key === 'manageProfile') window.location.href = '/manageProfile';
+                else if (key === 'logout') window.location.href = '/logout';
+                else if (key === 'adminPanel') window.location.href = '/adminDashboard';
+                };
             //ZAENKRAT SAMO HANDLAM CONFIRME ZA EVENTE IN POLLE REWARDI PRIDEJO NA KONCU
             const handleConfirmPolls = () => {
             message.success('Confirmed!');
