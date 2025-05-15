@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="en">
     <head>
     <meta charset="UTF-8" />
@@ -7,6 +7,7 @@
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/naive-ui"></script>
     <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css" />
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -94,11 +95,11 @@
           <n-form-item label="Poll Description">
             <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
           </n-form-item>
-          <n-form-item label="Poll Duration">
-            <n-input type="number" placeholder="Enter poll's duration" v-model:value="pollDuration" :min=1 />
+          <n-form-item label="Poll Duration (in days)">
+            <n-input-number v-model:value="pollDuration" :min="1" placeholder="Enter poll's duration" />
           </n-form-item>
           <n-form-item label="Poll Reward">
-            <n-input type="number" placeholder="Enter poll's reward" v-model:value="pollDuration" :min=1 />
+            <n-input-number v-model:value="pollReward" :min="1" placeholder="Enter poll's reward" />
           </n-form-item>
         </n-form>
       </n-modal>
@@ -125,10 +126,10 @@
       </template>
         <n-form>
           <n-form-item label="Event Title">
-            <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
+            <n-input v-model:value="eventTitle" placeholder="Enter poll title" />
           </n-form-item>
           <n-form-item label="Event Description">
-            <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
+            <n-input v-model:value="eventDescription" placeholder="Enter poll's description" />
           </n-form-item>
         </n-form>
       </n-modal>
@@ -174,7 +175,8 @@
             //SPREMENLJIVKE ZA POLL
             const pollTitle = ref("");
             const pollDescription = ref("");
-            const pollDuration = ref(50);
+            const pollDuration = ref(0);
+            const pollReward = ref(0);
 
             //SPREMENLJIVKE ZA EVENTS
             const eventTitle = ref("");
@@ -202,15 +204,27 @@
                 else if (key === 'logout') window.location.href = '/logout';
                 else if (key === 'adminPanel') window.location.href = '/adminDashboard';
                 };
+
+
+            //funkcija za resetiranje forma ob preklicu ali potrditvi
+            const resetPollForm = () => {
+              pollTitle.value = "";
+              pollDescription.value = "";
+              pollDuration.value = 0;
+              pollReward.value = 0;
+            };
             //ZAENKRAT SAMO HANDLAM CONFIRME ZA EVENTE IN POLLE REWARDI PRIDEJO NA KONCU
             const handleConfirmPolls = () => {
             message.success('Confirmed!');
             showPollModal.value = false;
+            sendPollData();
+            resetPollForm();
             };
 
             const handleConfirmEvents = () => {
             message.success('Confirmed!');
             showEventModal.value = false;
+
             };
 
             const handleConfirmRewards = () => {
@@ -221,11 +235,12 @@
             const handleCancelPolls = () => {
             message.info('Cancelled');
             showPollModal.value = false;
+            resetPollForm();
             };
 
             const handleCancelEvents = () => {
             message.info('Cancelled');
-            showPollModal.value = false;
+            showEventModal.value = false;
             };
 
             const handleCancelRewards = () => {
@@ -236,7 +251,53 @@
             const goBack = () => {
             window.location.href = '/dashboard';
             };
+            //ajax klici za posamezen modal
+            function sendPollData(){
+                const data = {
+                  naslov: pollTitle.value,
+                  opis: pollDescription.value,
+                  trajanje: pollDuration.value,
+                  reward: pollReward.value
+                };
+                console.log("pollTitle:", pollTitle.value);
+                console.log("pollDescription:", pollDescription.value);
+                console.log("pollDuration:", pollDuration.value);
+                console.log("pollReward:", pollReward.value);
+              $.ajax({
+                      url: "/addPoll", 
+                      method: "POST",
+                      contentType: "application/json",                
+                      data: JSON.stringify(data),
+                      success: function (odgovor) {
+                        if (odgovor.success){
+                          console.log("Poll successfully added:", naslov);
+                        }
 
+                      }
+                  });
+            };
+
+            function sendEventData(){
+                const data = {
+                  naslov: eventTitle.value,
+                  opis: eventDescription.value,
+                };
+                console.log("eventTitle:", eventTitle.value);
+                console.log("eventDescription:", eventDescription.value);
+              $.ajax({
+                      url: "/addEvent", 
+                      method: "POST",
+                      contentType: "application/json",                
+                      data: JSON.stringify(data),
+                      success: function (odgovor) {
+                        if (odgovor.success){
+                          console.log("Event successfully added:", naslov);
+                        }
+
+                      }
+                  });
+            };
+            
             return {
                 showPollModal,
                 showEventModal,
@@ -250,7 +311,17 @@
                 handleCancelPolls,
                 handleCancelEvents,
                 handleCancelRewards,
-                goBack
+                goBack,
+
+
+              //returni za spremenljivke
+                pollTitle,
+                pollDescription,
+                pollDuration,
+                pollReward,
+
+                eventTitle,
+                eventDescription
             };
         }
         }).use(naive).mount('#app');
