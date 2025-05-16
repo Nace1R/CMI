@@ -216,39 +216,57 @@ def publicPolls():
             pass
 
     userMestoData = profil.search(User.userId == userId)
-    userMesto = userMestoData['city']
+    print(userMestoData)
+    userMesto = userMestoData[0]['city']
 
     #show poll info
     polls = pollsT.all()
     print(polls)
-    showPollData = []
+    print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    pollList = []
     for poll in polls:
         mesto = poll.get('mesto')
         if userMesto == mesto:
-            Ime = poll.get('Ime')
-            Opis = poll.get('Opis')
+            naslov = poll.get('naslov')
+            opis = poll.get('opis')
             pollId = poll.get('pollId')
             exDate = poll.get('exDate')
+            reward = poll.get('reward')
             zdle = datetime.today()
-            if zdle < exDate:
-                timeLeft = exDate - datetime.today()
-                showPollData.append({
-                    "Ime": Ime,
-                    "Opis": Opis,
-                    "timeLeft": timeLeft,
+            sexDate = datetime.strptime(exDate, "%Y-%m-%d %H:%M:%S")
+            
+            if zdle < sexDate:
+                timeLeft = sexDate - datetime.today()
+                dni = timeLeft.days
+                sekunde = timeLeft.seconds
+                ure = sekunde // 3600
+
+                pollList.append({
+                    "naslov": naslov,
+                    "opis": opis,
+                    "timeLeft": [dni,ure],
                     "mesto": mesto,
-                    "pollId": pollId
+                    "pollId": pollId,
+                    "reward": reward
                 })
+
+                print("-----------------------------------------------------------------------------------------")
+                #print(len(showPollData))
+                print("-----------------------------------------------------------------------------------------")
+                #print(showPollData)
             else: 
-                polls.remove(User.pollId == pollId) # zaenkrat
+                pollsT.remove(User.pollId == pollId) # zaenkrat
 
             #SHOW rezultate coming soon
-
+    showPollData = {
+    "polls": pollList
+    }
     #vedno
     user = uporabniki.get(where('id') == userId)
     userData = user
     isAdmin = admins.contains(User.userId == userId)
     pfp = getPfp(userId)
+    print(showPollData)
     return render_template("PublicPolls.html", isAdmin=isAdmin, showPollData = showPollData, userData=userData, pfp=pfp)
 """
 poll = {
@@ -507,22 +525,22 @@ def addPoll():
         mesto = aUserData['mesto']
         print(mesto)
     data = request.json
-    ime = data['ime']
+    naslov = data['naslov']
     opis = data['opis']
-
-
     trajanje = data['trajanje'] # dobi integer število dni
+    reward  = data['reward']
     #backend 
     timeAddS = datetime.today()
-    timeAdd = timeAddS.strftime('%Y-%m-%d %H:%M:%S') # cas dodelitve 
+    #timeAdd = timeAddS.strftime('%Y-%m-%d %H:%M:%S') # cas dodelitve 
     #userId je ze
     #mesto je ze
     # za expiration
-    exDate = timeAdd + timedelta(days=trajanje)
-    pollId = uuid.uuid4()
-    pollsT.insert({"ime": ime, "opis": opis, "trajanje": trajanje, "timeAdd":timeAdd, "userId":userId, "mesto":mesto, "pollId" : pollId, "exDate": exDate})
-
-
+    sexDate = timeAddS + timedelta(days=trajanje) #;)
+    exDate = sexDate.strftime('%Y-%m-%d %H:%M:%S')
+    uuidPollId = uuid.uuid4()
+    pollId = str(uuidPollId)
+    pollsT.insert({"naslov": naslov, "opis": opis, "trajanje": trajanje, "reward":reward, "userId":userId, "mesto":mesto, "pollId" : pollId, "exDate": exDate})
+    return jsonify({"message": "Poll added successfully"}), 201
 
 """
 poll = {
@@ -534,6 +552,20 @@ Kdo: "adminIme" (backend auto)
 mesto : "mesto" (backend auto)
 }
 """
+
+@app.route("/pollVote", methods=["POST"])
+def pollVote():
+    pass
+"""
+rezultati = {
+pollId: "id"
+yes: int
+no: int
+
+}
+"""
+
+
 
 @app.route("/addEvent", methods=["POST"])
 def addEvent():

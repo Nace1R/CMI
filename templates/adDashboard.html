@@ -15,6 +15,7 @@
         font-family: 'Poppins', sans-serif;
         margin: 0;
         padding: 0;
+        background-color: #f5f5f5;
         }
         .navbar {
         height: 64px;
@@ -93,10 +94,10 @@
             <n-input v-model:value="pollTitle" placeholder="Enter poll title" />
           </n-form-item>
           <n-form-item label="Poll Description">
-            <n-input v-model:value="pollDescription" placeholder="Enter poll's description" />
+            <n-input v-model:value="pollDescription" type="textarea" placeholder="Enter poll's description"  />
           </n-form-item>
           <n-form-item label="Poll Duration (in days)">
-            <n-input-number v-model:value="pollDuration" :min="1" placeholder="Enter poll's duration" />
+            <n-input-number v-model:value="pollDuration" :min="1" placeholder="Enter poll's duration"  />
           </n-form-item>
           <n-form-item label="Poll Reward">
             <n-input-number v-model:value="pollReward" :min="1" placeholder="Enter poll's reward" />
@@ -113,7 +114,7 @@
         <n-modal
         v-model:show="showEventModal"
         preset="dialog"
-        title="Create a new poll"
+        title="Create a new event"
         positive-text="Save"
         negative-text="Cancel"
         @positive-click="handleConfirmEvents"
@@ -126,10 +127,10 @@
       </template>
         <n-form>
           <n-form-item label="Event Title">
-            <n-input v-model:value="eventTitle" placeholder="Enter poll title" />
+            <n-input v-model:value="eventTitle" placeholder="Enter event's title" />
           </n-form-item>
           <n-form-item label="Event Description">
-            <n-input v-model:value="eventDescription" placeholder="Enter poll's description" />
+            <n-input v-model:value="eventDescription" type="textarea" placeholder="Enter event's description" />
           </n-form-item>
         </n-form>
       </n-modal>
@@ -149,6 +150,47 @@
         @positive-click="handleConfirmRewards"
         @negative-click="handleCancelRewards"
         />
+         <template #icon>
+        <i class="las la-gift" style="font-size: 24px; color: #1B365C;"></i>
+        </template>
+        <n-form>
+          <n-form-item label="Reward Title">
+            <n-input v-model:value="rewardTitle" placeholder="Enter reward title" />
+          </n-form-item>
+          <n-form-item label="Reward Description">
+            <n-input v-model:value="rewardDescription" type="textarea" placeholder="Enter reward description" />
+          </n-form-item>
+          <n-form-item label="Points Needed">
+            <n-input-number v-model:value="pointsNeeded" :min="1" placeholder="Number of points" />
+          </n-form-item>
+        </n-form>
+      </n-modal>
+            </div>
+
+            
+        <div class="adminModal">
+        <!--Modal za rewards-->
+        <h3>Manage admins</h3>
+        <n-button @click="showAdminModal = true">Add Admin</n-button>
+
+        <n-modal
+        v-model:show="showAdminModal"
+        preset="dialog"
+        title="Add/remove admins"
+        positive-text="Save"
+        negative-text="Discard"
+        @positive-click="handleConfirmAdmins"
+        @negative-click="handleCancelAdmins"
+        />
+
+      <!--IKONA V MODALU-->
+      <template #icon>
+        <i class="las la-poll" style="font-size: 24px; color: #1B365C;"></i>
+      </template>
+        <n-space item-style="display: flex;" align="center">
+          <n-checkbox size="medium" label="{example user}" />
+        </n-space>
+      </n-modal>
             </div>
 
 
@@ -169,6 +211,7 @@
             const showPollModal = ref(false);
             const showEventModal = ref(false);
             const showRewardModal = ref(false);
+            const showAdminModal = ref(false);
             const { message } = createDiscreteApi(['message']);
 
 
@@ -181,6 +224,11 @@
             //SPREMENLJIVKE ZA EVENTS
             const eventTitle = ref("");
             const eventDescription = ref("");
+
+          //SPREMENLJIVKE ZA REWARDS
+          const rewardTitle = ref("");
+          const rewardDescription = ref("");
+          const pointsNeeded = ref(0);
 
 
             const userData = ref({
@@ -215,37 +263,45 @@
             };
             //ZAENKRAT SAMO HANDLAM CONFIRME ZA EVENTE IN POLLE REWARDI PRIDEJO NA KONCU
             const handleConfirmPolls = () => {
-            message.success('Confirmed!');
+            message.success('Poll saved!');
             showPollModal.value = false;
             sendPollData();
             resetPollForm();
             };
 
             const handleConfirmEvents = () => {
-            message.success('Confirmed!');
+            message.success('Event saved!');
             showEventModal.value = false;
 
             };
 
             const handleConfirmRewards = () => {
-            message.success('Confirmed!');
+            message.success('Reward saved!');
             showRewardModal.value = false;
+            };
+            const handleConfirmAdmins = () => {
+            message.success('Admin added!');
+            showAdminModal.value = false;
             };
             //ZAENKRAT SAMO HANDLAM CANCELE ZA POLLE IN EVENTE IN REWARDE
             const handleCancelPolls = () => {
-            message.info('Cancelled');
+            message.info('Poll canceled');
             showPollModal.value = false;
             resetPollForm();
             };
 
             const handleCancelEvents = () => {
-            message.info('Cancelled');
+            message.info('Event canceled');
             showEventModal.value = false;
             };
 
             const handleCancelRewards = () => {
-            message.info('Cancelled');
+            message.info('Reward canceled');
             showRewardModal.value = false;
+            };
+            const handleCancelAdmins = () => {
+            message.info('No admins were added');
+            showAdminModal.value = false;
             };
 
             const goBack = () => {
@@ -302,15 +358,18 @@
                 showPollModal,
                 showEventModal,
                 showRewardModal,
+                showAdminModal,
                 userData,
                 UserOptions,
                 handleSelect,
                 handleConfirmPolls,
                 handleConfirmEvents,
                 handleConfirmRewards,
+                handleConfirmAdmins,
                 handleCancelPolls,
                 handleCancelEvents,
                 handleCancelRewards,
+                handleCancelAdmins,
                 goBack,
 
 
