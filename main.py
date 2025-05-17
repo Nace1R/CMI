@@ -226,36 +226,39 @@ def publicPolls():
     pollList = []
     for poll in polls:
         mesto = poll.get('mesto')
-        if userMesto == mesto:
-            naslov = poll.get('naslov')
-            opis = poll.get('opis')
-            pollId = poll.get('pollId')
-            exDate = poll.get('exDate')
-            reward = poll.get('reward')
-            zdle = datetime.today()
-            sexDate = datetime.strptime(exDate, "%Y-%m-%d %H:%M:%S")
-            
-            if zdle < sexDate:
-                timeLeft = sexDate - datetime.today()
-                dni = timeLeft.days
-                sekunde = timeLeft.seconds
-                ure = sekunde // 3600
+        pollId = poll.get('pollId')
+        ifVotedPoll = pollResults.get(User.pollId == pollId)
+        ifVoted = ifVotedPoll['voted']
+        if userId not in ifVoted.values():
+            if userMesto == mesto:
+                naslov = poll.get('naslov')
+                opis = poll.get('opis')
+                exDate = poll.get('exDate')
+                reward = poll.get('reward')
+                zdle = datetime.today()
+                sexDate = datetime.strptime(exDate, "%Y-%m-%d %H:%M:%S")
+                
+                if zdle < sexDate:
+                    timeLeft = sexDate - datetime.today()
+                    dni = timeLeft.days
+                    sekunde = timeLeft.seconds
+                    ure = sekunde // 3600
 
-                pollList.append({
-                    "naslov": naslov,
-                    "opis": opis,
-                    "timeLeft": [dni,ure],
-                    "mesto": mesto,
-                    "pollId": pollId,
-                    "reward": reward
-                })
+                    pollList.append({
+                        "naslov": naslov,
+                        "opis": opis,
+                        "timeLeft": [dni,ure],
+                        "mesto": mesto,
+                        "pollId": pollId,
+                        "reward": reward
+                    })
 
-                print("-----------------------------------------------------------------------------------------")
-                #print(len(showPollData))
-                print("-----------------------------------------------------------------------------------------")
-                #print(showPollData)
-            else: 
-                pollsT.remove(User.pollId == pollId) # zaenkrat
+                    print("-----------------------------------------------------------------------------------------")
+                    #print(len(showPollData))
+                    print("-----------------------------------------------------------------------------------------")
+                    #print(showPollData)
+                else: 
+                    pollsT.remove(User.pollId == pollId) # zaenkrat
 
             #SHOW rezultate coming soon
     showPollData = {
@@ -278,6 +281,46 @@ Kdo: "adminIme" (backend auto)
 mesto : "mesto" (backend auto)
 }
 """
+
+
+@app.route("/pollVote", methods=["POST"])
+def pollVote():
+    userId = request.cookies.get("userId")
+    data = request.json # pricakuje: data = {"pollId" : {id}, "result" : "yes"/"no"}
+    pollId = data["pollId"]
+    poll = pollResults.get(User.pollId == pollId)
+    yes = poll['yes']
+    no = poll['no']
+    voted = poll['voted']
+    if not voted:
+        votedIndex = 1
+    else:
+        votedIndex = int(max(voted, key=int)) + 1
+
+    if data["result"] == "yes":
+        yes += 1
+    else:
+        no += 1
+    voted[str(votedIndex)] = userId
+
+    pollResults.update({
+        'yes': yes,
+        'no': no,
+        'voted': voted
+    }, User.pollId == pollId)
+
+
+
+"""
+rezultati = {
+pollId: "id"
+yes: int
+no: int
+voted: {1:userId, 2:userId2}
+}
+"""
+
+
 
 @app.route("/weatherData")
 def weatherData():
@@ -540,6 +583,12 @@ def addPoll():
     uuidPollId = uuid.uuid4()
     pollId = str(uuidPollId)
     pollsT.insert({"naslov": naslov, "opis": opis, "trajanje": trajanje, "reward":reward, "userId":userId, "mesto":mesto, "pollId" : pollId, "exDate": exDate})
+    pollResults.insert({
+        "pollId": pollId,
+        "yes" : 0,
+        "no": 0,
+        "voted" : {}
+    })
     return jsonify({"message": "Poll added successfully"}), 201
 
 """
@@ -553,17 +602,6 @@ mesto : "mesto" (backend auto)
 }
 """
 
-@app.route("/pollVote", methods=["POST"])
-def pollVote():
-    pass
-"""
-rezultati = {
-pollId: "id"
-yes: int
-no: int
-
-}
-"""
 
 
 
