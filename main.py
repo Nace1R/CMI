@@ -292,6 +292,9 @@ def pollVote():
     data = request.json # pricakuje: data = {"pollId" : {id}, "result" : "yes"/"no"}
     pollId = data["pollId"]
     poll = pollResults.get(User.pollId == pollId)
+    print(poll["yes"])
+    print(poll["no"])
+    
     yes = poll['yes']
     no = poll['no']
     voted = poll['voted']
@@ -311,7 +314,7 @@ def pollVote():
         'no': no,
         'voted': voted
     }, User.pollId == pollId)
-
+    return jsonify({"message": "Poll votet successfully"}), 201
 
 
 """
