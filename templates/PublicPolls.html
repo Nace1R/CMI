@@ -147,6 +147,14 @@
             <div><i class="las la-clock"></i>{{ poll.timeLeft[0] }}d {{ poll.timeLeft[1] }}h left</div>
             <div><i class="las la-gift"></i>Reward: {{ poll.reward }} pts</div>
             <div><i class="las la-id-badge"></i>ID: {{ poll.pollId }}</div>
+            <n-button @click="votePollYes('{{ poll.pollId }}')" type="primary" color="#008000">
+              <template #icon><i class="las la-check"></i></template>
+              Yes
+            </n-button>
+            <n-button @click="votePollNo('{{ poll.pollId }}')" type="primary" color="#FF0000">
+              <template #icon><i class="las la-check"></i></template>
+              No
+            </n-button>
           </div>
         </div>
         {% else %}
@@ -158,17 +166,24 @@
 
   <script>
     const { createApp, ref, h } = Vue;
+    const { createDiscreteApi } = naive;
     createApp({
       setup() {
         const collapsed = ref(false);
         const activeKey = ref('polls');
         const userData = ref({ ime: 'John Doe' });
+        const { message } = createDiscreteApi(['message']);
 
         const UserOptions = ref([
-          { label: 'Manage Profile', key: 'manageProfile' },
-          { label: 'Admin Dashboard', key: 'adminPanel' },
-          { label: 'Logout', key: 'logout' }
-        ]);
+            { label: 'Manage Profile', key: 'manageProfile' }
+            ]);
+
+            const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
+            if (isAdmin) {
+            UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
+            }
+
+            UserOptions.value.push({ label: 'Logout', key: 'logout' });
         function renderIcon(iconClass) {
             return () => h('i', { class: iconClass });
         }
@@ -383,7 +398,42 @@
           else if (key === 'manageProfile') window.location.href = '/manageProfile';
           else if (key === 'adminPanel') window.location.href = '/adminDashboard';
         };
-
+        function votePollYes(pollId){
+          $.ajax({
+            url: "/pollVote", 
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              pollId: pollId,
+              vote: "yes"
+            }),
+            success: function (odgovor) {
+              if (odgovor.success){
+                message.success('You have successfuly voted!');
+              }else{
+                message.error('Your vote didnt go through!');
+              }
+            }
+        });
+        }
+        function votePollNo(pollId){
+          $.ajax({
+            url: "/pollVote", 
+            method: "POST",
+            contentType: "application/json",                
+            data: JSON.stringify({
+              pollId: pollId,
+              vote: "no"
+            }),
+            success: function (odgovor) {
+              if (odgovor.success){
+                message.success('You have successfuly voted!');
+              }else{
+                message.error('Your vote didnt go through!');
+              }
+            }
+        });
+        }
         return {
           collapsed,
           activeKey,
@@ -391,6 +441,8 @@
           UserOptions,
           menuOptions,
           toggleSidebar,
+          votePollYes,
+          votePollNo,
           handleSelect
         };
       }

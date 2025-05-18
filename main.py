@@ -228,7 +228,10 @@ def publicPolls():
         mesto = poll.get('mesto')
         pollId = poll.get('pollId')
         ifVotedPoll = pollResults.get(User.pollId == pollId)
-        ifVoted = ifVotedPoll['voted']
+        if ifVotedPoll is None:
+            ifVoted = {}
+        else:
+            ifVoted = ifVotedPoll['voted']
         if userId not in ifVoted.values():
             if userMesto == mesto:
                 naslov = poll.get('naslov')
@@ -253,9 +256,9 @@ def publicPolls():
                         "reward": reward
                     })
 
-                    print("-----------------------------------------------------------------------------------------")
+                    #print("-----------------------------------------------------------------------------------------")
                     #print(len(showPollData))
-                    print("-----------------------------------------------------------------------------------------")
+                    #print("-----------------------------------------------------------------------------------------")
                     #print(showPollData)
                 else: 
                     pollsT.remove(User.pollId == pollId) # zaenkrat
@@ -295,9 +298,9 @@ def pollVote():
     if not voted:
         votedIndex = 1
     else:
-        votedIndex = int(max(voted, key=int)) + 1
+        votedIndex = int(max(voted, key=int)) + 1 #ai, problemi
 
-    if data["result"] == "yes":
+    if data["vote"] == "yes":
         yes += 1
     else:
         no += 1
