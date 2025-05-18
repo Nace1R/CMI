@@ -314,7 +314,7 @@ def pollVote():
         'no': no,
         'voted': voted
     }, User.pollId == pollId)
-    return jsonify({"message": "Poll votet successfully"}), 201
+    return jsonify({"success": True, "message": "Poll voted successfully"}), 201
 
 
 """
