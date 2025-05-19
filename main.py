@@ -10,7 +10,7 @@ db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
 
 profil = db.table('profile-info')
-
+points = db.table('points') # userId, points(int)
 
 pollsT = db.table('polls') # ime, rezultat, creditGet
 pollResults = db.table('pollResults') # pollId, yes: integer, no: integer
