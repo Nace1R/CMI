@@ -464,205 +464,207 @@ body, html {
             });
 
             // Menu options
-            const menuOptions = [
-                {
-                    label: 'Dashboard', // The text shown in the menu
-                    key: 'dashboard',    // Unique identifier for this item
-                    icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
-                    onClick: () => {
-                        window.location.href = '/dashboard';
-                    }
-
-                },
-
-                {
-                    label: 'City Guides',
-                    key: 'guides',
-                    icon: renderIcon('las la-map-marked-alt'),
-                    onClick: () => {
-                        window.location.href = '/cityGuides';
-                    }
-                    // Submenu items (children)
-                    /*                           children: [
-                                                   {
-                                                       label: 'Testing submenus',
-                                                       key: 'ustavi-key-tu'
-                                                   },
-                                                   {
-                                                       label: 'Testing submenus',
-                                                       key: 'ustavi-key-tu'
-                                                   },
-                                                   {
-                                                       label: 'Testing submenus',
-                                                       key: 'ustavi-key-tu'
-                                                   }
-                                               ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
-                },
-
-                {
-                    label: 'Public Polls',
-                    key: 'polls',
-                    icon: renderIcon('las la-poll'),
-                    onClick: () => {
-                        window.location.href = '/publicPolls';
-                    }
-                    /*children: [
+        const menuOptions = [
                         {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
+                            label: 'Dashboard', // The text shown in the menu
+                            key: 'dashboard',    // Unique identifier for this item
+                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
+
+                        },
+
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt'),
+                            disabled:true, 
+                            onClick: () => {
+                                window.location.href = '/cityGuides';
+                            }
+                            // Submenu items (children)
+ /*                           children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                        },
+
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll'),
+                            onClick: () => {
+                                window.location.href = '/publicPolls';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun'),
+                            onClick: () => {
+                                window.location.href = '/weatherData';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/trafficData';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                  //      {
+                  //          label: 'Social',
+                  //          key: 'social',
+                   //         icon: renderIcon('las la-users'), 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                   //     },
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt'),
+                            //disabled:true,
+                            onClick: () => {
+                                window.location.href = '/localEvents';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
                         },
                         {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/electricalInfo';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
                         },
                         {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/publicTransit';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift'),
+                            //disabled:true,
+                            onClick: () => {
+                                window.location.href = '/perksRewards';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+
+                        // About Us menu item
+                        
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle'), // About/information icon
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
                         }
-                    ]*/
-                },
-
-                {
-                    label: 'Weather Updates',
-                    key: 'wUpdates',
-                    icon: renderIcon('las la-cloud-sun'),
-                    onClick: () => {
-                        window.location.href = '/weatherData';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-
-                {
-                    label: 'Traffic Updates',
-                    key: 'tUpdates',
-                    icon: renderIcon('las la-traffic-light'),
-                    onClick: () => {
-                        window.location.href = '/trafficData';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-                //      {
-                //          label: 'Social',
-                //          key: 'social',
-                //         icon: renderIcon('las la-users'),
-                /*children: [
-                    {
-                        label: 'Testing submenus',
-                        key: 'ustavi-key-tu'
-                    },
-                    {
-                        label: 'Testing submenus',
-                        key: 'ustavi-key-tu'
-                    }
-                ]*/
-                //     },
-                {
-                    label: 'Local Events',
-                    key: 'lEvents',
-                    icon: renderIcon('las la-calendar-alt'),
-                    disabled:true,
-                    onClick: () => {
-                        window.location.href = '/localEvents';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-                {
-                    label: 'Electrical Information',
-                    key: 'eInfo',
-                    icon: renderIcon('las la-bolt'),
-                    disabled:true,
-                    onClick: () => {
-                        window.location.href = '/electricalInfo';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-                {
-                    label: 'Public Transit Info',
-                    key: 'ptInfo',
-                    icon: renderIcon('las la-bus'),
-                    disabled:true,
-                    onClick: () => {
-                        window.location.href = '/publicTransit';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-                {
-                    label: 'Perks and Rewards',
-                    key: 'PaR',
-                    icon: renderIcon('las la-gift'),
-                    disabled:true,
-                    onClick: () => {
-                        window.location.href = '/perksRewards';
-                    }
-                    /*children: [
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        },
-                        {
-                            label: 'Testing submenus',
-                            key: 'ustavi-key-tu'
-                        }
-                    ]*/
-                },
-
-
-                // About Us menu item
-
-                {
-                    label: 'About Us',
-                    key: 'aboutus',
-                    icon: renderIcon('las la-info-circle'), // About/information icon
-                    onClick: () => {
-                        window.location.href = '/about_us';
-                    }
-                }
-            ];
+                    ];
 
             // User dropdown options
             const UserOptions = ref([

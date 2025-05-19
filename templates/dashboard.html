@@ -392,7 +392,7 @@
                     const collapsed = ref(false); 
                     const activeKey = ref('dashboard'); 
 
-                    const menuOptions = [
+        const menuOptions = [
                         {
                             label: 'Dashboard', // The text shown in the menu
                             key: 'dashboard',    // Unique identifier for this item
@@ -406,7 +406,8 @@
                         {
                             label: 'City Guides',
                             key: 'guides',
-                            icon: renderIcon('las la-map-marked-alt'), 
+                            icon: renderIcon('las la-map-marked-alt'),
+                            disabled:true, 
                             onClick: () => {
                                 window.location.href = '/cityGuides';
                             }
@@ -507,7 +508,7 @@
                             label: 'Local Events',
                             key: 'lEvents',
                             icon: renderIcon('las la-calendar-alt'),
-                            disabled:true,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/localEvents';
                             }  
@@ -564,7 +565,7 @@
                             label: 'Perks and Rewards',
                             key: 'PaR',
                             icon: renderIcon('las la-gift'),
-                            disabled:true,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/perksRewards';
                             }  

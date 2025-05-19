@@ -746,7 +746,7 @@
                     // Profile picture (placeholder - ce nisi log inan pol je default avatar :) )
                     const defaultUserpfp = ref('{{ url_for("static", filename="slike/default-avatar.png") }}');
                     // Menu opcije
-                    const menuOptions = [
+        const menuOptions = [
                         {
                             label: 'Dashboard', // The text shown in the menu
                             key: 'dashboard',    // Unique identifier for this item
@@ -760,7 +760,8 @@
                         {
                             label: 'City Guides',
                             key: 'guides',
-                            icon: renderIcon('las la-map-marked-alt'), 
+                            icon: renderIcon('las la-map-marked-alt'),
+                            disabled:true, 
                             onClick: () => {
                                 window.location.href = '/cityGuides';
                             }
@@ -861,7 +862,7 @@
                             label: 'Local Events',
                             key: 'lEvents',
                             icon: renderIcon('las la-calendar-alt'),
-                            disabled:true,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/localEvents';
                             }  
@@ -918,7 +919,7 @@
                             label: 'Perks and Rewards',
                             key: 'PaR',
                             icon: renderIcon('las la-gift'),
-                            disabled:true,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/perksRewards';
                             }  
@@ -948,16 +949,16 @@
                     ];
 
                 // če je user admin oziroma je v bazi zabelezen kot admin potem mu prikazi oz. pushaj v navbaru v dropwodn ta gumb
-                const UserOptions = ref([
-                    { label: 'Manage Profile', key: 'manageProfile' }
-                    ]);
+                    const UserOptions = ref([
+                        { label: 'Manage Profile', key: 'manageProfile' }
+                        ]);
 
-                    const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
-                    if (isAdmin) {
-                    UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
-                    }
+                        const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
+                        if (isAdmin) {
+                        UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
+                        }
 
-                    UserOptions.value.push({ label: 'Logout', key: 'logout' });
+                        UserOptions.value.push({ label: 'Logout', key: 'logout' });
 
                     const handleSelect = (key) => {
                     if (key === 'manageProfile') window.location.href = '/manageProfile';

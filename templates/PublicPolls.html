@@ -304,7 +304,7 @@
                             label: 'Local Events',
                             key: 'lEvents',
                             icon: renderIcon('las la-calendar-alt'),
-                            disabled:true,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/localEvents';
                             }  
@@ -361,7 +361,7 @@
                             label: 'Perks and Rewards',
                             key: 'PaR',
                             icon: renderIcon('las la-gift'),
-                            disabled:false,
+                            //disabled:true,
                             onClick: () => {
                                 window.location.href = '/perksRewards';
                             }  
@@ -410,6 +410,9 @@
             success: function (odgovor) {
               if (odgovor.success){
                 message.success('You have successfuly voted!');
+                setTimeout(() => {
+                  location.reload();
+                }, 1000);
               }else{
                 message.error('Your vote didnt go through!');
               }
@@ -428,6 +431,9 @@
             success: function (odgovor) {
               if (odgovor.success){
                 message.success('You have successfuly voted!');
+                setTimeout(() => {
+                  location.reload();
+                }, 1000);
               }else{
                 message.error('Your vote didnt go through!');
               }
