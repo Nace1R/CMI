@@ -2,298 +2,214 @@
   "uporabniki": {
     "1": {
       "ime": "bine",
-      "email": "bine",
+      "email": "bine.tavcar@gmail.com",
       "geslo": "bine",
-      "id": "20250411121455"
+      "id": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
     },
     "2": {
       "ime": "nace",
-      "email": "nace@gmail.com",
+      "email": "nace_admin@gmail.com",
       "geslo": "nace",
-      "id": "20250411123639"
+      "id": "91278ae2-f660-4ef9-8e85-723cc45153ef"
+    }
+  },
+  "points": {
+    "1": {
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "points": 11
     },
-    "3": {
-      "ime": "dummy",
-      "email": "dummy",
-      "geslo": "123",
-      "id": "20250424112448"
+    "2": {
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "points": 0
     }
   },
   "profile-info": {
     "1": {
-      "userId": "20250411121455",
-      "pfp": "static/pfp/pfp_20250411121455.jpg",
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "pfp": "static/pfp/pfp_f2775f3f-58ba-4d75-b9fc-044c1432f160.jpg",
       "city": "Ljubljana",
-      "number": "064297766"
+      "number": "064297765"
     },
     "2": {
-      "userId": "20250411123639",
-      "pfp": "static/pfp/pfp_20250411123639.jpeg",
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "pfp": "static/pfp/pfp_91278ae2-f660-4ef9-8e85-723cc45153ef.jpeg",
       "city": "Skofja Loka",
       "number": "+386 51 369 536"
-    },
-    "3": {
-      "userId": "20250424112448",
-      "pfp": "static/pfp/pfp_20250424112448.jpeg",
-      "city": "Skofja Loka",
-      "number": "3123124312"
     }
   },
   "admins": {
     "1": {
-      "userId": "20250411121455",
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
       "mesto": "Ljubljana"
     },
     "2": {
-      "userId": "20250411123639",
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
       "mesto": "Skofja Loka"
     }
   },
   "polls": {
-    "7": {
-      "naslov": "hello world",
-      "opis": "ali vam je vĂ„Ä…Ă‹â€ˇeÄ‚â€žÄąÂ¤ nov shoping center",
+    "1": {
+      "naslov": "aa",
+      "opis": "aa",
+      "trajanje": 2,
+      "reward": 5,
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "pollId": "59f93424-d162-419b-bd7d-156d9a76c89c",
+      "exDate": "2025-05-23 06:26:09"
+    },
+    "2": {
+      "naslov": "ali vam je všeč novo križišče",
+      "opis": "ali vam je všeč novo križišče",
       "trajanje": 1,
-      "reward": 12,
-      "userId": "20250411121455",
+      "reward": 5,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
       "mesto": "Ljubljana",
-      "pollId": "1f10409c-2394-4ec1-9499-96c5498a89eb",
-      "exDate": "2025-05-18 15:48:24"
+      "pollId": "243d2610-598b-4d46-aa64-20f89d98fb15",
+      "exDate": "2025-05-22 06:26:33"
+    },
+    "3": {
+      "naslov": "ali vam je useč nov shopping center",
+      "opis": "ali vam je useč nov shopping center",
+      "trajanje": 1,
+      "reward": 5,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "c697186c-0ed3-4a02-8a27-3d8d4ec7cfed",
+      "exDate": "2025-05-22 06:26:46"
+    },
+    "4": {
+      "naslov": "asasa",
+      "opis": "sasasa",
+      "trajanje": 1,
+      "reward": 10,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "e4727cf9-d7e0-4756-a3b5-2301e4efdb45",
+      "exDate": "2025-05-22 06:32:36"
+    },
+    "5": {
+      "naslov": "dsds",
+      "opis": "dsdsds",
+      "trajanje": 1,
+      "reward": 5,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "793b3acc-7cd7-42aa-a387-34b455f06278",
+      "exDate": "2025-05-22 06:32:41"
+    },
+    "6": {
+      "naslov": "sdsd",
+      "opis": "sdsds",
+      "trajanje": 1,
+      "reward": 6,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "b0eb26d7-571b-46da-9b88-02cdc132504b",
+      "exDate": "2025-05-22 06:33:47"
+    },
+    "7": {
+      "naslov": "sadsad",
+      "opis": "dssd",
+      "trajanje": 1,
+      "reward": 5,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "4f1b8eea-f01f-4e88-ad5e-96f1ef6ba302",
+      "exDate": "2025-05-22 06:33:53"
     },
     "8": {
-      "naslov": "test1",
-      "opis": "test1",
-      "trajanje": 3,
-      "reward": 3,
-      "userId": "20250411121455",
+      "naslov": "dsds",
+      "opis": "dsds",
+      "trajanje": 1,
+      "reward": 6,
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
       "mesto": "Ljubljana",
-      "pollId": "1d29ba50-d52d-489f-854a-0949cf2c8728",
-      "exDate": "2025-05-21 13:26:54"
+      "pollId": "038e5f9e-651f-43bb-8d49-b85f060b93da",
+      "exDate": "2025-05-22 06:35:11"
     },
     "9": {
-      "naslov": "test2",
-      "opis": "test2",
-      "trajanje": 3,
-      "reward": 3,
-      "userId": "20250411121455",
-      "mesto": "Ljubljana",
-      "pollId": "82c4557b-29bc-4562-bf01-ce383b9a3914",
-      "exDate": "2025-05-21 13:27:02"
-    },
-    "10": {
-      "naslov": "test3",
-      "opis": "test3",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411121455",
-      "mesto": "Ljubljana",
-      "pollId": "d3d5ddbb-c1d8-4718-83b2-01d114dd5e0c",
-      "exDate": "2025-05-20 13:46:22"
-    },
-    "11": {
-      "naslov": "a",
-      "opis": "a",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "eb01f8b2-72d9-4360-b993-11ab32d80557",
-      "exDate": "2025-05-20 16:20:33"
-    },
-    "12": {
-      "naslov": "bam",
-      "opis": "bam",
-      "trajanje": 2,
-      "reward": 25,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "052c1cda-e9a4-4a56-b6bb-966a0bb1cb8f",
-      "exDate": "2025-05-20 16:23:37"
-    },
-    "13": {
-      "naslov": "test",
-      "opis": "test",
-      "trajanje": 3,
-      "reward": 4,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "e0724eaa-37fc-4c7f-8847-d46caa0edff1",
-      "exDate": "2025-05-21 17:31:03"
-    },
-    "14": {
-      "naslov": "aa",
-      "opis": "aa",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "302d4f96-fb3a-4391-b337-749fc22b0d10",
-      "exDate": "2025-05-20 18:28:58"
-    },
-    "15": {
-      "naslov": "aa",
-      "opis": "aa",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "b7baa6c8-f0e1-4591-a074-d19ee845c16e",
-      "exDate": "2025-05-20 18:31:32"
-    },
-    "16": {
-      "naslov": "a",
-      "opis": "a",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "18a673fb-a1c9-4f04-9b16-10fdd5ed6fda",
-      "exDate": "2025-05-20 18:32:37"
-    },
-    "17": {
-      "naslov": "aa",
-      "opis": "aa",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "127946cf-725f-4ae9-b31d-fdc81ea08ef9",
-      "exDate": "2025-05-20 18:32:57"
-    },
-    "18": {
-      "naslov": "bb",
-      "opis": "bb",
-      "trajanje": 2,
-      "reward": 2,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "4efddb63-2c25-4d06-a835-f96f784d418f",
-      "exDate": "2025-05-20 18:33:03"
-    },
-    "19": {
-      "naslov": "test",
-      "opis": "test",
-      "trajanje": 2,
-      "reward": 5,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "42c759f7-513b-49a9-a537-cca4648b1e51",
-      "exDate": "2025-05-20 18:39:35"
-    },
-    "20": {
-      "naslov": "test seenkrat",
-      "opis": "testt",
+      "naslov": "dsd",
+      "opis": "sdsd",
       "trajanje": 1,
       "reward": 5,
-      "userId": "20250411123639",
-      "mesto": "Skofja Loka",
-      "pollId": "23cee12f-915f-4e42-9e11-b0f62375dc0a",
-      "exDate": "2025-05-19 19:01:21"
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "pollId": "9f913ead-1608-46cb-8252-32346dcb3718",
+      "exDate": "2025-05-22 06:35:15"
     }
   },
   "pollResults": {
     "1": {
-      "pollId": "1d29ba50-d52d-489f-854a-0949cf2c8728",
+      "pollId": "59f93424-d162-419b-bd7d-156d9a76c89c",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411121455"
+        "1": "91278ae2-f660-4ef9-8e85-723cc45153ef"
       }
     },
     "2": {
-      "pollId": "82c4557b-29bc-4562-bf01-ce383b9a3914",
+      "pollId": "243d2610-598b-4d46-aa64-20f89d98fb15",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411121455"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "3": {
-      "pollId": "d3d5ddbb-c1d8-4718-83b2-01d114dd5e0c",
+      "pollId": "c697186c-0ed3-4a02-8a27-3d8d4ec7cfed",
       "yes": 0,
       "no": 1,
       "voted": {
-        "1": "20250411121455"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "4": {
-      "pollId": "eb01f8b2-72d9-4360-b993-11ab32d80557",
+      "pollId": "e4727cf9-d7e0-4756-a3b5-2301e4efdb45",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "5": {
-      "pollId": "052c1cda-e9a4-4a56-b6bb-966a0bb1cb8f",
-      "yes": 0,
-      "no": 1,
+      "pollId": "793b3acc-7cd7-42aa-a387-34b455f06278",
+      "yes": 1,
+      "no": 0,
       "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "6": {
-      "pollId": "e0724eaa-37fc-4c7f-8847-d46caa0edff1",
+      "pollId": "b0eb26d7-571b-46da-9b88-02cdc132504b",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "7": {
-      "pollId": "302d4f96-fb3a-4391-b337-749fc22b0d10",
+      "pollId": "4f1b8eea-f01f-4e88-ad5e-96f1ef6ba302",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "8": {
-      "pollId": "b7baa6c8-f0e1-4591-a074-d19ee845c16e",
+      "pollId": "038e5f9e-651f-43bb-8d49-b85f060b93da",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     },
     "9": {
-      "pollId": "18a673fb-a1c9-4f04-9b16-10fdd5ed6fda",
+      "pollId": "9f913ead-1608-46cb-8252-32346dcb3718",
       "yes": 1,
       "no": 0,
       "voted": {
-        "1": "20250411123639"
-      }
-    },
-    "10": {
-      "pollId": "127946cf-725f-4ae9-b31d-fdc81ea08ef9",
-      "yes": 1,
-      "no": 0,
-      "voted": {
-        "1": "20250411123639"
-      }
-    },
-    "11": {
-      "pollId": "4efddb63-2c25-4d06-a835-f96f784d418f",
-      "yes": 0,
-      "no": 1,
-      "voted": {
-        "1": "20250411123639"
-      }
-    },
-    "12": {
-      "pollId": "42c759f7-513b-49a9-a537-cca4648b1e51",
-      "yes": 1,
-      "no": 0,
-      "voted": {
-        "1": "20250411123639"
-      }
-    },
-    "13": {
-      "pollId": "23cee12f-915f-4e42-9e11-b0f62375dc0a",
-      "yes": 1,
-      "no": 0,
-      "voted": {
-        "1": "20250411123639"
+        "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     }
   }

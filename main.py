@@ -10,7 +10,7 @@ db = TinyDB('database/database.json')
 uporabniki = db.table('uporabniki')
 
 profil = db.table('profile-info')
-points = db.table('points') # userId, points(int)
+points = db.table('points') #userId, points(int)
 
 pollsT = db.table('polls') # ime, rezultat, creditGet
 pollResults = db.table('pollResults') # pollId, yes: integer, no: integer
@@ -34,8 +34,9 @@ def index():
 def register():
 
     if request.method == "POST":
-        now = datetime.now()
-        ids = now.strftime("%Y%m%d%H%M%S")
+        uuidId = uuid.uuid4()
+        ids = str(uuidId)
+
         ime = request.form.get("ime")
         email = request.form.get("email")
         geslo = request.form.get("geslo")
@@ -44,6 +45,9 @@ def register():
             return jsonify({"success": False, "error": "Uporabnik ze obstaja!"})
 
         uporabniki.insert({"ime": ime, "email": email, "geslo": geslo, "id":ids})
+
+        points.insert({"userId": ids, "points": 0})
+
         response = make_response(jsonify({"success": True, "redirect_url": url_for('profileCreation')}))
         response.set_cookie("userId", ids, max_age=600)
         return response
@@ -314,6 +318,19 @@ def pollVote():
         'no': no,
         'voted': voted
     }, User.pollId == pollId)
+
+    pointsTempData = points.get(User.userId == userId)
+    pointsTemp = pointsTempData['points']
+    rewardData = pollsT.get(User.pollId == pollId)
+    reward = int(rewardData["reward"])
+
+    pointsTemp += reward
+    points.update({
+        'points' : pointsTemp
+    }, User.userId == userId)
+    rewardDataDebug = pollsT.get(User.pollId == pollId)
+    rewardDebug = rewardDataDebug["reward"]
+    print(rewardDebug)
     return jsonify({"success": True, "message": "Poll voted successfully"}), 201
 
 
@@ -325,7 +342,13 @@ no: int
 voted: {1:userId, 2:userId2}
 }
 """
+"""
+points = {
+"userID": userId
+"points": int
+}
 
+"""
 
 
 @app.route("/weatherData")
@@ -533,12 +556,20 @@ def publicTrans():
 @app.route("/perksRewards")
 def perksRewards():
     userId = request.cookies.get("userId")
+    userData = {"ime": "gost"}
+    user = uporabniki.get(where('id') == userId)
     if not userId:
         return redirect(url_for("login"))
-    if request.method == "POST":
-            pass
+    userData = user
     isAdmin = admins.contains(User.userId == userId)
-    return render_template("PerksAndRewards.html", isAdmin=isAdmin)
+    pfp = getPfp(userId)
+
+
+    # vsebina
+
+    #pointsData = points.get(User.userId == userId)
+    #points = pointsData["points"]
+    return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=points)
 
 
 #---------------- ADMIN SHIT -------------------------
@@ -623,8 +654,8 @@ def addReward():
 
 #-------------------KONEC ADMIN----------------------------------------
 
-#admins.insert({'userId': 20250411121455, 'mesto': 'Ljubljana'})
-#admins.insert({'userId': 20250411123639, 'mesto': 'Skofja Loka'})
+#admins.insert({'userId': "f2775f3f-58ba-4d75-b9fc-044c1432f160", 'mesto': 'Ljubljana'})
+#admins.insert({'userId': "91278ae2-f660-4ef9-8e85-723cc45153ef", 'mesto': 'Skofja Loka'})
 
 
 

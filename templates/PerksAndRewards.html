@@ -1,1 +1,429 @@
-<!--DEVELOPMENT WAITING-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMI City - About Us</title>
+    <!-- Load Vue.js framework -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- Load Naive UI component library -->
+    <script src="https://unpkg.com/naive-ui"></script>
+    <link rel="stylesheet" href="https://unpkg.com/naive-ui/dist/naive-ui.css">
+    <!-- Load Line Awesome icons -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <!-- Load Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <style>
+        /*prostor za css*/
+        body{
+            font-family: 'Poppins','sans-serif';
+        }
+                #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top navigation bar */
+        .navbar {
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 20px;
+        }
+
+        .username {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Main content container with sidebar and content area */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            background-color: #1B365C; /* Dark blue background */
+            color: white;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-expanded {
+            width: 240px;
+        }
+
+        .sidebar-collapsed {
+            width: 64px;
+        }
+         /*BREZ OBROBE ZA DROPDOWN BUTTONE POMEMBNO!!!!!!!!!!!*/
+  /* Target all Naive UI dropdown-related elements */
+  .n-dropdown,
+    .n-dropdown *,
+    .n-base-selection,
+    .n-base-selection *,
+    .n-input,
+    .n-input *,
+    .n-button,
+    .n-button * {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+    .n-dropdown-menu {
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        background-color: white !important;
+    }
+    .n-dropdown-option {
+        background-color: white !important;
+    }
+
+    .n-dropdown-option:hover {
+        background-color: #f5f5f5 !important;
+    }
+    .username {
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+    }
+    .n-base-selection__border,
+    .n-base-selection__state-border {
+        border: none !important;
+        box-shadow: none !important;
+        display: none !important;
+    }
+    /*konec sekcije za dropdowne*/
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="navbar">
+            <div class="navbar-left">
+                <n-button quaternary circle @click="toggleSidebar">
+                    <template #icon>
+                        <n-icon>
+                            <i v-if="collapsed" class="las la-angle-right"></i>
+                            <i v-else class="las la-bars"></i>
+                        </n-icon>
+                    </template>
+                </n-button>
+                <img src="{{ url_for('static', filename='slike/logo2.png') }}" alt="CMI Logo" class="logo">
+            </div>
+
+            <div class="navbar-right">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
+                    <n-button><span class="username">{{userData.ime}}</span> </n-button>
+                </n-dropdown>
+                <n-avatar round size="medium" src="{{pfp_path}}"></n-avatar>
+            </div>
+        </div>
+
+        <!-- Main Container with Sidebar and Content -->
+        <div class="main-container">
+            <!-- Sidebar with Menu -->
+            <div class="sidebar" :class="collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+                <n-menu
+                    v-model:value="activeKey"
+                    :collapsed="collapsed"
+                    :collapsed-width="64"
+                    :collapsed-icon-size="22"
+                    :options="menuOptions"
+                    :indent="18"
+                    inverted
+                />
+            </div>
+            <h1>Perks and rewards</h1>
+    </div>
+
+
+</body>
+<script>
+    const { createApp, ref } = Vue;
+    const { createDiscreteApi } = naive;
+    const app = createApp({
+                 setup() {
+                    // Stanje sidebara
+                    const collapsed = ref(false);
+                    const activeKey = ref('PaR');
+
+
+                    const userData = ref({
+                        ime: 'John Doe',
+                        email: 'john.doe@example.com'
+                    });
+
+                    // Profile picture (placeholder - ce nisi log inan pol je default avatar :) )
+                    const defaultUserpfp = ref('{{ url_for("static", filename="slike/default-avatar.png") }}');
+                    // Menu opcije
+        const menuOptions = [
+                        {
+                            label: 'Dashboard', // The text shown in the menu
+                            key: 'dashboard',    // Unique identifier for this item
+                            icon: renderIcon('las la-tachometer-alt'), // Dashboard icon
+                            onClick: () => {
+                                window.location.href = '/dashboard';
+                            }
+
+                        },
+
+                        {
+                            label: 'City Guides',
+                            key: 'guides',
+                            icon: renderIcon('las la-map-marked-alt'),
+                            disabled:true, 
+                            onClick: () => {
+                                window.location.href = '/cityGuides';
+                            }
+                            // Submenu items (children)
+ /*                           children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ] TRENUTNO NE POTREBUJEM TU SUBMENUJEV ODKOMENTIRAJ PO POTREBI!!!!!!!!!!!!!*/
+                        },
+
+                        {
+                            label: 'Public Polls',
+                            key: 'polls',
+                            icon: renderIcon('las la-poll'),
+                            onClick: () => {
+                                window.location.href = '/publicPolls';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Weather Updates',
+                            key: 'wUpdates',
+                            icon: renderIcon('las la-cloud-sun'),
+                            onClick: () => {
+                                window.location.href = '/weatherData';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+                        {
+                            label: 'Traffic Updates',
+                            key: 'tUpdates',
+                            icon: renderIcon('las la-traffic-light'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/trafficData';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                  //      {
+                  //          label: 'Social',
+                  //          key: 'social',
+                   //         icon: renderIcon('las la-users'), 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                   //     },
+                        {
+                            label: 'Local Events',
+                            key: 'lEvents',
+                            icon: renderIcon('las la-calendar-alt'),
+                            //disabled:true,
+                            onClick: () => {
+                                window.location.href = '/localEvents';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Electrical Information',
+                            key: 'eInfo',
+                            icon: renderIcon('las la-bolt'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/electricalInfo';
+                            } 
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Public Transit Info',
+                            key: 'ptInfo',
+                            icon: renderIcon('las la-bus'),
+                            disabled:true,
+                            onClick: () => {
+                                window.location.href = '/publicTransit';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+                        {
+                            label: 'Perks and Rewards',
+                            key: 'PaR',
+                            icon: renderIcon('las la-gift'),
+                            //disabled:true,
+                            onClick: () => {
+                                window.location.href = '/perksRewards';
+                            }  
+                            /*children: [
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                },
+                                {
+                                    label: 'Testing submenus',
+                                    key: 'ustavi-key-tu'
+                                }
+                            ]*/
+                        },
+
+
+                        // About Us menu item
+                        
+                        {
+                            label: 'About Us',
+                            key: 'aboutus',
+                            icon: renderIcon('las la-info-circle'), // About/information icon
+                            onClick: () => {
+                                window.location.href = '/about_us';
+                            }
+                        }
+                    ];
+
+                // če je user admin oziroma je v bazi zabelezen kot admin potem mu prikazi oz. pushaj v navbaru v dropwodn ta gumb
+                    const UserOptions = ref([
+                        { label: 'Manage Profile', key: 'manageProfile' }
+                        ]);
+
+                        const isAdmin = "{{ 'true' if isAdmin else 'false' }}" === 'true';
+                        if (isAdmin) {
+                        UserOptions.value.push({ label: 'Admin Dashboard', key: 'adminPanel' });
+                        }
+
+                        UserOptions.value.push({ label: 'Logout', key: 'logout' });
+
+                    const handleSelect = (key) => {
+                    if (key === 'manageProfile') window.location.href = '/manageProfile';
+                    else if (key === 'logout') window.location.href = '/logout';
+                    else if (key === 'adminPanel') window.location.href = '/adminDashboard';
+                    };
+                    
+                    function renderIcon(iconClass) {
+                        return () => h('i', { class: iconClass });
+                    }
+
+                    function toggleSidebar() {
+                        collapsed.value = !collapsed.value;
+                    }
+            return{
+                handleSelect,
+                menuOptions,
+                UserOptions,
+                collapsed,
+                activeKey,
+                userData,
+                toggleSidebar
+
+
+            };
+        }
+    });
+
+</script>
+</html>
