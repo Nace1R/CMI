@@ -12,56 +12,206 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            min-height: 100vh;
         }
+
         .navbar {
-        height: 64px;
-        background-color: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
+            height: 64px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
         }
+
+        .navbar strong {
+            font-size: 18px;
+            color: #1B365C;
+            font-weight: 600;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .username {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Fix navbar button styling */
+        .navbar .n-button {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 4px 8px !important;
+        }
+
+        .navbar .n-button:hover {
+            background-color: #f5f5f5 !important;
+        }
+
+        .back-button {
+            margin: 20px 0 30px 20px;
+            background-color: #1B365C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: #2A4A7C;
+        }
+
+        h1 {
+            margin: 30px 20px;
+            color: #1B365C;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: #1B365C;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .admin-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 0 20px 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-card .n-button {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            background-color: #1B365C;
+            border: none;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .admin-card .n-button:hover {
+            background-color: #2A4A7C;
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            display: block;
+            text-align: center;
+            color: #5F9EA0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+                padding: 0 15px 15px 15px;
+            }
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            h1 {
+                margin: 20px 15px;
+                font-size: 24px;
+            }
+
+            .back-button {
+                margin: 15px 0 20px 15px;
+            }
+             /*BREZ OBROBE ZA DROPDOWN BUTTONE POMEMBNO!!!!!!!!!!!*/
+  /* Target all Naive UI dropdown-related elements */
+  .n-dropdown,
+    .n-dropdown *,
+    .n-base-selection,
+    .n-base-selection *,
+    .n-input,
+    .n-input *,
+    .n-button,
+    .n-button * {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+    .n-dropdown-menu {
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        background-color: white !important;
+    }
+    .n-dropdown-option {
+        background-color: white !important;
+    }
+
+    .n-dropdown-option:hover {
+        background-color: #f5f5f5 !important;
+    }
+    .username {
         font-weight: 500;
         color: #333;
         cursor: pointer;
-        }
-        .back-button {
-        margin-top: 20px;
-        background-color: #1B365C;
-        color: white;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        transition: all 0.2s ease;
-        }
-        .back-button:hover {
-        background-color: #2A4A7C;
+    }
+    .n-base-selection__border,
+    .n-base-selection__state-border {
+        border: none !important;
+        box-shadow: none !important;
+        display: none !important;
+    }
+    /*konec sekcije za dropdowne*/
         }
     </style>
     </head>
     <body>
     <div id="app">
         <div class="navbar">
-        <div><strong>CMI Admin Dashboard</strong></div>
-        <div>
-            <n-dropdown :options="UserOptions" @select="handleSelect">
-            <n-button><span class="username">{{ userData.ime }}</span></n-button>
-            </n-dropdown>
-            <n-avatar round size="medium" src="{{ pfp }}"></n-avatar>
-        </div>
+            <div><strong>CMI Admin Dashboard</strong></div>
+            <div class="navbar-right">
+                <n-dropdown :options="UserOptions" @select="handleSelect">
+                    <n-button><span class="username">{{ userData.ime }}</span></n-button>
+                </n-dropdown>
+                <n-avatar round size="medium" src="{{ pfp }}"></n-avatar>
+            </div>
         </div>
 
-        <h1 style="margin-left: 20px;">Welcome admin <u>{{ userData.ime }}</u>!</h1>
+        <h1>Welcome admin <u>{{ userData.ime }}</u>!</h1>
 
         <n-button @click="goBack" class="back-button">
         <template #icon>
@@ -70,10 +220,11 @@
         Back to Dashboard
         </n-button>
 
-        <div class="modal1">
-        <!--Modal za polle zaenkrat mi se ne dela tko kot je treba da je form noter-->
-        <h3>Manage Polls</h3>
-        <n-button @click="showPollModal = true">Create Poll</n-button>
+        <div class="admin-container">
+            <div class="modal1 admin-card">
+                <i class="las la-poll card-icon"></i>
+                <h3>Manage Polls</h3>
+                <n-button @click="showPollModal = true">Create Poll</n-button>
 
         <n-modal
         v-model:show="showPollModal"
@@ -105,11 +256,12 @@
         </n-form>
       </n-modal>
 
-        </div>
-        <div class="modal2">
-        <!--MODAL za evente ampak se ne prikaze se rabim najt tezavo-->
-        <h3>Manage Events</h3>
-        <n-button @click="showEventModal = true">Create Event</n-button>
+            </div>
+
+            <div class="modal2 admin-card">
+                <i class="las la-calendar card-icon"></i>
+                <h3>Manage Events</h3>
+                <n-button @click="showEventModal = true">Create Event</n-button>
 
         <n-modal
         v-model:show="showEventModal"
@@ -120,7 +272,7 @@
         @positive-click="handleConfirmEvents"
         @negative-click="handleCancelEvents"
       >
-      
+
       <!--IKONA V MODALU-->
       <template #icon>
         <i class=" las la-calendar" style="font-size: 24px; color: #1B365C;"></i>
@@ -134,11 +286,12 @@
           </n-form-item>
         </n-form>
       </n-modal>
-        </div>
-        <div class="modal3">
-        <!--Modal za rewards-->
-        <h3>Manage Rewards</h3>
-        <n-button @click="showRewardModal = true">Create Reward</n-button>
+            </div>
+
+            <div class="modal3 admin-card">
+                <i class="las la-gift card-icon"></i>
+                <h3>Manage Rewards</h3>
+                <n-button @click="showRewardModal = true">Create Reward</n-button>
 
         <n-modal
         v-model:show="showRewardModal"
@@ -167,32 +320,31 @@
       </n-modal>
             </div>
 
-            
-        <div class="adminModal">
-        <!--Modal za rewards-->
-        <h3>Manage admins</h3>
-        <n-button @click="showAdminModal = true">Add Admin</n-button>
+            <div class="adminModal admin-card">
+                <i class="las la-user-shield card-icon"></i>
+                <h3>Manage Admins</h3>
+                <n-button @click="showAdminModal = true">Add Admin</n-button>
 
-        <n-modal
-        v-model:show="showAdminModal"
-        preset="dialog"
-        title="Add/remove admins"
-        positive-text="Save"
-        negative-text="Discard"
-        @positive-click="handleConfirmAdmins"
-        @negative-click="handleCancelAdmins"
-        />
+                <n-modal
+                v-model:show="showAdminModal"
+                preset="dialog"
+                title="Add/remove admins"
+                positive-text="Save"
+                negative-text="Discard"
+                @positive-click="handleConfirmAdmins"
+                @negative-click="handleCancelAdmins"
+                >
 
-      <!--IKONA V MODALU-->
-      <template #icon>
-        <i class="las la-poll" style="font-size: 24px; color: #1B365C;"></i>
-      </template>
-        <n-space item-style="display: flex;" align="center">
-          <n-checkbox size="medium" label="{example user}" />
-        </n-space>
-      </n-modal>
+                <!--IKONA V MODALU-->
+                <template #icon>
+                    <i class="las la-user-shield" style="font-size: 24px; color: #1B365C;"></i>
+                </template>
+                <n-space item-style="display: flex;" align="center">
+                    <n-checkbox size="medium" label="{example user}" />
+                </n-space>
+                </n-modal>
             </div>
-
+        </div>
 
     </div>
 
@@ -320,9 +472,9 @@
                 console.log("pollDuration:", pollDuration.value);
                 console.log("pollReward:", pollReward.value);
               $.ajax({
-                      url: "/addPoll", 
+                      url: "/addPoll",
                       method: "POST",
-                      contentType: "application/json",                
+                      contentType: "application/json",
                       data: JSON.stringify(data),
                       success: function (odgovor) {
                         if (odgovor.success){
@@ -341,9 +493,9 @@
                 console.log("eventTitle:", eventTitle.value);
                 console.log("eventDescription:", eventDescription.value);
               $.ajax({
-                      url: "/addEvent", 
+                      url: "/addEvent",
                       method: "POST",
-                      contentType: "application/json",                
+                      contentType: "application/json",
                       data: JSON.stringify(data),
                       success: function (odgovor) {
                         if (odgovor.success){
@@ -353,7 +505,7 @@
                       }
                   });
             };
-            
+
             return {
                 showPollModal,
                 showEventModal,
