@@ -413,6 +413,18 @@
               pollDuration.value = 0;
               pollReward.value = 0;
             };
+
+            const resetEventForm = () => {
+              eventTitle.value = "";
+              eventDescription.value ="";
+            };
+
+
+            const resetRewardForm = () => {
+              rewardTitle.value = "";
+              rewardDescription.value = "";
+              pointsNeeded.value = 0;
+            };
             //ZAENKRAT SAMO HANDLAM CONFIRME ZA EVENTE IN POLLE REWARDI PRIDEJO NA KONCU
             const handleConfirmPolls = () => {
             message.success('Poll saved!');
@@ -424,12 +436,15 @@
             const handleConfirmEvents = () => {
             message.success('Event saved!');
             showEventModal.value = false;
-
+            sendEventData();
+            resetEventForm();
             };
 
             const handleConfirmRewards = () => {
             message.success('Reward saved!');
             showRewardModal.value = false;
+            sendRewardData();
+            resetRewardForm();
             };
             const handleConfirmAdmins = () => {
             message.success('Admin added!');
@@ -445,11 +460,13 @@
             const handleCancelEvents = () => {
             message.info('Event canceled');
             showEventModal.value = false;
+            resetEventForm();
             };
 
             const handleCancelRewards = () => {
             message.info('Reward canceled');
             showRewardModal.value = false;
+            resetRewardForm();
             };
             const handleCancelAdmins = () => {
             message.info('No admins were added');
@@ -488,7 +505,7 @@
             function sendEventData(){
                 const data = {
                   naslov: eventTitle.value,
-                  opis: eventDescription.value,
+                  opis: eventDescription.value
                 };
                 console.log("eventTitle:", eventTitle.value);
                 console.log("eventDescription:", eventDescription.value);
@@ -500,6 +517,28 @@
                       success: function (odgovor) {
                         if (odgovor.success){
                           console.log("Event successfully added:", naslov);
+                        }
+
+                      }
+                  });
+            };
+            function sendRewardData(){
+                const data = {
+                  naslov: rewardTitle.value,
+                  opis: rewardDescription.value,
+                  potTock: pointsNeeded.value
+                };
+                console.log("Naslov:", rewardTitle.value);
+                console.log("Opis rewarda:", rewardDescription.value);
+                console.log("Potrebno tock:", pointsNeeded.value);
+              $.ajax({
+                      url: "/addReward",
+                      method: "POST",
+                      contentType: "application/json",
+                      data: JSON.stringify(data),
+                      success: function (odgovor) {
+                        if (odgovor.success){
+                          console.log("Reward successfully added:", naslov);
                         }
 
                       }
@@ -532,7 +571,11 @@
                 pollReward,
 
                 eventTitle,
-                eventDescription
+                eventDescription,
+
+                rewardTitle,
+                rewardDescription,
+                pointsNeeded
             };
         }
         }).use(naive).mount('#app');

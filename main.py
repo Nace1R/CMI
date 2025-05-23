@@ -15,8 +15,8 @@ points = db.table('points') #userId, points(int)
 pollsT = db.table('polls') # ime, rezultat, creditGet
 pollResults = db.table('pollResults') # pollId, yes: integer, no: integer
 admins = db.table('admins') # userId, država 
-rewards = db.table('rewards')
-
+rewardsT = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
+rewardsUser = db.table('rewardsUsers') # rewardId : userId
 
 User = Query()
 
@@ -563,12 +563,14 @@ def perksRewards():
     userData = user
     isAdmin = admins.contains(User.userId == userId)
     pfp = getPfp(userId)
+    pointsData = points.get(User.userId == userId)
+    points = pointsData["points"]
 
+
+    
 
     # vsebina
-
-    #pointsData = points.get(User.userId == userId)
-    #points = pointsData["points"]
+    #rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
     return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=points)
 
 
@@ -648,17 +650,35 @@ def addEvent():
 
 @app.route("/addReward", methods=["POST"])
 def addReward():
-    pass
+    userId = request.cookies.get("userId")
+    aUserData = admins.get(User.userId == userId)
+        # iz frontenda
+    if aUserData:
+        mesto = aUserData['mesto']
+        print(mesto)
+    else:
+        return jsonify({"success": False, "message": "nisi admin/error"}), 400
+    data = request.json
+    naslov = data['naslov']
+    opis = data['opis']
+    pointsR = data['potTock']
+
+    #backend
+    uuidRewardId = uuid.uuid4()
+    rewardId = str(uuidRewardId)
 
 
+    rewardsT.insert({"naslov": naslov, "opis": opis, "userId":userId, "mesto":mesto, "rewardId" : rewardId, "potTock": pointsR})
+    rewardsUser.insert({'rewardId':[]})
 
+    return jsonify({"success": True, "message": "Reward added successfully"}), 201
+
+#rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
+#rewardsUser = db.table('rewardsUsers') # rewardId : userId
 #-------------------KONEC ADMIN----------------------------------------
 
 #admins.insert({'userId': "f2775f3f-58ba-4d75-b9fc-044c1432f160", 'mesto': 'Ljubljana'})
 #admins.insert({'userId': "91278ae2-f660-4ef9-8e85-723cc45153ef", 'mesto': 'Skofja Loka'})
-
-
-
 
 # konec ostlaih sitou
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------
