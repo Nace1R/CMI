@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMI City - About Us</title>
+    <title>CMI City - Perks and Rewards</title>
     <!-- Load Vue.js framework -->
     <script src="https://unpkg.com/vue@3"></script>
     <!-- Load Naive UI component library -->
@@ -20,7 +20,7 @@
         body{
             font-family: 'Poppins','sans-serif';
         }
-                #app {
+        #app {
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -126,6 +126,7 @@
 </head>
 <body>
     <div id="app">
+        <!-- Top Navbar -->
         <div class="navbar">
             <div class="navbar-left">
                 <n-button quaternary circle @click="toggleSidebar">
@@ -140,10 +141,10 @@
             </div>
 
             <div class="navbar-right">
-                <n-dropdown :options="UserOptions" @select="handleSelect">
+                <n-dropdown :options="UserOptions" @select="handleSelect" trigger="hover">
                     <n-button><span class="username">{{userData.ime}}</span> </n-button>
                 </n-dropdown>
-                <n-avatar round size="medium" src="{{pfp_path}}"></n-avatar>
+                <n-avatar round size="medium" src="{{pfp}}"></n-avatar>
             </div>
         </div>
 
@@ -161,30 +162,32 @@
                     inverted
                 />
             </div>
-            <h1>Perks and rewards</h1>
-            <p>{{}}</p>
-    </div>
-
+            <div class = "content">
+                <h1>Perks and Rewards</h1>
+                <p>You currently have: <strong>{{points}} points</strong></p>
+            </div>
 
 </body>
-<script>
-    const { createApp, ref } = Vue;
-    const { createDiscreteApi } = naive;
-    const app = createApp({
-                 setup() {
-                    // Stanje sidebara
-                    const collapsed = ref(false);
-                    const activeKey = ref('PaR');
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const { createApp, h, ref } = Vue;
 
+            
+            function renderIcon(iconClass) {
 
-                    const userData = ref({
+                return () => h('i', { class: iconClass, style: 'font-size: 1.2rem;' });
+            }
+            const userData = ref({
                         ime: 'John Doe',
                         email: 'john.doe@example.com'
-                    });
+            });
+            const app = createApp({
+                setup() {
+                    // Define the menu structure with icons and submenus
+                    // This array will be passed to the NaiveUI menu component
+                    const collapsed = ref(false); 
+                    const activeKey = ref('PaR'); 
 
-                    // Profile picture (placeholder - ce nisi log inan pol je default avatar :) )
-                    const defaultUserpfp = ref('{{ url_for("static", filename="slike/default-avatar.png") }}');
-                    // Menu opcije
         const menuOptions = [
                         {
                             label: 'Dashboard', // The text shown in the menu
@@ -386,8 +389,7 @@
                             }
                         }
                     ];
-
-                // če je user admin oziroma je v bazi zabelezen kot admin potem mu prikazi oz. pushaj v navbaru v dropwodn ta gumb
+                        //SPREMENJEN USEROPTION ZARADI ADMINPANEL GUMBA
                     const UserOptions = ref([
                         { label: 'Manage Profile', key: 'manageProfile' }
                         ]);
@@ -399,32 +401,30 @@
 
                         UserOptions.value.push({ label: 'Logout', key: 'logout' });
 
-                    const handleSelect = (key) => {
-                    if (key === 'manageProfile') window.location.href = '/manageProfile';
-                    else if (key === 'logout') window.location.href = '/logout';
-                    else if (key === 'adminPanel') window.location.href = '/adminDashboard';
-                    };
-                    
-                    function renderIcon(iconClass) {
-                        return () => h('i', { class: iconClass });
-                    }
+                        const handleSelect = (key) => {
+                        if (key === 'manageProfile') window.location.href = '/manageProfile';
+                        else if (key === 'logout') window.location.href = '/logout';
+                        else if (key === 'adminPanel') window.location.href = '/adminDashboard';
+                        };
 
                     function toggleSidebar() {
                         collapsed.value = !collapsed.value;
                     }
-            return{
-                handleSelect,
-                menuOptions,
-                UserOptions,
-                collapsed,
-                activeKey,
-                userData,
-                toggleSidebar
 
 
-            };
-        }
-    });
+                    return {
+                        collapsed,// Ali je sidebar oz. menu collapsan ali  ne
+                        activeKey,     // Ctrenutno izbran item
+                        menuOptions,   // opcije iz menija
+                        UserOptions,
+                        handleSelect,
+                        toggleSidebar  
+                    };
+                }
+            });
 
-</script>
+            app.use(naive);
+            app.mount('#app');
+        });
+    </script>
 </html>
