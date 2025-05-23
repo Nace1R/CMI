@@ -564,14 +564,37 @@ def perksRewards():
     isAdmin = admins.contains(User.userId == userId)
     pfp = getPfp(userId)
     pointsData = points.get(User.userId == userId)
-    points = pointsData["points"]
+    pointsN = pointsData["points"]
 
+    userMestoData = profil.get(User.userId == userId)
+    userMesto = userMestoData["city"]
+    print(userMesto)
+    rewardList = []
+    rewards = rewardsT.all()
+    for reward in rewards:
+        rewardMesto = reward.get('mesto')
+        if rewardMesto == userMesto:
+            naslov = reward.get('naslov')
+            opis = reward.get('opis')
+            pointsR = reward.get('potTock')
+            rewardId = reward.get('rewardId')
 
-    
+            rewardList.append({
+                "naslov" : naslov,
+                "opis" : opis,
+                "potTock" : pointsR,
+                "rewardId" : rewardId,
+                "mesto" : rewardMesto
+            })
+            
+    showRewardData = {
+        "reward" : rewardList
+    }
 
-    # vsebina
+    print(showRewardData)
+
     #rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
-    return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=points)
+    return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=pointsN, showRewardData = showRewardData)
 
 
 #---------------- ADMIN SHIT -------------------------
@@ -669,7 +692,7 @@ def addReward():
 
 
     rewardsT.insert({"naslov": naslov, "opis": opis, "userId":userId, "mesto":mesto, "rewardId" : rewardId, "potTock": pointsR})
-    rewardsUser.insert({'rewardId':[]})
+    rewardsUser.insert({rewardId:[]})
 
     return jsonify({"success": True, "message": "Reward added successfully"}), 201
 

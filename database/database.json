@@ -212,5 +212,42 @@
         "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
     }
+  },
+  "rewards": {
+    "1": {
+      "naslov": "MEK burgr",
+      "opis": "mek burgr",
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "rewardId": "668fc14e-eef1-4a6f-a0d7-c3f9664db1c3",
+      "potTock": 100
+    },
+    "2": {
+      "naslov": "mek burgr",
+      "opis": "mwek burgr",
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "rewardId": "b49867ad-f5df-4263-ba19-31a42e5cd5dd",
+      "potTock": 500
+    },
+    "3": {
+      "naslov": "dsds",
+      "opis": "dsdsds",
+      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
+      "mesto": "Ljubljana",
+      "rewardId": "8a94c56d-3bb0-452b-bd30-828af263a505",
+      "potTock": 1000
+    }
+  },
+  "rewardsUsers": {
+    "1": {
+      "rewardId": []
+    },
+    "2": {
+      "rewardId": []
+    },
+    "3": {
+      "8a94c56d-3bb0-452b-bd30-828af263a505": []
+    }
   }
 }
