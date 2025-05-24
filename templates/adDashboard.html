@@ -52,19 +52,39 @@
             background-color: transparent !important;
             border: none !important;
             box-shadow: none !important;
+            outline: none !important;
             padding: 4px 8px !important;
         }
 
         .navbar .n-button:hover {
             background-color: #f5f5f5 !important;
+            border: none !important;
+            outline: none !important;
+        }
+
+        .navbar .n-button:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Remove borders from all button states */
+        .navbar .n-button,
+        .navbar .n-button *,
+        .navbar .n-dropdown,
+        .navbar .n-dropdown * {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         .back-button {
-            margin: 20px 0 30px 20px;
+            margin: 20px 20px 30px 0;
             background-color: #1B365C;
             color: white;
             border: none;
             border-radius: 8px;
+            top:-85px;
             padding: 8px 16px;
             font-size: 14px;
             font-weight: 500;
@@ -72,6 +92,7 @@
             display: inline-flex;
             align-items: center;
             transition: all 0.2s ease;
+            float:right;
         }
 
         .back-button:hover {
@@ -99,6 +120,7 @@
             padding: 0 20px 30px 20px;
             max-width: 1200px;
             margin: 0 auto;
+            margin-top: 150px;
         }
 
         .admin-card {

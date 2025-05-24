@@ -165,6 +165,17 @@
             <div class = "content">
                 <h1>Perks and Rewards</h1>
                 <p>You currently have: <strong>{{points}} points</strong></p>
+
+                <div class="reward-container">
+                    {% for reward in showRewardData.reward %}
+                    <div class="reward-card">
+                        <h2>{{ reward.naslov }}</h2>
+                        <p>{{ reward.opis }}</p>
+                        <p>Points Needed: {{ reward.potTock }}</p>
+                        <n-button @click="claimReward('{{ reward.rewardId }}')">Claim Reward</n-button>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
 
 </body>
@@ -410,8 +421,11 @@
                     function toggleSidebar() {
                         collapsed.value = !collapsed.value;
                     }
+                    function claimReward(rewardId) {
 
 
+
+                    };
                     return {
                         collapsed,// Ali je sidebar oz. menu collapsan ali  ne
                         activeKey,     // Ctrenutno izbran item

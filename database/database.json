@@ -20,7 +20,7 @@
     },
     "2": {
       "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
-      "points": 50
+      "points": 53
     }
   },
   "profile-info": {
@@ -59,8 +59,8 @@
       "exDate": "2025-05-23 06:26:09"
     },
     "2": {
-      "naslov": "ali vam je všeč novo križišče",
-      "opis": "ali vam je všeč novo križišče",
+      "naslov": "ali vam je vĹˇeÄŤ novo kriĹľiĹˇÄŤe",
+      "opis": "ali vam je vĹˇeÄŤ novo kriĹľiĹˇÄŤe",
       "trajanje": 1,
       "reward": 5,
       "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
@@ -69,8 +69,8 @@
       "exDate": "2025-05-22 06:26:33"
     },
     "3": {
-      "naslov": "ali vam je useč nov shopping center",
-      "opis": "ali vam je useč nov shopping center",
+      "naslov": "ali vam je useÄŤ nov shopping center",
+      "opis": "ali vam je useÄŤ nov shopping center",
       "trajanje": 1,
       "reward": 5,
       "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
@@ -137,6 +137,26 @@
       "mesto": "Ljubljana",
       "pollId": "9f913ead-1608-46cb-8252-32346dcb3718",
       "exDate": "2025-05-22 06:35:15"
+    },
+    "10": {
+      "naslov": "aa",
+      "opis": "aa",
+      "trajanje": 3,
+      "reward": 3,
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "pollId": "27df863d-3ecd-4156-b61a-f27851b0b2c7",
+      "exDate": "2025-05-27 23:21:02"
+    },
+    "11": {
+      "naslov": "a",
+      "opis": "a",
+      "trajanje": 2,
+      "reward": 4,
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "pollId": "eed3f0ca-e6db-4ecd-924f-91ac96abc24a",
+      "exDate": "2025-05-26 23:22:12"
     }
   },
   "pollResults": {
@@ -211,6 +231,20 @@
       "voted": {
         "1": "f2775f3f-58ba-4d75-b9fc-044c1432f160"
       }
+    },
+    "10": {
+      "pollId": "27df863d-3ecd-4156-b61a-f27851b0b2c7",
+      "yes": 1,
+      "no": 0,
+      "voted": {
+        "1": "91278ae2-f660-4ef9-8e85-723cc45153ef"
+      }
+    },
+    "11": {
+      "pollId": "eed3f0ca-e6db-4ecd-924f-91ac96abc24a",
+      "yes": 0,
+      "no": 0,
+      "voted": {}
     }
   },
   "rewards": {
@@ -237,6 +271,22 @@
       "mesto": "Ljubljana",
       "rewardId": "8a94c56d-3bb0-452b-bd30-828af263a505",
       "potTock": 1000
+    },
+    "4": {
+      "naslov": "test1",
+      "opis": "test1",
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "rewardId": "91491855-0712-4f52-89f9-105dc5a5e81b",
+      "potTock": 5
+    },
+    "5": {
+      "naslov": "test2",
+      "opis": "test2",
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "rewardId": "4a50786d-8123-4d88-a4fb-941c3b967192",
+      "potTock": 5
     }
   },
   "rewardsUsers": {
@@ -248,6 +298,12 @@
     },
     "3": {
       "8a94c56d-3bb0-452b-bd30-828af263a505": []
+    },
+    "4": {
+      "91491855-0712-4f52-89f9-105dc5a5e81b": []
+    },
+    "5": {
+      "4a50786d-8123-4d88-a4fb-941c3b967192": []
     }
   }
 }
