@@ -408,27 +408,7 @@
   </div>
 
   <script>
-    // COOKIES(PIŠKOTEK ;) ) (choco chip)
-    // Deklaracija spremenljivke za ID uporabnika
     let userId;
-    /**
-     * Funkcija za pridobivanje ID uporabnika iz piškotkov (cookies)
-     * @returns {string} ID uporabnika iz piškotkov ali undefined če ne obstaja
-     */
-    function getCookies(){
-      // Razdeli piškotke po '; ' in poišči tistega, ki se začne z 'userId='
-      const userId = document.cookie
-        .split('; ')
-        .find(row => row.indexOf('userId=') === 0)
-        // Če najdeš piškotek, razdeli po '=' in vzemi drugi del (vrednost)
-        ?.split('=')[1];
-      return userId;
-    }
-
-    // Pridobi ID uporabnika iz piškotkov
-    userId = getCookies()
-    console.log('ID uporabnika:', userId);
-
     // Pridobi potrebne funkcije iz Vue.js
     const { createApp, ref } = Vue;
 
@@ -436,6 +416,11 @@
     createApp({
       // Setup funkcija se izvede ob inicializaciji komponente
       setup() {
+        const userData = ref({
+          ime: 'John Doe',
+          email: 'john.doe@example.com'
+        });
+
         // Reaktivne spremenljivke za sledenje stanju obrazca
         const step = ref(1);                // Trenutni korak registracije (1-4)
         const pictureFile = ref(null);      // Izbrana profilna slika
