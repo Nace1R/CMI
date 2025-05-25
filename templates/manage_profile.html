@@ -285,9 +285,9 @@
         </div>
         <div class="profile-header">
             <div class="profile-picture">
-                <i class="las la-user" v-if="!pfp"></i>
-                <img v-else :src="pfp" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                <div class="profile-picture-edit" v-if="active">
+                
+                <img src="{{pfp}}" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <div class="profile-picture-edit"> <!-- DODAJ TO KO BO PRISEL UPDATE ZA DEJANSKI EDIT v-if="active"-->
                     <i class="las la-camera"></i>
                 </div>
             </div>
@@ -295,7 +295,7 @@
                 <h2 class="profile-name">{{username}}</h2>
                 <p class="profile-email">{{email}}</p>
             </div>
-            <n-button @click="editM" class="edit-profile-btn">
+            <n-button class="edit-profile-btn"> <!-- DODAJ TO KO BO PRISEL UPDATE ZA DEJANSKI EDIT @click="editM"-->
                 Edit Profile
             </n-button>
         </div>
@@ -307,26 +307,26 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <div v-if="!active" class="form-value">{{username}}</div>
-                    <n-input v-else v-model:value="username" placeholder="Enter your username"></n-input>
+                    <div  class="form-value">{{username}}</div>
+                    <n-input  v-model:value="username" placeholder="Enter your username"></n-input>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <div v-if="!active" class="form-value">{{email}}</div>
-                    <n-input v-else v-model:value="email" placeholder="Enter your email"></n-input>
+                    <div  class="form-value">{{email}}</div>
+                    <n-input  v-model:value="email" placeholder="Enter your email"></n-input>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <div v-if="!active" class="form-value">{{password}}</div>
-                    <n-input v-else v-model:value="password" type="text" placeholder="Enter your password"></n-input>
+                    <div  class="form-value">{{password}}</div>
+                    <n-input  v-model:value="password" type="text" placeholder="Enter your password"></n-input>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">City</label>
-                    <div v-if="!active" class="form-value">{{mesto}}</div>
-                    <n-input v-else v-model:value="mesto" placeholder="Enter your city"></n-input>
+                    <div class="form-value">{{mesto}}</div>
+                    <n-input  v-model:value="mesto" placeholder="Enter your city"></n-input>
                 </div>
             </div>
         </div>
@@ -338,8 +338,8 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label">Phone Number</label>
-                    <div v-if="!active" class="form-value">{{number}}</div>
-                    <n-input v-else v-model:value="number" placeholder="Enter your phone number"></n-input>
+                    <div  class="form-value">{{number}}</div>
+                    <n-input  v-model:value="number" placeholder="Enter your phone number"></n-input>
                 </div>
             </div>
         </div>
@@ -352,7 +352,6 @@
       email: "{{ email }}",
       password: "{{ password }}",
       number: "{{ number }}",
-      pfp: "{{ pfp }}",
       mesto: "{{ mesto }}"
     };
   </script>
@@ -364,15 +363,11 @@
           email: userDATA.email,
           password: userDATA.password,
           number: userDATA.number,
-          pfp: userDATA.pfp,
           mesto: userDATA.mesto,
-          active: false
+          // active: false odkomentiraj ko pride editing profile
         }
       },
       methods:{
-        editM() {
-          this.active = !this.active;
-        },
         goBack() {
           window.location.href = '/dashboard';
         }

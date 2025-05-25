@@ -332,7 +332,7 @@
         <div v-if="step === 1" class="step-container">
           <h2>
             <i class="las la-camera step-icon"></i>
-            1. Upload a nice picture of you :)
+            1. Please upload your profile picture
           </h2>
           <n-upload
             :default-upload="false"
@@ -341,7 +341,7 @@
           >
             <n-button type="primary" color="#1B365C">
               <template #icon><i class="las la-upload"></i></template>
-              Pick a picture
+              Pick your profile picture
             </n-button>
           </n-upload>
 
@@ -446,6 +446,9 @@
          * Funkcija za obravnavo naložene datoteke (slike)
          * @param {Array} fileList - Seznam izbranih datotek
          */
+
+        // @PARAM ARRAY FILELIST je optional in ga ne potrebujem ampak je samo za to da se ve kaj se pricakuje v handle upload
+        // handleUpload dobi fileList = [file1,fil2] in vzame file1.
         const handleUpload = (fileList) => {
           // Shrani prvo datoteko iz seznama
           pictureFile.value = fileList[0];

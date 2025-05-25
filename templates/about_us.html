@@ -716,15 +716,6 @@
     </div>
 
     <script>
-        function getCookies(){
-            // Razdeli piškotke po '; ' in poišči tistega, ki se začne z 'userId='
-            const userId = document.cookie
-            .split('; ')
-            .find(row => row.indexOf('userId=') === 0)
-            // Če najdeš piškotek, razdeli po '=' in vzemi drugi del (vrednost)
-            ?.split('=')[1];
-        return userId;
-        }
         document.addEventListener('DOMContentLoaded', function() {
             // Get the necessary functions from Vue
             const { createApp, ref, computed, onMounted, h } = Vue;
@@ -743,10 +734,10 @@
                         email: 'john.doe@example.com'
                     });
 
-                    // Profile picture (placeholder - ce nisi log inan pol je default avatar :) )
+                    // Profile picture (placeholder - ce nisi log inan pol je default avatar :) ) -- v naslednjih updejtih treba dodat da ni nujno da izberes sliko v pf creation
                     const defaultUserpfp = ref('{{ url_for("static", filename="slike/default-avatar.png") }}');
                     // Menu opcije
-        const menuOptions = [
+                    const menuOptions = [
                         {
                             label: 'Dashboard', // The text shown in the menu
                             key: 'dashboard',    // Unique identifier for this item
