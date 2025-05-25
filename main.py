@@ -108,7 +108,7 @@ def profileCreation():
     if userIdF:
         userF = uporabniki.get(User.id == userIdF)
         if userF:
-            userDataF = user
+            userDataF = userF
 
     return render_template("profileCreation.html", userData = userDataF)
 
