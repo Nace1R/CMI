@@ -70,7 +70,12 @@ def login():
                 return "Wrong password"
         else:
             return "User not found"
-    return render_template("login.html")
+    userIdF = request.cookies.get("userId")
+    if userIdF:
+        userF = uporabniki.get(User.id == userIdF)
+        if userF:
+            userDataF = user
+    return render_template("login.html", userData = userDataF)
 
 
 @app.route("/profileCreation", methods=["GET", "POST"])
@@ -102,6 +107,8 @@ def profileCreation():
                 #city = request.form.get("city")
                 #number = request.form.get("phoneNumber")
                 return {'message': 'profile succewsfuly created'}, 200
+
+
 
     return render_template("profileCreation.html")
 
