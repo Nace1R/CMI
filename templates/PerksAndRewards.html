@@ -346,14 +346,17 @@
                                 <n-button @click="claimReward('{{ reward.rewardId }}')">Claim Reward</n-button>
                             </div>
                             {% endfor %}
+                            
                         </div>
                     </div>
 
                     <div class="claimed-rewards">
                         <h2>Claimed Rewards</h2>
+                        <!--
                         {%for claimedReward in claimedRewards.claimedReward%}
                         <p></p>
-
+                        {% endfor %}
+-->
 
                         <p style="text-align: center; color: #666; font-style: italic;">No rewards claimed yet</p>
                     </div>

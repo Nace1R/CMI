@@ -560,7 +560,7 @@ def publicTrans():
     
     return render_template("Public_Transit_Data.html")
 
-@app.route("/perksRewards")
+@app.route("/perksRewards",methods=["GET" , "POST"])
 def perksRewards():
     userId = request.cookies.get("userId")
     userData = {"ime": "gost"}
@@ -569,6 +569,7 @@ def perksRewards():
         return redirect(url_for("login"))
     userData = user
     isAdmin = admins.contains(User.userId == userId)
+    print(isAdmin)
     pfp = getPfp(userId)
     pointsData = points.get(User.userId == userId)
     pointsN = pointsData["points"]
