@@ -267,61 +267,42 @@
   },
   "rewards": {
     "1": {
-      "naslov": "MEK burgr",
-      "opis": "mek burgr",
+      "naslov": "mcdonalds",
+      "opis": "mcdonalds burgr",
       "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
       "mesto": "Ljubljana",
-      "rewardId": "668fc14e-eef1-4a6f-a0d7-c3f9664db1c3",
-      "potTock": 100
+      "rewardId": "03b05755-27ac-4b7e-a90a-f2efd76136d0",
+      "potTock": 250
     },
     "2": {
-      "naslov": "mek burgr",
-      "opis": "mwek burgr",
-      "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
-      "mesto": "Ljubljana",
-      "rewardId": "b49867ad-f5df-4263-ba19-31a42e5cd5dd",
-      "potTock": 500
+      "naslov": "aa",
+      "opis": "aa",
+      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
+      "mesto": "Skofja Loka",
+      "rewardId": "1723dcc9-01fb-45f4-87d1-4b8af0971b18",
+      "potTock": 3
     },
     "3": {
-      "naslov": "dsds",
+      "naslov": "sds",
       "opis": "dsdsds",
       "userId": "f2775f3f-58ba-4d75-b9fc-044c1432f160",
       "mesto": "Ljubljana",
-      "rewardId": "8a94c56d-3bb0-452b-bd30-828af263a505",
-      "potTock": 1000
-    },
-    "4": {
-      "naslov": "test1",
-      "opis": "test1",
-      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
-      "mesto": "Skofja Loka",
-      "rewardId": "91491855-0712-4f52-89f9-105dc5a5e81b",
-      "potTock": 5
-    },
-    "5": {
-      "naslov": "test2",
-      "opis": "test2",
-      "userId": "91278ae2-f660-4ef9-8e85-723cc45153ef",
-      "mesto": "Skofja Loka",
-      "rewardId": "4a50786d-8123-4d88-a4fb-941c3b967192",
-      "potTock": 5
+      "rewardId": "eb5edb77-329e-4a96-bfc7-aa874ae3edbe",
+      "potTock": 3
     }
   },
   "rewardsUsers": {
     "1": {
-      "rewardId": []
+      "rewardId": "eb5edb77-329e-4a96-bfc7-aa874ae3edbe",
+      "claimedU": [
+        "f2775f3f-58ba-4d75-b9fc-044c1432f160"
+      ]
     },
     "2": {
-      "rewardId": []
-    },
-    "3": {
-      "8a94c56d-3bb0-452b-bd30-828af263a505": []
-    },
-    "4": {
-      "91491855-0712-4f52-89f9-105dc5a5e81b": []
-    },
-    "5": {
-      "4a50786d-8123-4d88-a4fb-941c3b967192": []
+      "rewardId": "1723dcc9-01fb-45f4-87d1-4b8af0971b18",
+      "claimedU": [
+        "91278ae2-f660-4ef9-8e85-723cc45153ef"
+      ]
     }
   }
 }

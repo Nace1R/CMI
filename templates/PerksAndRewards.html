@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='slike/favicon5.png') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /*prostor za css*/
         body{
@@ -343,7 +344,7 @@
                                 <h2>{{ reward.naslov }}</h2>
                                 <p>{{ reward.opis }}</p>
                                 <p>Points Needed: {{ reward.potTock }}</p>
-                                <n-button @click="claimReward('{{ reward.rewardId }}')">Claim Reward</n-button>
+                                <n-button @click="claimReward('{{ reward.rewardId }}')">Claim Reward</n-button> <!--posljem rewardid glede na kliknjen reward-->
                             </div>
                             {% endfor %}
                             
@@ -352,11 +353,7 @@
 
                     <div class="claimed-rewards">
                         <h2>Claimed Rewards</h2>
-                        <!--
-                        {%for claimedReward in claimedRewards.claimedReward%}
-                        <p></p>
-                        {% endfor %}
--->
+
 
                         <p style="text-align: center; color: #666; font-style: italic;">No rewards claimed yet</p>
                     </div>
@@ -369,6 +366,7 @@
    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const { createApp, h, ref } = Vue;
+            const { createDiscreteApi } = naive;
 
 
             function renderIcon(iconClass) {
@@ -383,7 +381,8 @@
                 setup() {
                     const collapsed = ref(false);
                     const activeKey = ref('PaR');
-
+                    const { message } = createDiscreteApi(['message']);
+                    
         const menuOptions = [
                         {
                             label: 'Dashboard',
@@ -607,6 +606,7 @@
                         collapsed.value = !collapsed.value;
                     }
                     function claimReward(rewardId){
+                        console.log(rewardId);
                         $.ajax({
                             url: "/claimReward",
                             method: "POST",
@@ -617,8 +617,10 @@
                             success: function (odgovor) {
                                 if (odgovor.success){
                                     message.success('You have successfuly claimed the reward!');
+                                    
                                     setTimeout(() => {
                                         location.reload();
+                                        
                                     }, 1000);
                                 }
                             }
@@ -630,7 +632,8 @@
                         menuOptions,   // opcije iz menija
                         UserOptions,
                         handleSelect,
-                        toggleSidebar
+                        toggleSidebar,
+                        claimReward  
                     };
                 }
             });

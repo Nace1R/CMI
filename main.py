@@ -569,14 +569,14 @@ def perksRewards():
         return redirect(url_for("login"))
     userData = user
     isAdmin = admins.contains(User.userId == userId)
-    print(isAdmin)
+
     pfp = getPfp(userId)
     pointsData = points.get(User.userId == userId)
     pointsN = pointsData["points"]
 
     userMestoData = profil.get(User.userId == userId)
     userMesto = userMestoData["city"]
-    print(userMesto)
+
     rewardList = []
     rewards = rewardsT.all()
     for reward in rewards:
@@ -599,26 +599,34 @@ def perksRewards():
         "reward" : rewardList
     }
 
-    print(showRewardData)
+
+
+
 
     #rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
     return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=pointsN, showRewardData = showRewardData)
 
-@app.route("/claimReward",methods=["POST"])
+@app.route("/claimReward", methods=["POST"])
 def claimReward():
     userId = request.cookies.get("userId")
-    print(f"{userId} claimed reward")
+
     data = request.json
     rewardId = data["rewardId"]
+    if not data or "rewardId" not in data:
+        print("error")
     claimedData = rewardsUser.get(User.rewardId == rewardId)
-    #rewardsUser = db.table('rewardsUsers') # rewardId : []
-    print(claimedData)
-    claimedUsers = claimedData[rewardId]
-    claimedUsers.append(userId)
-
-    pollResults.update({
-        rewardId: claimedUsers
-    }, User.rewardId == rewardId)
+    print(f"REWARD ID ={rewardId}---------------------------------")
+    if claimedData is None:
+        claimedUsers = [userId]
+        rewardsUser.insert({"rewardId": rewardId, "claimedU": claimedUsers}) 
+    """ tole mi boste razložil kako dela profesor, hvala:) ta zadeva se že inserta u faking addReward, ista zadeva, (line 702), 
+        seprav že obstaja, potem je bil error da sm dubiu none, ker je bil list faking prazn, notr sm dou "1", šezmer je bil none,
+        mistral mi je naredu če je none da mi ŠE ENKRATA INSERTA Z IDJEM NAMEST "1" KAR JE ISTA ZADEVA
+"""
+    else:
+        claimedUsers = claimedData['claimedU']
+        claimedUsers.append(userId)
+        rewardsUser.update({"claimedU": claimedUsers}, User.rewardId == rewardId) 
 
     return jsonify({"success": True, "message": "Reward claimed successfully"}), 201
 #---------------- ADMIN SHIT -------------------------
@@ -716,7 +724,9 @@ def addReward():
 
 
     rewardsT.insert({"naslov": naslov, "opis": opis, "userId":userId, "mesto":mesto, "rewardId" : rewardId, "potTock": pointsR})
-    rewardsUser.insert({rewardId:[]})
+    rewardsUser.insert({"rewardId":rewardId,
+                        "claimedU" : []
+                        })
 
     return jsonify({"success": True, "message": "Reward added successfully"}), 201
 
