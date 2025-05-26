@@ -603,7 +603,23 @@ def perksRewards():
     #rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
     return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=pointsN, showRewardData = showRewardData)
 
+@app.route("/claimReward",methods=["POST"])
+def claimReward():
+    userId = request.cookies.get("userId")
+    print(f"{userId} claimed reward")
+    data = request.json
+    rewardId = data["rewardId"]
+    claimedData = rewardsUser.get(User.rewardId == rewardId)
+    #rewardsUser = db.table('rewardsUsers') # rewardId : []
+    print(claimedData)
+    claimedUsers = claimedData[rewardId]
+    claimedUsers.append(userId)
 
+    pollResults.update({
+        rewardId: claimedUsers
+    }, User.rewardId == rewardId)
+
+    return jsonify({"success": True, "message": "Reward claimed successfully"}), 201
 #---------------- ADMIN SHIT -------------------------
 
 

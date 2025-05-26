@@ -351,6 +351,10 @@
 
                     <div class="claimed-rewards">
                         <h2>Claimed Rewards</h2>
+                        {%for claimedReward in claimedRewards.claimedReward%}
+                        <p></p>
+
+
                         <p style="text-align: center; color: #666; font-style: italic;">No rewards claimed yet</p>
                     </div>
                 </div>
@@ -599,10 +603,23 @@
                     function toggleSidebar() {
                         collapsed.value = !collapsed.value;
                     }
-                    function claimReward(rewardId) {
-                        //zaenkrat se prazno
-
-
+                    function claimReward(rewardId){
+                        $.ajax({
+                            url: "/claimReward",
+                            method: "POST",
+                            contentType:"application/json",
+                            data: JSON.stringify({ 
+                                rewardId: rewardId //posljem v backend rewardId za preverjanje ali je user ze claimal rewared
+                            }),
+                            success: function (odgovor) {
+                                if (odgovor.success){
+                                    message.success('You have successfuly claimed the reward!');
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
+                                }
+                            }
+                        })
                     };
                     return {
                         collapsed,// Ali je sidebar oz. menu collapsan ali  ne
