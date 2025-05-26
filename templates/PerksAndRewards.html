@@ -353,9 +353,20 @@
 
                     <div class="claimed-rewards">
                         <h2>Claimed Rewards</h2>
-
-
+                        {%for claimedReward in showClaimedRewardData.reward %}
+                            <div class="reward-card">
+                                <h2>{{ claimedReward.naslov }}</h2>
+                                <p>{{ claimedReward.opis }}</p>
+                                <n-qr-code
+                                value="{{ claimedReward.rewardId }}"
+                                icon-src="static/slike/favicon5.png"
+                                error-correction-level="H"
+                                />
+                            </div>
+                        {%else%}
                         <p style="text-align: center; color: #666; font-style: italic;">No rewards claimed yet</p>
+                        {% endfor %}
+                        
                     </div>
                 </div>
             </div>
