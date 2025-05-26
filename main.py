@@ -734,7 +734,7 @@ def addReward():
 #rewardsUser = db.table('rewardsUsers') # rewardId : userId
 #-------------------KONEC ADMIN----------------------------------------
 
-#admins.insert({'userId': "f2775f3f-58ba-4d75-b9fc-044c1432f160", 'mesto': 'Ljubljana'})
+#admins.insert({'userId': "64710575-bb80-4dd1-8bcc-3307efa63e9a", 'mesto': 'Ljubljana'})
 #admins.insert({'userId': "91278ae2-f660-4ef9-8e85-723cc45153ef", 'mesto': 'Skofja Loka'})
 
 # konec ostlaih sitou
