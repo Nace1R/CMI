@@ -619,10 +619,10 @@ def claimReward():
     if claimedData is None:
         claimedUsers = [userId]
         rewardsUser.insert({"rewardId": rewardId, "claimedU": claimedUsers}) 
-    """ tole mi boste razložil kako dela profesor, hvala:) ta zadeva se že inserta u faking addReward, ista zadeva, (line 702), 
-        seprav že obstaja, potem je bil error da sm dubiu none, ker je bil list faking prazn, notr sm dou "1", šezmer je bil none,
-        mistral mi je naredu če je none da mi ŠE ENKRATA INSERTA Z IDJEM NAMEST "1" KAR JE ISTA ZADEVA
-"""
+        """ tole mi boste razložil kako dela profesor, hvala:) ta zadeva se že inserta u faking addReward, ista zadeva, (line 702), 
+            seprav že obstaja, potem je bil error da sm dubiu none, ker je bil list faking prazn, notr sm dou "1", šezmer je bil none,
+            mistral mi je naredu če je none da mi ŠE ENKRATA INSERTA Z IDJEM NAMEST "1" KAR JE ISTA ZADEVA
+        """
     else:
         claimedUsers = claimedData['claimedU']
         claimedUsers.append(userId)
