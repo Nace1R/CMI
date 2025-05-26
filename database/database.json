@@ -5,12 +5,22 @@
       "email": "bine@gmail.com",
       "geslo": "bine",
       "id": "64710575-bb80-4dd1-8bcc-3307efa63e9a"
+    },
+    "2": {
+      "ime": "nace",
+      "email": "nace_admin@gmail.com",
+      "geslo": "nace",
+      "id": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92"
     }
   },
   "points": {
     "1": {
       "userId": "64710575-bb80-4dd1-8bcc-3307efa63e9a",
       "points": 6
+    },
+    "2": {
+      "userId": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92",
+      "points": 2
     }
   },
   "profile-info": {
@@ -19,18 +29,28 @@
       "pfp": "static/pfp/pfp_64710575-bb80-4dd1-8bcc-3307efa63e9a.jpg",
       "city": "Ljubljana",
       "number": "064297765"
+    },
+    "2": {
+      "userId": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92",
+      "pfp": "static/pfp/pfp_2ced179e-4edd-4ab0-9f1f-10e2d1923f92.jpg",
+      "city": "Skofja Loka",
+      "number": "051369536"
     }
   },
   "admins": {
     "1": {
       "userId": "64710575-bb80-4dd1-8bcc-3307efa63e9a",
       "mesto": "Ljubljana"
+    },
+    "2": {
+      "userId": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92",
+      "mesto": "Skofja Loka"
     }
   },
   "polls": {
     "1": {
-      "naslov": "ali vam je všeč nov shopping center",
-      "opis": "ali vam je všeč nov shopping center",
+      "naslov": "ali vam je vĂ„Ä…Ă‹â€ˇeÄ‚â€žÄąÂ¤ nov shopping center",
+      "opis": "ali vam je vĂ„Ä…Ă‹â€ˇeÄ‚â€žÄąÂ¤ nov shopping center",
       "trajanje": 1,
       "reward": 3,
       "userId": "64710575-bb80-4dd1-8bcc-3307efa63e9a",
@@ -47,6 +67,16 @@
       "mesto": "Ljubljana",
       "pollId": "7073333e-29d8-4d78-8d82-3250f59cce48",
       "exDate": "2025-05-27 21:05:56"
+    },
+    "3": {
+      "naslov": "aa",
+      "opis": "aa",
+      "trajanje": 2,
+      "reward": 2,
+      "userId": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92",
+      "mesto": "Skofja Loka",
+      "pollId": "26ee807e-0420-475e-bb4e-d002da288d26",
+      "exDate": "2025-05-28 21:18:29"
     }
   },
   "pollResults": {
@@ -64,6 +94,14 @@
       "no": 1,
       "voted": {
         "1": "64710575-bb80-4dd1-8bcc-3307efa63e9a"
+      }
+    },
+    "3": {
+      "pollId": "26ee807e-0420-475e-bb4e-d002da288d26",
+      "yes": 1,
+      "no": 0,
+      "voted": {
+        "1": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92"
       }
     }
   },
@@ -83,6 +121,14 @@
       "mesto": "Ljubljana",
       "rewardId": "f8344c4b-612e-41f4-91d7-c4bc3e80943f",
       "potTock": 130
+    },
+    "3": {
+      "naslov": "aa",
+      "opis": "aa",
+      "userId": "2ced179e-4edd-4ab0-9f1f-10e2d1923f92",
+      "mesto": "Skofja Loka",
+      "rewardId": "574351ae-33a0-434a-b7b5-8d2e10d5c732",
+      "potTock": 2
     }
   },
   "rewardsUsers": {
@@ -95,6 +141,12 @@
     "2": {
       "rewardId": "f8344c4b-612e-41f4-91d7-c4bc3e80943f",
       "claimedU": []
+    },
+    "3": {
+      "rewardId": "574351ae-33a0-434a-b7b5-8d2e10d5c732",
+      "claimedU": [
+        "2ced179e-4edd-4ab0-9f1f-10e2d1923f92"
+      ]
     }
   }
 }
