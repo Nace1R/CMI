@@ -576,35 +576,48 @@ def perksRewards():
 
     userMestoData = profil.get(User.userId == userId)
     userMesto = userMestoData["city"]
-
+    claimedRewardList = []
     rewardList = []
     rewards = rewardsT.all()
     for reward in rewards:
         rewardMesto = reward.get('mesto')
         if rewardMesto == userMesto:
+            
+
+            rewardId = reward.get('rewardId')
+            # rabm list claimed, rewardId mam iscem po bazi uzamem list in preverjam
+            claimedRewardData = rewardsUser.get(User.rewardId == rewardId)
+            claimedReward = claimedRewardData["claimedU"]
             naslov = reward.get('naslov')
             opis = reward.get('opis')
             pointsR = reward.get('potTock')
             rewardId = reward.get('rewardId')
-
-            rewardList.append({
-                "naslov" : naslov,
-                "opis" : opis,
-                "potTock" : pointsR,
-                "rewardId" : rewardId,
-                "mesto" : rewardMesto
-            })
-            
+            if userId not in claimedReward:
+                rewardList.append({
+                    "naslov" : naslov,
+                    "opis" : opis,
+                    "potTock" : pointsR,
+                    "rewardId" : rewardId,
+                    "mesto" : rewardMesto
+                })
+            else:
+                claimedRewardList.append({
+                    "naslov" : naslov,
+                    "opis" : opis,
+                    "potTock" : pointsR,
+                    "rewardId" : rewardId,
+                    "mesto" : rewardMesto
+                })
     showRewardData = {
         "reward" : rewardList
     }
-
-
-
+    showClaimedRewardData = {
+        "reward" : claimedRewardList
+    }
 
 
     #rewards = db.table('rewards') # rewardId, pointsR, Ime, Description, mesto
-    return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=pointsN, showRewardData = showRewardData)
+    return render_template("PerksAndRewards.html", isAdmin=isAdmin, userData = userData, pfp=pfp, points=pointsN, showRewardData = showRewardData, showClaimedRewardData=showClaimedRewardData)
 
 @app.route("/claimReward", methods=["POST"])
 def claimReward():
