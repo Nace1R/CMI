@@ -126,7 +126,7 @@ def dashboard():
     if not user:
         return redirect(url_for("login"))
     
-    #prikaz mesta na dashboardu
+    #prikaz mesta na dashboardu - nace
     result = profil.get(User.userId == userId)
     mesto = result['city']
     userData = user
@@ -161,7 +161,7 @@ def about_us():
         return redirect(url_for("login"))
 
 
-
+    # ta str pfp
     pfp_path = url_for('static', filename='slike/default-avatar.png')
     profile = profil.get(where('userId') == userId)
     if profile:
@@ -430,7 +430,7 @@ def weatherFor():
 
 
     def getDate(index):
-        dt = datetime.strptime(dataF["list"][index-1]["dt_txt"], "%Y-%m-%d %H:%M:%S") #ai
+        dt = datetime.strptime(dataF["list"][index-1]["dt_txt"], "%Y-%m-%d %H:%M:%S") 
         date_only = dt.date()
         return date_only
 
@@ -486,8 +486,6 @@ def weatherFor():
             }
             forDayAftrTom[f"{getUra(index)}"] = vremeForDT
             print(forDayAftrTom)
-
-
 
     '''dan1 = {
         "ura1": {
@@ -751,7 +749,6 @@ def addReward():
     #backend
     uuidRewardId = uuid.uuid4()
     rewardId = str(uuidRewardId)
-
 
     rewardsT.insert({"naslov": naslov, "opis": opis, "userId":userId, "mesto":mesto, "rewardId" : rewardId, "potTock": pointsR})
     rewardsUser.insert({"rewardId":rewardId,
