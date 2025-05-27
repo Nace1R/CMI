@@ -622,9 +622,20 @@ def perksRewards():
 @app.route("/claimReward", methods=["POST"])
 def claimReward():
     userId = request.cookies.get("userId")
-
     data = request.json
     rewardId = data["rewardId"]
+    #points -
+    pointsRData = rewardsT.get(User.rewardId == rewardId)
+    pointsR = int(pointsRData['potTock'])
+    print(pointsR)
+
+    pointsTempData = points.get(User.userId == userId)
+    pointsTemp = int(pointsTempData['points'])
+    print(pointsTemp)
+
+    if pointsR > pointsTemp:
+        return jsonify({"success": False, "message": "Nimaš dovolj točk"}), 401
+    
     if not data or "rewardId" not in data:
         print("error")
     claimedData = rewardsUser.get(User.rewardId == rewardId)
@@ -640,6 +651,12 @@ def claimReward():
         claimedUsers = claimedData['claimedU']
         claimedUsers.append(userId)
         rewardsUser.update({"claimedU": claimedUsers}, User.rewardId == rewardId) 
+
+    # računanje points
+    pointsTemp -= pointsR
+    points.update({
+        'points' : pointsTemp
+    }, User.userId == userId)
 
     return jsonify({"success": True, "message": "Reward claimed successfully"}), 201
 #---------------- ADMIN SHIT -------------------------

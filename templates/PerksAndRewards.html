@@ -631,7 +631,10 @@
                                     setTimeout(() => {
                                         location.reload();
                                     }, 1000);
-                                }
+                                } 
+                            },
+                            error:function(){
+                                message.error('You have insufficient points')
                             }
                         })
                     };
@@ -642,7 +645,7 @@
                         UserOptions,
                         handleSelect,
                         toggleSidebar,
-                        claimReward  
+                        claimReward  //mora biti returnano ker je v setupu ta ajax klic
                     };
                 }
             });
